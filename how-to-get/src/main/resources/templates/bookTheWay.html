@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+
+<title>Processing Form page</title>
+<style>
+.error {
+	color: red
+}
+</style>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<a class="navbar-brand" href="/">How To Get</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse"
+		data-target="#navbarSupportedContent"
+		aria-controls="navbarSupportedContent" aria-expanded="false"
+		aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item active"><a class="nav-link" href="/tripForm">Way
+					Finder <span class="sr-only">(current)</span>
+			</a></li>
+			<li class="nav-item active"><a class="nav-link" href="/loading">Transport
+					Companies <span class="sr-only">(current)</span>
+			</a></li>
+			<li class="nav-item active"><a class="nav-link" href="/contacts">Contacts
+					<span class="sr-only">(current)</span>
+			</a></li>
+			
+			<li class="nav-item active" sec:authorize="!isAuthenticated()">
+			<a class="nav-link" href="/registration/newUser">Registration<span class="sr-only">(current)</span>
+			</a>
+			</li>
+			
+			<li class="nav-item active" sec:authorize="isAuthenticated()">
+				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" th:text="${#authentication.name}" >My Cab<span class="sr-only">(current)</span>				
+				</a>
+			</li>
+			
+
+
+			<li class="nav-item dropdown"><a
+				class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Dropdown </a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a class="dropdown-item" href="/tripForm">Action</a> <a
+						class="dropdown-item" href="#">Another action</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="#">Something else here</a>
+				</div></li>
+
+		</ul>
+			<div sec:authorize="isAuthenticated()">
+			  This content is only shown to authenticated users.
+			</div>
+		     <form action="#" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
+        		<input type="submit" value="Logout" class="btn btn-primary-outline">
+			</form>
+			
+			
+		<p class="tab"></p>
+		<form class="form-inline my-2 my-lg-0">
+			<input class="form-control mr-sm-2" type="search"
+				placeholder="Search" aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		</form>
+	</div>
+</nav>
+</head>
+<body>
+<div class="container">
+	<div class="jumbotron">
+		<form action="" th:action="@{/process/booking}" method="POST"
+			th:object="${way}">
+			<h6>Trip details</h6>
+			Operator: <a href="@{/}" th:text="*{companyProvider}" /> 
+			<br>
+			<br> Departure date: <span th:text="*{departureDate}" />
+			Arrival date: <span th:text="*{departureDate}" /> <br>
+			Duration: <span th:text="*{duration}" /> <br> Price per 1
+			seat: <span th:text="*{price}" /> <br> Enter number of
+			seats: <input type="number" value="1" min="1" max="8" step="1" name="numberOfTickets">
+			<br> <br>
+			<h6>Please pick the package of your booking</h6>
+			<br>
+			<div class="btn-group" role="group" aria-label="Basic example">
+				<button type="button" class="btn btn-secondary">Standart</button>
+				<button type="button" class="btn btn-secondary">Gold</button>
+				<button type="button" class="btn btn-secondary">Platinum</button>
+			</div>
+			<br> <br> 
+			<input type="hidden" name="id" th:value="${way.id}">
+			<input type="hidden" name="ufn" th:value="${way.ufn}">
+			<input type="hidden" name="companyProvider"	th:value="${way.companyProvider}"> 
+			<input type="hidden" name="price" th:value="${way.price}">
+			<input type="hidden" name="departureDate" th:value="${way.departureDate}"> 
+			<input type="hidden" name="duration" th:value="${way.duration}">
+			<input type="hidden" name="locationFrom" th:value="${way.locationFrom}"> 
+			<input type="hidden" name="locationTo" th:value="${way.locationTo}">
+						
+			<input type="submit" value="Book"class="btn btn-outline-dark" />
+		</form>
+	</div>
+</div>
+
+	<h1></h1>
+	<div class="container">
+		<a href="/login">Login</a> <a href="/tripForm">TripForm</a>
+	</div>
+
+</body>
+</html>
