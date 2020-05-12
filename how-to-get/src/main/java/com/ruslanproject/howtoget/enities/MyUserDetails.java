@@ -34,7 +34,9 @@ public class MyUserDetails implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		String roles = user.getRoles();
 		String[] rolesArray = roles.split(",");
+		System.out.println("rolesArray:"+Arrays.toString(rolesArray));
 		List<SimpleGrantedAuthority> authorities =Arrays.stream(rolesArray).map(b->new SimpleGrantedAuthority(b)).collect(Collectors.toList());
+		
 		return authorities;
 	}
 

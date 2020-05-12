@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ruslanproject.howtoget.dao.ProviderRepository;
 import com.ruslanproject.howtoget.enities.Bus;
 import com.ruslanproject.howtoget.enities.Flight;
 import com.ruslanproject.howtoget.enities.OrderBus;
@@ -44,7 +45,7 @@ public class HomeController {
 	
 	@Autowired
 	OrderService orderService;
-
+	
 	@RequestMapping("/contacts")
 	public String getContacts() {
 
@@ -200,6 +201,7 @@ public class HomeController {
 		model.addAttribute("ordersBus",ordersBus);
 		model.addAttribute("ordersFlight",ordersFlight);
 		
+		
 		return "myOrders";
 	}
 	
@@ -228,5 +230,13 @@ public class HomeController {
 		//orderService.saveUser(user);
 		
 		return "info";
+	}
+	
+	@RequestMapping("/myCabinet/edit")
+	public String edit(Model model, Authentication auth) {
+		
+		//FIXME finish this controller
+		
+		return null;
 	}
 }

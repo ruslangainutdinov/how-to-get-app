@@ -80,23 +80,20 @@
 	</div>
 </nav>
 </head>
-
-<body>
-
-
-	<div class="container">
-	<br><br>
-		<h1>My cabinet</h1>
-		<br>
-		<div if:th="${#authentication.name==param.id}">
-			Logged user: <span sec:authentication="name"
-				th:text="${#authentication.name}">Bob</span>
-		</div>
-		<br>
-		<a href="/myOrders">My orders</a>
-		<div sec:authorize="hasRole('ROLE_PROVIDER')">
-			<a th:href="@{/myCabinet/edit}">Control Room</a>
-		</div>
+	
+	<div class="jumbotron">
+	  <h1 class="display-4">Hello, world!</h1>
+	  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+	  <hr class="my-4">
+	  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+	  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
 	</div>
+</head>
+<body>
+	<h1></h1>
+	<div class="container">
+		<a href="/login">Login</a> <a href="/tripForm">TripForm</a>
+	</div>
+
 </body>
 </html>
