@@ -16,3 +16,6 @@ The technologies that have been used during development are:
 -Thymeleaf,
 -MySQL
 I am also currently do not consider my front-end skills as professional, so I make use of Bootstrap components, which are easy and ready to use.
+
+
+-Added CommercialAccount Entity, needed to be fixed
