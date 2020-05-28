@@ -45,12 +45,10 @@
 			</a>
 			</li>
 
-			<li class="nav-item active" sec:authorize="isAuthenticated()"><a
-				class="nav-link" th:href="@{/user(id=${#authentication.name})}"
-				th:text="${#authentication.name}">My Cab<span class="sr-only">(current)</span>
-			</a></li>
-
-
+			<li class="nav-item active" sec:authorize="isAuthenticated()">
+				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" >My Cabinet<span class="sr-only">(current)</span>				
+				</a>
+			</li>
 
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
@@ -105,9 +103,16 @@
 					+' Number of seats: '+${order.numberOfTickets}"></td>
 					<td th:text="'Price to pay: '+${#numbers.formatDecimal(order.way.price*(order.numberOfTickets),2,2)}+'$'"></td>
 					<td>
-						<form th:action="@{/myOrders/cancel}" th:method="POST"> 
+						<form th:action="@{/myOrders/cancel}" th:method="POST" > 
+						
 							<input type="hidden" th:value="${order.id}" name="id">
+							
 							<input type="hidden" th:value="${order.way.ufn}" name="ufn">
+							
+							<input type="hidden" th:value="${order.numberOfTickets}" name="number">
+							
+							<input type="hidden" th:value="${order.way.id}" name="wayid">
+							
 							<input type="submit" value="Cancel"/>	
 						</form>
 					</td>
@@ -133,6 +138,8 @@
 						<form th:action="@{/myOrders/cancel}" th:method="POST">
 							<input type="hidden" th:value="${order.way.ufn}" name="ufn"> 
 							<input type="hidden" th:value="${order.id}" name="id">
+							<input type="hidden" th:value="${order.numberOfTickets}" name="number">
+							<input type="hidden" th:value="${order.way.id}" name="wayid">
 							<input type="submit" value="Cancel"/>	
 						</form>
 					</td>

@@ -45,7 +45,7 @@
 			</li>
 			
 			<li class="nav-item active" sec:authorize="isAuthenticated()">
-				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" th:text="${#authentication.name}" >My Cab<span class="sr-only">(current)</span>				
+				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" >My Cabinet<span class="sr-only">(current)</span>				
 				</a>
 			</li>
 			
@@ -63,10 +63,7 @@
 				</div></li>
 
 		</ul>
-			<div sec:authorize="isAuthenticated()">
-			  This content is only shown to authenticated users.
-			</div>
-		     <form action="#" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
+			 <form action="#" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
         		<input type="submit" value="Logout" class="btn btn-primary-outline">
 			</form>
 			
@@ -85,12 +82,12 @@
 	<div class="jumbotron">
 		<form action="" th:action="@{/process/booking}" method="POST"
 			th:object="${way}">
-			<h6>Trip details</h6>
+			<h3>Trip details</h3>
 			Operator: <a href="@{/}" th:text="*{companyProvider}" /> 
 			<br>
 			<br> Departure date: <span th:text="*{departureDate}" />
-			Arrival date: <span th:text="*{departureDate}" /> <br>
-			Duration: <span th:text="*{duration}" /> <br> Price per 1
+
+			Arrival date: <span th:text="*{arrivalDate}" /> <br> Price per 1
 			seat: <span th:text="*{price}" /> <br> Enter number of
 			seats: <input type="number" value="1" min="1" max="8" step="1" name="numberOfTickets">
 			<br> <br>
@@ -107,19 +104,17 @@
 			<input type="hidden" name="companyProvider"	th:value="${way.companyProvider}"> 
 			<input type="hidden" name="price" th:value="${way.price}">
 			<input type="hidden" name="departureDate" th:value="${way.departureDate}"> 
-			<input type="hidden" name="duration" th:value="${way.duration}">
+			<input type="hidden" name="arrivalDate" th:value="${way.arrivalDate}">
 			<input type="hidden" name="locationFrom" th:value="${way.locationFrom}"> 
 			<input type="hidden" name="locationTo" th:value="${way.locationTo}">
+			<input type="hidden" name="ticketsAvailable" th:value="${way.ticketsAvailable}">
 						
 			<input type="submit" value="Book"class="btn btn-outline-dark" />
 		</form>
 	</div>
 </div>
 
-	<h1></h1>
-	<div class="container">
-		<a href="/login">Login</a> <a href="/tripForm">TripForm</a>
-	</div>
+	
 
 </body>
 </html>

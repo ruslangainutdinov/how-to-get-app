@@ -11,78 +11,53 @@
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
 
+<style>
+	h5 {
+		color:black;
+		font-family:Arial, Helvetica, sans-serif;
+		font-size: 39px;	
+	}
+	ref {
+		color:black;
+		font-size: 10px;	
+	}
+</style>
 <title>How to get service</title>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<a class="navbar-brand" href="/">How To Get</a>
-	<button class="navbar-toggler" type="button" data-toggle="collapse"
-		data-target="#navbarSupportedContent"
-		aria-controls="navbarSupportedContent" aria-expanded="false"
-		aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	</button>
-
-	<div class="collapse navbar-collapse" id="navbarSupportedContent">
-		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active"><a class="nav-link" href="/tripForm">Way
-					Finder <span class="sr-only">(current)</span>
-			</a></li>
-			<li class="nav-item active"><a class="nav-link" href="/loading">Transport
-					Companies <span class="sr-only">(current)</span>
-			</a></li>
-			<li class="nav-item active"><a class="nav-link" href="/contacts">Contacts
-					<span class="sr-only">(current)</span>
-			</a></li>
-			
-			<li class="nav-item active" sec:authorize="!isAuthenticated()">
-			<a class="nav-link" href="/registration/newUser">Registration<span class="sr-only">(current)</span>
-			</a>
-			</li>
-			
-			<li class="nav-item active" sec:authorize="isAuthenticated()">
-				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" th:text="${#authentication.name}" >My Cab<span class="sr-only">(current)</span>				
-				</a>
-			</li>
-			
-
-
-			<li class="nav-item dropdown"><a
-				class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
-				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Dropdown </a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="/tripForm">Action</a> <a
-						class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
-				</div></li>
-
-		</ul>
-			<div sec:authorize="isAuthenticated()">
-			  This content is only shown to authenticated users.
-			</div>
-		     <form action="#" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
-        		<input type="submit" value="Logout" class="btn btn-primary-outline">
-			</form>
-			
-			
-		<p class="tab"></p>
-		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="search"
-				placeholder="Search" aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		</form>
-	</div>
-</nav>
-<div class="container-sm">100% wide until small breakpoint</div>
-<div class="container-md">100% wide until medium breakpoint</div>
-<div class="container-lg">100% wide until large breakpoint</div>
-<div class="container-xl">100% wide until extra large breakpoint</div>
 </head>
 <body>
 	<h1></h1>
 	<div class="container">
-		<a href="/login">Login</a> <a href="/tripForm">TripForm</a>
+	<br><br><br><br><br><br>
+		<form action="#" th:action="@{/authentication}" method="POST">
+			<div class="col-md-4 offset-md-4">
+				<h5>HOW TO GET APP</h5>
+				<br>
+				<div class="row">
+
+						<label for="exampleInputEmail1">Email address</label> 
+						<input type="email" class="form-control" name="username" aria-describedby="emailHelp" placeholder="e.g. example@name.com" required> 
+				</div>
+				<br>			
+				<div class="row">
+						<label for="exampleInputPassword1">Password</label> 
+						<input type="password" class="form-control" name="password" placeholder="Please enter password" required>
+				</div>
+				
+				<br>
+								
+				<button type="submit" class="btn btn-dark ">Login</button>
+			
+				<a href="#"th:href="@{/}" class="btn btn-outline-dark">Back to main</a>
+				<br><br>
+				
+				<div th:if="${param.error}">
+                        <div class="alert alert-danger">
+                            Invalid username or password.
+                        </div>
+                </div>
+				
+				</div>
+		</form>
 	</div>
 
 </body>

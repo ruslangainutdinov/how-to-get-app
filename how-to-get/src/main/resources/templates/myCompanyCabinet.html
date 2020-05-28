@@ -45,12 +45,10 @@
 			</li>
 			
 			<li class="nav-item active" sec:authorize="isAuthenticated()">
-				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" th:text="${#authentication.name}" >My Cab<span class="sr-only">(current)</span>				
+				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" >My Cabinet<span class="sr-only">(current)</span>				
 				</a>
 			</li>
 			
-
-
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
 				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -80,19 +78,58 @@
 	</div>
 </nav>
 </head>
-	
-	<div class="jumbotron">
-	  <h1 class="display-4">Hello, world!</h1>
-	  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-	  <hr class="my-4">
-	  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-	  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-	</div>
-</head>
 <body>
 	<h1></h1>
 	<div class="container">
-		<a href="/login">Login</a> <a href="/tripForm">TripForm</a>
+		<a th:href="@{/myCabinet/edit/add}">Add new route</a>
+		<table>
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Way info</th>
+					<th>Way info 2</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="way,index:${companyWays}">
+					<td th:text="*{way.id}"></td>
+					<td th:text="*{way.CompanyProvider}"></td>
+					<td th:text="*{way.price}"></td>
+					<td th:text="*{way.departureDate}"></td>
+					<td th:text="*{way.ticketsAvailable}"></td>
+					<td>
+						<form action="#" th:action="@{/myCabinet/edit/remove}" th:object="${way}" method="POST">
+							<input type="hidden" name="id" th:value="${way.id}" >
+							<input type="hidden" name="ufn" th:value="${way.ufn}"> 
+							<input type="hidden" name="companyProvider"	th:value="${way.companyProvider}"> 
+							<input type="hidden" name="price" th:value="${way.price}"> 
+							<input type="hidden" name="departureDate" th:value="${way.departureDate}"> 
+							<input type="hidden" name="arrivalDate" th:value="${way.arrivalDate}"> 
+							<input type="hidden" name="locationFrom" th:value="${way.locationFrom}">
+							<input type="hidden" name="locationTo" th:value="${way.locationTo}">
+							<input type="hidden" name="ticketsAvailable" th:value="${way.ticketsAvailable}">
+							<button type="submit" th:text="Remove"></button>
+						</form>|
+						
+						<form action="#" th:action="@{/myCabinet/edit/edit/save}" th:object="${way}" method="POST">
+							<input type="hidden" name="id" th:value="${way.id}" >
+							<input type="hidden" name="ufn" th:value="${way.ufn}"> 
+							<input type="hidden" name="companyProvider"	th:value="${way.companyProvider}"> 
+							<input type="hidden" name="price" th:value="${way.price}"> 
+							<input type="hidden" name="departureDate" th:value="${way.departureDate}"> 
+							<input type="hidden" name="arrivalDate" th:value="${way.arrivalDate}"> 
+							<input type="hidden" name="locationFrom" th:value="${way.locationFrom}">
+							<input type="hidden" name="locationTo" th:value="${way.locationTo}">
+							<input type="hidden" name="ticketsAvailable" th:value="${way.ticketsAvailable}">
+							<button type="submit" th:text="Edit"></button>
+						</form>|
+					<!--  	<form th:action="@{/}" th:object="${}" method="POST">
+							<button type="submit" value="Edit"></button>
+						</form>-->
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 
 </body>

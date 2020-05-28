@@ -48,7 +48,7 @@
 				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" >My Cabinet<span class="sr-only">(current)</span>				
 				</a>
 			</li>
-			
+
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
 				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -78,21 +78,15 @@
 	</div>
 </nav>
 </head>
-	<div class="jumbotron">
-	  <form action="" th:action="@{/process/booking}" method="POST" th:object="${order}">
-	  		Congratulations
-	  		You succesfully book the trip. You can check it in "My Cabinet"
-	  		
-	  		
-			
-			<br>
-			<br>		
-	  </form>
-	</div>
-</head>
-<body>
+	<body>
 	<h1></h1>
 	<div class="container">
+		You are on the page where you can choose which type of route you can add
+		
+		<form th:switch="${type}" th:action="@{/myCabinet/edit/add/new}">
+			<button th:case="BUS" type="submit" th:name="type" th:value="Bus">Click here to add new bus route</button>
+    		<button th:case="FLIGHT"type="submit" th:name="type" th:value="Flight">Click here to add new flight</button>
+		</form>
 		<a href="/login">Login</a> <a href="/tripForm">TripForm</a>
 	</div>
 
