@@ -1,6 +1,7 @@
 package com.ruslanproject.howtoget.enities;
 
-import javax.persistence.Column;
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -8,9 +9,9 @@ import javax.persistence.Table;
 @Table(name="buses")
 public class Bus extends WayToGet {
 	
-	public Bus(String id, String companyProvider, double price, String departureDate, String duration,
+	public Bus(String id, String companyProvider, double price, String departureDate, String arrivalDate,
 			String locationFrom, String locationTo) {
-		super(id, companyProvider, price, departureDate, duration, locationFrom, locationTo);
+		super(id, companyProvider, price, departureDate, arrivalDate, locationFrom, locationTo);
 
 	}
 	public Bus() {

@@ -26,17 +26,12 @@ public class BusService implements WayToGetService{
 	private WayToGetTransformer<Bus> transformer = new WayToGetTransformer<>();
 	
 	@Transactional
-	public List<Bus> findAll() {
-		List<Bus> flights =busRepository.findAll();
-		return flights;
-	}
-	
-	@Transactional
 	public List<Bus> findAllByTrip(Trip trip) {
-		List<Bus> buses = busRepository.findAll();
-		buses= buses.stream().filter(b -> b.getLocationFrom().equals(trip.getLocationFrom())
-				&& b.getLocationTo().equals(trip.getLocationTo()) && (b.getTicketsAvailable()>0)).collect(Collectors.toList());
+		List<Bus> buses = busRepository.findAllByLocationFromAndLocationTo(trip.getLocationFrom(), trip.getLocationTo());
 		
+		buses= buses.stream().filter(b -> b.getDepartureDate().startsWith(trip.getDepartureDate())).collect(Collectors.toList());
+		
+		System.out.println(">>>>>>>>>>>>>>>>>>>>Departuredate: "+trip.getDepartureDate());
 		return buses;
 	}
 	

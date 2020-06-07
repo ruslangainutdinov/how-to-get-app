@@ -46,7 +46,6 @@ public class MyScheduledOperations {
 			}
 		});
 
-		flights.forEach(b -> System.out.println("before iterator"+b.getDepartureDate()+", "+b.getId()));
 		
 		OUTER:for (int i = flights.size() - 1; i >= 0; i--) {
 			LocalDateTime departureDate = LocalDateTime.parse(flights.get(i).getDepartureDate());
@@ -58,7 +57,6 @@ public class MyScheduledOperations {
 				break OUTER;
 			}
 		}
-		flightRepository.findAll().forEach(b -> System.out.println("After iterator"+b.getDepartureDate()+", "+b.getId()));
 	}
 	
 	@Scheduled(fixedDelay = 100000)
@@ -77,7 +75,6 @@ public class MyScheduledOperations {
 			}
 		});
 
-		buses.forEach(b -> System.out.println("before iterator"+b.getDepartureDate()+", "+b.getId()));
 		
 		OUTER:for (int i = buses.size() - 1; i >= 0; i--) {
 			LocalDateTime departureDate = LocalDateTime.parse(buses.get(i).getDepartureDate());
@@ -89,6 +86,5 @@ public class MyScheduledOperations {
 				break OUTER;
 			}
 		}
-		busRepository.findAll().forEach(b -> System.out.println("After iterator"+b.getDepartureDate()+", "+b.getId()));
 	}
 }

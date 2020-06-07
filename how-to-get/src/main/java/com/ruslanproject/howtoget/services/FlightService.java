@@ -23,18 +23,12 @@ public class FlightService implements WayToGetService{
 	private FlightRepository flightRepository;
 	
 	private WayToGetTransformer<Flight> transformer = new WayToGetTransformer<>();
-	
-	@Transactional
-	public List<Flight> findAll() {
-		List<Flight> flights =flightRepository.findAll();
-		return flights;
-	}
-	
+
 	@Transactional
 	public List<Flight> findAllByTrip(Trip trip) {
-		List<Flight> flights = flightRepository.findAll();
-		flights= flights.stream().filter(f -> f.getLocationFrom().equals(trip.getLocationFrom())
-				&& f.getLocationTo().equals(trip.getLocationTo()) && (f.getTicketsAvailable()>0)).collect(Collectors.toList());
+		List<Flight> flights = flightRepository.findAllByLocationFromAndLocationTo(trip.getLocationFrom(), trip.getLocationTo());
+		
+		flights= flights.stream().filter(f->f.getDepartureDate().startsWith(trip.getDepartureDate())).collect(Collectors.toList());
 		
 		return flights;
 	}

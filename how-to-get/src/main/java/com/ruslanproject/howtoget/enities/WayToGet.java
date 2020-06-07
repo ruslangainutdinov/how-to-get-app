@@ -1,10 +1,13 @@
 package com.ruslanproject.howtoget.enities;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -16,7 +19,7 @@ import com.ruslanproject.howtoget.validators.FutureDateTimeString;
 
 @MappedSuperclass
 @FieldsDoNotMatch(first = "locationFrom", second = "locationTo",message="Departure location and arrival location should not match")
-@FutureDateTimeString(first = "departureDate", message = "Arrival date must be after departure date", second = "arrivalDate")
+//@FutureDateTimeString(first = "departureDate", message = "Arrival date must be after departure date", second = "arrivalDate")
 public class WayToGet {
 	
 	@Id
@@ -35,12 +38,13 @@ public class WayToGet {
 	@Min(value = 5, message="Minimum price is 5$")
 	private Double price;
 	
-	@CustomFutureDateTime
 	@Column(name="departure_date")
 	private String departureDate;
 	
+	
 	@Column(name="arrival_date")
 	private String arrivalDate;
+	
 	
 	@NotNull
 	@Size(min=4, message="Length of the location cannot be less than 5")
@@ -51,7 +55,6 @@ public class WayToGet {
 	@NotNull
 	@Size(min=4, message="Length of the location cannot be less than 5")
 	@Pattern(regexp = "^[A-Z].*[^0-9]",message="Location must starts with capital letter and should not contain number")	
-	
 	@Column(name="arrival_to")
 	private String locationTo;
 	
@@ -90,7 +93,7 @@ public class WayToGet {
 	public void setDepartureDate(String departureDate) {
 		this.departureDate = departureDate;
 	}
-	public String getArrivalDate() {
+	public String  getArrivalDate() {
 		return arrivalDate;
 	}
 	public void setArrivalDate(String arrivalDate) {

@@ -99,13 +99,9 @@ public class HomeController {
 		model.addAttribute("authenticationName", authentication.getName());
 
 		model.addAttribute("tripObject", new Trip());
-		List<String> cities = new ArrayList();
-		cities.add("New York");
-		cities.add("Washington D.C.");
-		cities.add("Boston");
+		List<String> locations=tripService.getAllLocations();
 
-		model.addAttribute("cities", cities);
-		// model.addAttribute("ways", new String[] {"BUS","FLIGHT"});
+		model.addAttribute("locations", locations);
 		return "form";
 	}
 
@@ -115,16 +111,14 @@ public class HomeController {
 		ModelAndView model = new ModelAndView();
 		model.addObject("authenticationName", authentication.getName());
 
-		List<String> cities = new ArrayList();
-		cities.add("New York");
-		cities.add("Washington D.C.");
-		cities.add("Boston");
+		List<String> locations=tripService.getAllLocations();
 
+		model.addObject("locations", locations);
+
+		
 		System.out.println("Types are: " + trip.getTypes());
 
-		System.out.println("Types are: " + trip.getArrivalDate());
 
-		model.addObject("cities", cities);
 
 		if (bindingResult.hasErrors()) {
 			model.setViewName("form");
@@ -208,7 +202,6 @@ public class HomeController {
 		System.out.println("Step2 ");
 		
 		System.out.println(auth.getName());
-		System.out.println("Fligths"+flightService.findAll());
 				
 		return "redirect:/successBooking";
 	}
