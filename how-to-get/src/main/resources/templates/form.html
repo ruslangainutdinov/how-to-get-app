@@ -18,6 +18,7 @@
 	color: red
 }
 </style>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 	<a class="navbar-brand" href="/">How To Get</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -29,92 +30,93 @@
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active"><a class="nav-link" href="/tripForm">Way
-					Finder <span class="sr-only">(current)</span>
+			<li class="nav-item active"><a class="nav-link" href="/tripForm">Search
+					Way<span class="sr-only">(current)</span>
 			</a></li>
 			<li class="nav-item active"><a class="nav-link" href="/loading">Transport
 					Companies <span class="sr-only">(current)</span>
 			</a></li>
-			<li class="nav-item active"><a class="nav-link" href="/contacts">Contacts
+			<li class="nav-item active"><a class="nav-link" href="/contacts">Information
 					<span class="sr-only">(current)</span>
 			</a></li>
 			
-			<li class="nav-item active" sec:authorize="!isAuthenticated()">
-			<a class="nav-link" href="/registration/newUser">Registration<span class="sr-only">(current)</span>
-			</a>
-			</li>
-			
 			<li class="nav-item active" sec:authorize="isAuthenticated()">
-				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" th:text="${#authentication.name}" >My Cab<span class="sr-only">(current)</span>				
+				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" >My Cabinet<span class="sr-only">(current)</span>				
 				</a>
 			</li>
 			
 
 
-			<li class="nav-item dropdown"><a
-				class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
-				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Dropdown </a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="/tripForm">Action</a> <a
-						class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
-				</div></li>
 
 		</ul>
-			<div sec:authorize="isAuthenticated()">
-			  This content is only shown to authenticated users.
-			</div>
 		     <form action="#" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
         		<input type="submit" value="Logout" class="btn btn-primary-outline">
 			</form>
 			
 			
-		<p class="tab"></p>
-		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="search"
-				placeholder="Search" aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		</form>
+			<div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/registration/newUser}">Registration<span class="sr-only">(current)</span></a>
+			</div>
+        	
+	        <div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/loginURL}">Login<span class="sr-only">(current)</span></a>
+			</div>
+        	
+        	
 	</div>
 </nav>
 </head>
 <body>
 	<div class="container">
-		<h1>Pick the locations appropriate to your trip</h1>
+		<br>
+		
 		<form action="#" th:action="@{/process}" th:object="${tripObject}"
 			method="post">
-
-			Location from: 
+			<div class="col-md-12 mb-3">
+				  <h3>Pick the details of your future trip</h3>
+				  <br>
+				  <div class="form-row">
+					    <div class="col">
+							<label>Departure location</label> 
+								<select th:field="*{locationFrom}" class="form-control">
+									<option th:each="location : ${locations}"   th:value="${location}"  th:text="${location}">Departure location</option>
+								</select> 
+						</div>
+			    		<div class="col">
+							<label>Arrival location</label> 
+								<select th:field="*{locationTo}" class="form-control">	
+									<option  th:each="location : ${locations}" th:value="${location}" th:text="${location}">Arrival location</option>
+								</select> 
+						</div>
+					</div>
+					</div>
+					<div class="col-md-6 mb-3">
+						<label>Departure date</label> 
+						
+							<input type="date" th:field="*{departureDate}" class="form-control" required/> 
+						
+						<br>
+					</div>
+					
+					<div class="col-md-6 mb-3">
+						<div class="form-row">
+							<div class="col"> 
+								<input type="checkbox" th:field="*{types}" th:checked="${true}" value="FLIGHT">
+								<label>Pick the flight</label>
+							</div>												
+							<div class="col">
+								<input type="checkbox" th:field="*{types}" th:checked="${true}" value="BUS">
+								<label>Pick the bus</label>
+							</div>
+							<br>
+						</div>
+					
+					<span th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="error"></span>
+					<p th:text="${errorStatus}" class="error" />
 			
-			<select th:field="*{locationFrom}" >
-				<option th:each="city : ${cities}"   th:value="${city}"  th:text="${city}">City from</option>
-			</select> 
-			
-			Location to: 
-			<select th:field="*{locationTo}">
-				
-				<option  th:each="city : ${cities}" th:value="${city}" th:text="${city}">City to</option>
-				
-			</select> 
-			
-			
-			<br> <br> Departure date: <input type="date"
-				th:field="*{departureDate}" /> 
-				<br><br>
-				Flight <input type="checkbox" th:field="*{types}" th:checked="${true}" value="FLIGHT">
-				Bus <input type="checkbox" th:field="*{types}" th:checked="${true}" value="BUS">
-				<br><br>
-
-<!-- ${#strings.equals(first, second)}-->
-
-
-
-			<span th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="error"></span>
-			<p th:text="${errorStatus}" class="error" />
-			
-				<input type="submit" value="Send" />
+					<button type="submit" class="btn btn-outline-dark">Send</button>
+					
+					</div>
 		</form>
 	</div>
 </body>

@@ -14,6 +14,7 @@
 
 <title>Processing Form page</title>
 
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 	<a class="navbar-brand" href="/">How To Get</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -25,65 +26,53 @@
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active"><a class="nav-link" href="/tripForm">Way
-					Finder <span class="sr-only">(current)</span>
+			<li class="nav-item active"><a class="nav-link" href="/tripForm">Search
+					Way<span class="sr-only">(current)</span>
 			</a></li>
 			<li class="nav-item active"><a class="nav-link" href="/loading">Transport
 					Companies <span class="sr-only">(current)</span>
 			</a></li>
-			<li class="nav-item active"><a class="nav-link" href="/contacts">Contacts
+			<li class="nav-item active"><a class="nav-link" href="/contacts">Information
 					<span class="sr-only">(current)</span>
 			</a></li>
 			
-			<li class="nav-item active" sec:authorize="!isAuthenticated()">
-			<a class="nav-link" href="/registration/newUser">Registration<span class="sr-only">(current)</span>
-			</a>
-			</li>
-			
 			<li class="nav-item active" sec:authorize="isAuthenticated()">
-				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" th:text="${#authentication.name}" >My Cab<span class="sr-only">(current)</span>				
+				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" >My Cabinet<span class="sr-only">(current)</span>				
 				</a>
 			</li>
 			
 
 
-			<li class="nav-item dropdown"><a
-				class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
-				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Dropdown </a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="/tripForm">Action</a> <a
-						class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
-				</div></li>
 
 		</ul>
-			<div sec:authorize="isAuthenticated()">
-			  This content is only shown to authenticated users.
-			</div>
 		     <form action="#" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
         		<input type="submit" value="Logout" class="btn btn-primary-outline">
 			</form>
 			
 			
-		<p class="tab"></p>
-		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="search"
-				placeholder="Search" aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		</form>
+			<div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/registration/newUser}">Registration<span class="sr-only">(current)</span></a>
+			</div>
+        	
+	        <div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/loginURL}">Login<span class="sr-only">(current)</span></a>
+			</div>
+        	
+        	
 	</div>
 </nav>
 </head>
 <body>
 	<div class="container">
+	<br>
 		Search results:
 		<span th:text="${tripObject}" />
+		
+		<div th:if="${buses != null}">
 		<br>
 		<h3>Buses</h3>
 		<br>
-		<div th:if="${buses != null}">
+		
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>
@@ -91,9 +80,10 @@
 					<th>Company</th>
 					<th>Price</th>
 					<th>Departure date</th>
-					<th>Duration</th>
+					<th>Arrival date</th>
 					<th>Departure from</th>
 					<th>Arrival to</th>
+					<th># of tickets</th>
 					<th>Book</th>
 				</tr>
 			</thead>
@@ -102,10 +92,11 @@
 					<td th:text="${bus.ufn}"></td>
 					<td th:text="${bus.companyProvider}"></td>
 					<td th:text="${bus.price}"></td>
-					<td th:text="${bus.departureDate}"></td>
-					<td th:text="${bus.duration}"></td>
+					<td th:text="${#strings.replace(bus.departureDate,'T',' ')}"></td>
+					<td th:text="${#strings.replace(bus.arrivalDate,'T',' ')}"></td>
 					<td th:text="${bus.locationFrom}"></td>
 					<td th:text="${bus.locationTo}"></td>
+					<td th:text="${bus.ticketsAvailable}"></td>
 					<td>
 						<form th:action="@{/process/book}" th:object="${buses}"
 							method="POST">
@@ -116,11 +107,14 @@
 								name="price" th:value="${bus.price}"> <input
 								type="hidden" name="departureDate"
 								th:value="${bus.departureDate}"> <input type="hidden"
-								name="duration" th:value="${bus.duration}"> <input
+								name="arrivalDate" th:value="${bus.arrivalDate}"> <input
 								type="hidden" name="locationFrom" th:value="${bus.locationFrom}">
 							<input type="hidden" name="locationTo"
-								th:value="${bus.locationTo}"> <input type="submit"
-								value="Submit" />
+								th:value="${bus.locationTo}"> 
+							<input type="hidden" name="ticketsAvailable" th:value="${bus.ticketsAvailable}">
+								
+								<input type="submit"
+								value="Book" />
 					</td>
 					</form>
 
@@ -129,7 +123,9 @@
 		</table>
 		</div>
 		<div th:if="${flights != null}">
+			<br>
 			<h3>Fligths</h3>
+			<br>
 			<table th:if="${flights != null}" class="table">
 				<thead class="thead-dark">
 					<tr>
@@ -137,9 +133,10 @@
 						<th>Company</th>
 						<th>Price</th>
 						<th>Departure date</th>
-						<th>Duration</th>
+						<th>Arrival date</th>
 						<th>Departure from</th>
 						<th>Arrival to</th>
+						<th># of tickets</th>
 						<th>Book</th>
 					</tr>
 				</thead>
@@ -148,10 +145,11 @@
 						<td th:text="${flight.ufn}"></td>
 						<td th:text="${flight.companyProvider}"></td>
 						<td th:text="${flight.price}"></td>
-						<td th:text="${flight.departureDate}"></td>
-						<td th:text="${flight.duration}"></td>
+						<td th:text="${#strings.replace(flight.departureDate,'T',' ')}"></td>
+						<td th:text="${#strings.replace(flight.arrivalDate,'T',' ')}"></td>
 						<td th:text="${flight.locationFrom}"></td>
 						<td th:text="${flight.locationTo}"></td>
+						<td th:text="${flight.ticketsAvailable}"></td>
 						<td>
 							<form th:action="@{/process/book}" th:object="${buses}"
 								method="POST">
@@ -162,11 +160,13 @@
 									type="hidden" name="price" th:value="${flight.price}">
 								<input type="hidden" name="departureDate"
 									th:value="${flight.departureDate}"> <input
-									type="hidden" name="duration" th:value="${flight.duration}">
+									type="hidden" name="arrivalDate" th:value="${flight.arrivalDate}">
 								<input type="hidden" name="locationFrom"
 									th:value="${flight.locationFrom}"> <input type="hidden"
-									name="locationTo" th:value="${flight.locationTo}"> <input
-									type="submit" value="Submit" />
+									name="locationTo" th:value="${flight.locationTo}"> 
+							<input type="hidden" name="ticketsAvailable" th:value="${flight.ticketsAvailable}">
+									<input
+									type="submit" value="Book" />
 						</td>
 						</form>
 

@@ -66,21 +66,48 @@
 	</div>
 </nav>
 </head>
-	<div class="jumbotron">
-	  <form action="" th:action="@{/process/booking}" method="POST" th:object="${order}">
-	  		Congratulations
-	  		You succesfully book the trip. You can check it in "My Cabinet"
-	  		
-	  		
+<body>
+	<div class="container">
+	
+		
+		<form th:action="@{/myCabinet/edit/add/save}" >
+			
+			<input type="hidden" th:name="type" th:value="${type}">
+			<input type="hidden" th:field="*{way.id}" th:value="${way.id}">
+			<span th:text="*{way.id}"></span>
+			<h4>Form to add new <span th:text=${type}/></h4>
+			<input type="hidden" th:field="*{way.companyProvider}" th:value="*{way.companyProvider}">
+			<span th:text="*{way.companyProvider}"></span>
+			
+			<br><br>
+			Location from   <input type="text" th:field="*{way.locationFrom}" th:value="${#strings.capitalizeWords(way.locationFrom)}" placeholder="Please enter location from" required>
+			<br>
+			<span th:if="${#fields.hasErrors('way.locationFrom')}" th:errors="*{way.locationFrom}" class="error"></span>
+			<br>
+			Location to(*)   <input type="text" th:field="*{way.locationTo}" th:value="${#strings.capitalizeWords(way.locationTo)}"  placeholder="Please enter location to" required>
+			<br>
+			<span th:if="${#fields.hasErrors('way.locationTo')}" th:errors="*{way.locationTo}" class="error"></span>	
+			<br>
+			Departure date(*)   <input type="datetime-local" th:field="*{way.departureDate}" placeholder="Please enter departure date" required>
+			<span th:if="${#fields.hasErrors('way.departureDate')}" th:errors="*{way.departureDate}" class="error"></span>
+			<br><br>
+			Arrival date(*)   <input type="datetime-local" th:field="*{way.arrivalDate}" placeholder="Please enter arrival date" required>
+			<span th:if="${#fields.hasErrors('way.arrivalDate')}" th:errors="*{way.arrivalDate}" class="error"></span>
+			<br><br>
+			Price(*)    <input type="text" th:field="*{way.price}" placeholder="Enter price" required>
+			<span th:if="${#fields.hasErrors('way.price')}" th:errors="*{way.price}" class="error"></span>
+			<br><br>
+			UFN(*)    <input type="text" th:field="*{way.ufn}" th:value="${#strings.toUpperCase(way.ufn)}" placeholder="Enter ufn" required>
+			<span th:if="${#fields.hasErrors('way.ufn')}" th:errors="*{way.ufn}" class="error"></span>
+			<br>
+			<span th:if="${#fields.hasErrors('way')}" th:errors="*{way}" class="error"></span> 
+			<br>
+			Tickets available(*)    <input type="number" min="10" th:field="*{way.ticketsAvailable}" placeholder="Enter number of available tickets" required>
+			<span th:if="${#fields.hasErrors('way.ticketsAvailable')}" th:errors="*{way.ticketsAvailable}" class="error"></span>
 			
 			<br>
-			<br>		
-	  </form>
-	</div>
-</head>
-<body>
-	<h1></h1>
-	<div class="container">
+			<button type="submit" th:text="Save"></button>	
+		</form>
 		<a href="/login">Login</a> <a href="/tripForm">TripForm</a>
 	</div>
 

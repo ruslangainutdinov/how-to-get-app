@@ -66,76 +66,13 @@
 	</div>
 </nav>
 </head>
-
-<body>
-
-
+	<body>
+	<h1></h1>
 	<div class="container">
-		<br> <br>
-		<h2>My orders</h2>
-		<br>
-		<table class="table">
-			<thead class="thead-light">
-				<tr>
-					<th scope="col">#</th>
-					<th scope="col">Description</th>
-					<th scope="col">Price to pay</th>
-					<th scope="col"></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="order,iStat: ${ordersFlight}">
-					<th th:text="${iStat.index}+1"></th>
-					<td th:text="'Company: '+${order.way.companyProvider}+' Departure: '+${order.way.departureDate}
-					+' Number of seats: '+${order.numberOfTickets}"></td>
-					<td th:text="'Price to pay: '+${#numbers.formatDecimal(order.way.price*(order.numberOfTickets),2,2)}+'$'"></td>
-					<td>
-						<form th:action="@{/myOrders/cancel}" th:method="POST" > 
-						
-							<input type="hidden" th:value="${order.id}" name="id">
-							
-							<input type="hidden" th:value="${order.way.ufn}" name="ufn">
-							
-							<input type="hidden" th:value="${order.numberOfTickets}" name="number">
-							
-							<input type="hidden" th:value="${order.way.id}" name="wayid">
-							
-							<input type="submit" value="Cancel"/>	
-						</form>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-				<table class="table">
-			<thead class="thead-light">
-				<tr>
-					<th scope="col">#</th>
-					<th scope="col">Description</th>
-					<th scope="col">Price to pay</th>
-					<th scope="col"></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="order,iStat: ${ordersBus}">
-					<th th:text="${iStat.index}+1"></th>
-					<td th:text="'Company: '+${order.way.companyProvider}+' Departure: '+${order.way.departureDate}
-					+' Number of seats: '+${order.numberOfTickets}"></td>
-					<td th:text="'Price to pay: '+${#numbers.formatDecimal(order.way.price*(order.numberOfTickets),2,2)}+'$'"></td>
-					<td>
-						<form th:action="@{/myOrders/cancel}" th:method="POST">
-							<input type="hidden" th:value="${order.way.ufn}" name="ufn"> 
-							<input type="hidden" th:value="${order.id}" name="id">
-							<input type="hidden" th:value="${order.numberOfTickets}" name="number">
-							<input type="hidden" th:value="${order.way.id}" name="wayid">
-							<input type="submit" value="Cancel"/>	
-						</form>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		
+		You are on the page where you can choose which type of route you can add
+		Success saving new route
+		<a href="/login">Login</a> <a href="/tripForm">TripForm</a>
 	</div>
-	<br>
-	</div>
+
 </body>
 </html>

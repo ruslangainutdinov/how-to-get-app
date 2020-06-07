@@ -1,6 +1,7 @@
 package com.ruslanproject.howtoget.enities;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,6 +41,25 @@ public class UserProfile {
 				joinColumns = @JoinColumn(name="profile_id"),
 				inverseJoinColumns = @JoinColumn(name="order_flight_id"))
 	private List<OrderFlight> ordersFlight;
+	
+	public List<Flight>  getFlightsOfOrder() {
+		List<Flight> collect = ordersFlight.stream().map(b->b.getWay()).collect(Collectors.toList());
+		return collect;
+	}
+	
+
+	public List<Integer>  getBusesOfOrderIds() {
+		List<Integer> collect = ordersBus.stream().map(b->b.getWay().getId()).collect(Collectors.toList());
+		System.out.println("getBusesOfOrderIds()  "+collect);
+		return collect;
+	}
+	
+	public List<Integer>  getFlightsOfOrderIds() {
+		List<Integer> collect = ordersFlight.stream().map(b->b.getWay().getId()).collect(Collectors.toList());
+		System.out.println("getFlightfOrderIds()  "+collect);
+		return collect;
+	}
+	
 	
 	public UserProfile() {
 		

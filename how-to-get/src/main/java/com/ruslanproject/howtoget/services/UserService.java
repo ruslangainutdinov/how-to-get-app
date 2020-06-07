@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ruslanproject.howtoget.enities.UniqueId;
@@ -20,7 +21,16 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private MailSenderClass sender;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
+	private static final String MESSAGE_SUBJECT="Registration confirmation";
+	
 	private HashMap<String,UniqueId> validationMap = new HashMap<>();
+
 	private HashMap<String,User> userMap = new HashMap<>();
 	
 	public boolean isUserExists(User user) {
@@ -44,6 +54,10 @@ public class UserService {
 		UserProfile profile =new UserProfile();
 		profile.setUser(user);
 		user.setUserProfile(profile);
+		
+		String encodedPassword=passwordEncoder.encode(user.getPassword());
+		user.setEncryptedPassword(encodedPassword);
+		System.out.println("encodedPassword"+encodedPassword);
 		userRepository.save(user);
 		System.out.println("Step 3");
 		userMap.remove(uniqueId.getEmail());
@@ -76,10 +90,9 @@ public class UserService {
 	}
 
 	public void sendConfirmation(UniqueId uniqueId, @Valid User user) {
-		MailSenderClass senderClass = new MailSenderClass();
 		System.out.println("Value to be send: "+uniqueId.getUniqueId());
-		senderClass.sendMessage(uniqueId.getEmail(), user.getFirstName()+" "+user.getLastName()
-		, uniqueId.getUniqueId(), null, true);
+		sender.sendMessage(uniqueId.getEmail(), user.getFirstName()+" "+user.getLastName()
+		,MESSAGE_SUBJECT, uniqueId.getUniqueId(), null, true);
 
 	}
 	

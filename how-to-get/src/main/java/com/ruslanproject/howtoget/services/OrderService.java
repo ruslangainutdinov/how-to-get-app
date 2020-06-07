@@ -19,6 +19,7 @@ import com.ruslanproject.howtoget.enities.OrderFlight;
 import com.ruslanproject.howtoget.enities.User;
 import com.ruslanproject.howtoget.enities.WayToGet;
 import com.ruslanproject.howtoget.repositories.UserRepository;
+import com.ruslanproject.howtoget.utils.WayToGetTransformer;
 
 @Service
 public class OrderService {
@@ -38,7 +39,11 @@ public class OrderService {
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	private CommercialAccountService commercialAccountService;
 	
+	@Autowired
+	WayToGetTransformer transformer;
 	
 	public List<String> getAllBusUfns() {
 		List<String> busesUfnList =busRepository.findAll().stream().map(b->b.getUfn()).distinct().collect(Collectors.toList());
@@ -52,12 +57,12 @@ public class OrderService {
 	
 	public void processNewOrder(WayToGet way, int number, String name) {
 		
-		if(way.getUfn().startsWith("F")) {
+		if(commercialAccountService.checkWayForFlight(way)) {
 			//logic for fligths
 			System.out.println("Flight logic");
 			processNewOrderFligth(way,number,name);
 		}
-		else if (way.getUfn().startsWith("N")) {
+		else if (commercialAccountService.checkWayForBus(way)) {
 			//logic for buses
 			System.out.println("Bus logic");
 			processNewOrderBus(way,number,name);
@@ -65,10 +70,16 @@ public class OrderService {
 		} 
 	}
 
+	@Transactional
 	private void processNewOrderBus(WayToGet way, int number, String name) {
 		System.out.println("way.getId()"+way.getId());
 		Optional<Bus> bus = busRepository.findById(way.getId());
 		Optional<User> user = userRepository.findByEmail(name);
+	
+		Bus tempBus = bus.get();
+		tempBus.setTicketsAvailable(tempBus.getTicketsAvailable()-number);
+		busRepository.save(tempBus);
+		
 			if(bus.isPresent()&&user.isPresent()) {
 				OrderBus order = new OrderBus(number, bus.get());
 				User userToSave = user.get();
@@ -78,17 +89,24 @@ public class OrderService {
 		
 	}
 
+	@Transactional
 	private void processNewOrderFligth(WayToGet way, int number, String name) {
+		
 		System.out.println("way.getId()"+way.getId());
+		
 		Optional<Flight> flight = flightRepository.findById(way.getId());
 		Optional<User> user = userRepository.findByEmail(name);
-			if(flight.isPresent()&&user.isPresent()) {
-				OrderFlight order = new OrderFlight(number, flight.get());
-				User userToSave = user.get();
-				userToSave.getUserProfile().addFlightOrder(order);
-				userRepository.save(userToSave);
-			}
 		
+		Flight tempFlight = flight.get();
+		tempFlight.setTicketsAvailable(tempFlight.getTicketsAvailable()-number);
+		flightRepository.save(tempFlight);
+				
+		if(flight.isPresent()&&user.isPresent()) {
+			OrderFlight order = new OrderFlight(number, flight.get());
+			User userToSave = user.get();
+			userToSave.getUserProfile().addFlightOrder(order);
+			userRepository.save(userToSave);
+		}
 	}
 
 	public List<OrderBus> getAllOrdersBusByUser(String name) {
@@ -117,21 +135,52 @@ public class OrderService {
 	}
 
 	@Transactional
-	public void removeWay(int id, String ufn, String email) {
+	public void removeWay(int id, String ufn, String email, int numberOfTickets, int wayid) {
+		
+		
 		User user =userService.findByEmail(email);
+		
 		boolean bus = getAllBusUfns().contains(ufn);
+		
+		
+		
 		System.out.println("Ufns: "+getAllBusUfns());
 		System.out.println("Ufns flight: "+getAllFlightUfns());
 		System.out.println("Bus status: "+bus);
+		
 		if(getAllFlightUfns().contains(ufn)){
-			//logic for fligths
 			System.out.println("Flight logic");
+			
+			flightUpdateNumberOfTickets(wayid, numberOfTickets);
+			
 			user.getUserProfile().getOrdersFlight().removeIf(i->i.getId()==(id));
 		}
 		else if (getAllBusUfns().contains(ufn)){
 			System.out.println("Bus logic");
+			
+			busUpdateNumberOfTickets(wayid,numberOfTickets);
+			
 			user.getUserProfile().getOrdersBus().removeIf(i->i.getId()==(id));
 		}
 		
 	}
+	
+	@Transactional
+	private void flightUpdateNumberOfTickets(int id, int numberOfTickets) {
+		Optional<Flight> optFlight = flightRepository.findById(id);
+		Flight flight = optFlight.get();
+		flight.setTicketsAvailable(flight.getTicketsAvailable()+numberOfTickets);
+		flightRepository.save(flight);
+	}
+
+	@Transactional
+	private void busUpdateNumberOfTickets(int id, int numberOfTickets) {
+		Optional<Bus> optBus = busRepository.findById(id);
+		System.out.println("busRepository.findById(id);"+id);
+		Bus bus = optBus.get();
+		bus.setTicketsAvailable(bus.getTicketsAvailable()+numberOfTickets);
+		busRepository.save(bus);
+	}
+	
+	
 }
