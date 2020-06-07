@@ -20,7 +20,7 @@ public class FlightDao {
 		return null;
 	 }
 	
-	public List<? extends WayToGet> getWays(Trip trip){
+	/*public List<? extends WayToGet> getWays(Trip trip){
 		List<WayToGet> ways = new ArrayList<>();
 		ways.add(new Flight("FNW115","S7",50.00,"2020-05-05 08:00","1:20","New York","Washington D.C."));
 		ways.add(new Flight("FNW115","S7",50.00,"2020-05-05 12:00","1:20","New York","Washington D.C."));
@@ -32,5 +32,5 @@ public class FlightDao {
 		ways = ways.stream().filter(f -> f.getLocationFrom().equals(trip.getLocationFrom())
 				&& f.getLocationTo().equals(trip.getLocationTo())).collect(Collectors.toList());
 		return ways;
-	}
+	}*/
 }

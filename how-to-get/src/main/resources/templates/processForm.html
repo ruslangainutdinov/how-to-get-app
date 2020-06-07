@@ -14,6 +14,7 @@
 
 <title>Processing Form page</title>
 
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 	<a class="navbar-brand" href="/">How To Get</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -25,52 +26,39 @@
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active"><a class="nav-link" href="/tripForm">Way
-					Finder <span class="sr-only">(current)</span>
+			<li class="nav-item active"><a class="nav-link" href="/tripForm">Search
+					Way<span class="sr-only">(current)</span>
 			</a></li>
 			<li class="nav-item active"><a class="nav-link" href="/loading">Transport
 					Companies <span class="sr-only">(current)</span>
 			</a></li>
-			<li class="nav-item active"><a class="nav-link" href="/contacts">Contacts
+			<li class="nav-item active"><a class="nav-link" href="/contacts">Information
 					<span class="sr-only">(current)</span>
 			</a></li>
-			
-			<li class="nav-item active" sec:authorize="!isAuthenticated()">
-			<a class="nav-link" href="/registration/newUser">Registration<span class="sr-only">(current)</span>
-			</a>
-			</li>
 			
 			<li class="nav-item active" sec:authorize="isAuthenticated()">
 				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" >My Cabinet<span class="sr-only">(current)</span>				
 				</a>
 			</li>
 			
-			<li class="nav-item dropdown"><a
-				class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
-				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Dropdown </a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="/tripForm">Action</a> <a
-						class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
-				</div></li>
+
+
 
 		</ul>
-			<div sec:authorize="isAuthenticated()">
-			  This content is only shown to authenticated users.
-			</div>
 		     <form action="#" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
         		<input type="submit" value="Logout" class="btn btn-primary-outline">
 			</form>
 			
 			
-		<p class="tab"></p>
-		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="search"
-				placeholder="Search" aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		</form>
+			<div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/registration/newUser}">Registration<span class="sr-only">(current)</span></a>
+			</div>
+        	
+	        <div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/loginURL}">Login<span class="sr-only">(current)</span></a>
+			</div>
+        	
+        	
 	</div>
 </nav>
 </head>
@@ -104,8 +92,8 @@
 					<td th:text="${bus.ufn}"></td>
 					<td th:text="${bus.companyProvider}"></td>
 					<td th:text="${bus.price}"></td>
-					<td th:text="${#temporals.format(new java.util.Date(bus.departureDate)), 'dd-MM-yyyy')}"></td>
-					<td th:text="${bus.arrivalDate}"></td>
+					<td th:text="${#strings.replace(bus.departureDate,'T',' ')}"></td>
+					<td th:text="${#strings.replace(bus.arrivalDate,'T',' ')}"></td>
 					<td th:text="${bus.locationFrom}"></td>
 					<td th:text="${bus.locationTo}"></td>
 					<td th:text="${bus.ticketsAvailable}"></td>
@@ -157,8 +145,8 @@
 						<td th:text="${flight.ufn}"></td>
 						<td th:text="${flight.companyProvider}"></td>
 						<td th:text="${flight.price}"></td>
-						<td th:text="${flight.departureDate}"></td>
-						<td th:text="${flight.arrivalDate}"></td>
+						<td th:text="${#strings.replace(flight.departureDate,'T',' ')}"></td>
+						<td th:text="${#strings.replace(flight.arrivalDate,'T',' ')}"></td>
 						<td th:text="${flight.locationFrom}"></td>
 						<td th:text="${flight.locationTo}"></td>
 						<td th:text="${flight.ticketsAvailable}"></td>

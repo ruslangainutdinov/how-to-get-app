@@ -21,7 +21,6 @@ public class Trip {
 	private String locationTo;
 
 	private String departureDate;
-	private String arrivalDate;
 	private LocalDateTime timestamp;
 	
 	private Set<String> types= new HashSet<>();
@@ -64,13 +63,7 @@ public class Trip {
 		return "From: " + locationFrom + ", to: " + locationTo + ", departure date: " + departureDate;
 	}
 
-	public String getArrivalDate() {
-		return arrivalDate;
-	}
-
-	public void setArrivalDate(String arrivalDate) {
-		this.arrivalDate = arrivalDate;
-	}
+	
 
 	public LocalDateTime getTimestamp() {
 		return timestamp;

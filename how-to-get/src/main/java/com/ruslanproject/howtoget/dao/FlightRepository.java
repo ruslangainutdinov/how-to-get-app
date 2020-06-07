@@ -8,6 +8,8 @@ import com.ruslanproject.howtoget.enities.Bus;
 import com.ruslanproject.howtoget.enities.Flight;
 
 public interface FlightRepository extends JpaRepository<Flight,Integer>{
+	
 	List<Flight> findAllByCompanyProvider(String companyProvider);
-
+	
+	List<Flight> findAllByLocationFromAndLocationTo(String locationFrom,String locationTo);
 }

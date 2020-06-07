@@ -1,8 +1,8 @@
 package com.ruslanproject.howtoget.enities;
 
-import javax.persistence.Column;
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
@@ -11,9 +11,9 @@ public class Flight extends WayToGet {
 
 	
 	
-	public Flight(String id, String companyProvider, double price, String departureDate, String duration,
+	public Flight(String id, String companyProvider, double price, String departureDate, String arrivalDate,
 			String locationFrom, String locationTo) {
-		super(id, companyProvider, price, departureDate, duration, locationFrom, locationTo);
+		super(id, companyProvider, price, departureDate, arrivalDate, locationFrom, locationTo);
 	}
 	public Flight() {}
 	
