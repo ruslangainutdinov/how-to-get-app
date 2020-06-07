@@ -3,43 +3,42 @@ package com.ruslanproject.howtoget.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.ruslanproject.howtoget.dao.BusRepository;
 import com.ruslanproject.howtoget.dao.FlightRepository;
 import com.ruslanproject.howtoget.enities.Bus;
 import com.ruslanproject.howtoget.enities.Flight;
 import com.ruslanproject.howtoget.enities.Trip;
+import com.ruslanproject.howtoget.enities.WayToGet;
+import com.ruslanproject.howtoget.utils.WayToGetTransformer;
 
 @Service
-public class FlightService {
+public class FlightService implements WayToGetService{
 	
 	@Autowired
 	private FlightRepository flightRepository;
 	
-	@Autowired
-	private BusRepository busRepository;
-	
-	public List<Flight> findFlights() {
-		List<Flight> flights =flightRepository.findAll();
+	private WayToGetTransformer<Flight> transformer = new WayToGetTransformer<>();
+
+	@Transactional
+	public List<Flight> findAllByTrip(Trip trip) {
+		List<Flight> flights = flightRepository.findAllByLocationFromAndLocationTo(trip.getLocationFrom(), trip.getLocationTo());
+		
+		flights= flights.stream().filter(f->f.getDepartureDate().startsWith(trip.getDepartureDate())).collect(Collectors.toList());
+		
 		return flights;
 	}
 	
-	public List<Bus> findBuses(Trip trip) {
-		List<Bus> buses = busRepository.findAll();
-		buses= buses.stream().filter(f -> f.getLocationFrom().equals(trip.getLocationFrom())
-				&& f.getLocationTo().equals(trip.getLocationTo())).collect(Collectors.toList());
-		
-		return buses;
-	}
-	
-	public List<Flight> findFlights(Trip trip) {
-		List<Flight> flights = flightRepository.findAll();
-		flights= flights.stream().filter(f -> f.getLocationFrom().equals(trip.getLocationFrom())
-				&& f.getLocationTo().equals(trip.getLocationTo())).collect(Collectors.toList());
-		
-		return flights;
+	@Transactional
+	public void saveEntity(@Valid WayToGet way) {
+		Flight flight = new Flight();
+		transformer.transform(way, flight);
+		System.out.println("Transformed flight "+flight);	
+		flightRepository.save(flight);
 	}
 
 }

@@ -12,6 +12,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.stereotype.Component;
 
+@Component
 public class MailSenderClass {
 
 	private Session session;
@@ -43,23 +44,22 @@ public class MailSenderClass {
 		properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	}
 
-	public  boolean sendMessage(String receiver, String name, Long confirmationCode, String messageBody, boolean registrationFlag) {
+	public  boolean sendMessage(String receiver, String name, String subject, Long confirmationCode, String messageBody, boolean registrationFlag) {
 		boolean success=false;
 		try {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(receiver));
-			message.setSubject("Registration confirmation");
+			message.setSubject(subject);
 			if(registrationFlag) {
-				System.out.println("So what's up");
 				message.setText("Hello, "+ name + "\n\n\n Here is your confirmation code: "+confirmationCode
 						+"\n\n\nPlease enter above confirmation code to complete registration.");
 			}else {
 				message.setText(messageBody);
 			}
 			Transport.send(message);
-			System.out.println("Done");
+			System.out.println("Message was sent to " + receiver + " Subject: " +subject);
 			success=true;
 		} catch (MessagingException e) {
 

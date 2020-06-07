@@ -33,6 +33,7 @@ public class OrderBus {
 	
 	}
 	
+	
 	public OrderBus(int numberOfTickets, Bus way) {
 		this.numberOfTickets = numberOfTickets;
 		this.way = way;

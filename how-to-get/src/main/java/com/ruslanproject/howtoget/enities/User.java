@@ -39,17 +39,22 @@ public class User {
 	private String email;
 	
 	
-	@Min(value=1,message="Please enter correct *age value")
-	@Max(value=99,message="Please enter correct *age value")
+	@Min(value=1,message="Please enter correct 'Age' value")
+	@Max(value=99,message="Please enter correct 'Age' value")
 	@Column(name="age")
 	private Integer age;
 	
-	@Column(name="pass")
+	@Transient
 	@Size(min=6,max=20,message="Length of password must be more than 6 and less than 20")
 	private String password;
 	
+	@Column(name="pass")
+	private String encryptedPassword;
+	
 	@Column(name="roles")
 	private String roles= "ROLE_USER";
+	
+	
 	
 	@Transient
 	private String tempPassword;
@@ -141,6 +146,14 @@ public class User {
 
 	public void setRoles(String roles) {
 		this.roles = roles;
+	}
+
+	public String getEncryptedPassword() {
+		return encryptedPassword;
+	}
+
+	public void setEncryptedPassword(String encryptedPassword) {
+		this.encryptedPassword = encryptedPassword;
 	}
 	
 }

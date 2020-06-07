@@ -44,7 +44,7 @@ public class MyUserDetails implements UserDetails {
 	public String getPassword() {
 		System.out.println(">>>>>>>>>>>>>>>>Username is " + user.getEmail());
 		// userDetailsRepository.getUser(username);
-		return user.getPassword();
+		return user.getEncryptedPassword();
 	}
 
 	@Override

@@ -18,6 +18,7 @@
 	color: red
 }
 </style>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 	<a class="navbar-brand" href="/">How To Get</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -29,70 +30,94 @@
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active"><a class="nav-link" href="/tripForm">Way
-					Finder <span class="sr-only">(current)</span>
+			<li class="nav-item active"><a class="nav-link" href="/tripForm">Search
+					Way<span class="sr-only">(current)</span>
 			</a></li>
 			<li class="nav-item active"><a class="nav-link" href="/loading">Transport
 					Companies <span class="sr-only">(current)</span>
 			</a></li>
-			<li class="nav-item active"><a class="nav-link" href="/contacts">Contacts
+			<li class="nav-item active"><a class="nav-link" href="/contacts">Information
 					<span class="sr-only">(current)</span>
 			</a></li>
 			
-			<li class="nav-item active" sec:authorize="!isAuthenticated()">
-			<a class="nav-link" href="/registration/newUser">Registration<span class="sr-only">(current)</span>
-			</a>
-			</li>
-			
 			<li class="nav-item active" sec:authorize="isAuthenticated()">
-				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" th:text="${#authentication.name}" >My Cab<span class="sr-only">(current)</span>				
+				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" >My Cabinet<span class="sr-only">(current)</span>				
 				</a>
 			</li>
 			
 
 
-			<li class="nav-item dropdown"><a
-				class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
-				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Dropdown </a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="/tripForm">Action</a> <a
-						class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
-				</div></li>
 
 		</ul>
-			<div sec:authorize="isAuthenticated()">
-			  This content is only shown to authenticated users.
-			</div>
 		     <form action="#" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
         		<input type="submit" value="Logout" class="btn btn-primary-outline">
 			</form>
 			
 			
-		<p class="tab"></p>
-		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="search"
-				placeholder="Search" aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		</form>
+			<div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/registration/newUser}">Registration<span class="sr-only">(current)</span></a>
+			</div>
+        	
+	        <div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/loginURL}">Login<span class="sr-only">(current)</span></a>
+			</div>
+        	
+        	
 	</div>
 </nav>
-</head>
-	
-	<div class="jumbotron">
-	  <h1 class="display-4">Hello, world!</h1>
-	  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-	  <hr class="my-4">
-	  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-	  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-	</div>
 </head>
 <body>
 	<h1></h1>
 	<div class="container">
-		<a href="/login">Login</a> <a href="/tripForm">TripForm</a>
+		<a th:href="@{/myCabinet/edit/add}">Add new route</a>
+		<table>
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Way info</th>
+					<th>Way info 2</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="way,index:${companyWays}">
+					<td th:text="*{way.id}"></td>
+					<td th:text="*{way.CompanyProvider}"></td>
+					<td th:text="*{way.price}"></td>
+					<td th:text="*{way.departureDate}"></td>
+					<td th:text="*{way.ticketsAvailable}"></td>
+					<td>
+						<form action="#" th:action="@{/myCabinet/edit/remove}" th:object="${way}" method="POST">
+							<input type="hidden" name="id" th:value="${way.id}" >
+							<input type="hidden" name="ufn" th:value="${way.ufn}"> 
+							<input type="hidden" name="companyProvider"	th:value="${way.companyProvider}"> 
+							<input type="hidden" name="price" th:value="${way.price}"> 
+							<input type="hidden" name="departureDate" th:value="${way.departureDate}"> 
+							<input type="hidden" name="arrivalDate" th:value="${way.arrivalDate}"> 
+							<input type="hidden" name="locationFrom" th:value="${way.locationFrom}">
+							<input type="hidden" name="locationTo" th:value="${way.locationTo}">
+							<input type="hidden" name="ticketsAvailable" th:value="${way.ticketsAvailable}">
+							<button type="submit" th:text="Remove"></button>
+						</form>|
+						
+						<form action="#" th:action="@{/myCabinet/edit/edit/save}" th:object="${way}" method="POST">
+							<input type="hidden" name="id" th:value="${way.id}" >
+							<input type="hidden" name="ufn" th:value="${way.ufn}"> 
+							<input type="hidden" name="companyProvider"	th:value="${way.companyProvider}"> 
+							<input type="hidden" name="price" th:value="${way.price}"> 
+							<input type="hidden" name="departureDate" th:value="${way.departureDate}"> 
+							<input type="hidden" name="arrivalDate" th:value="${way.arrivalDate}"> 
+							<input type="hidden" name="locationFrom" th:value="${way.locationFrom}">
+							<input type="hidden" name="locationTo" th:value="${way.locationTo}">
+							<input type="hidden" name="ticketsAvailable" th:value="${way.ticketsAvailable}">
+							<button type="submit" th:text="Edit"></button>
+						</form>|
+					<!--  	<form th:action="@{/}" th:object="${}" method="POST">
+							<button type="submit" value="Edit"></button>
+						</form>-->
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 
 </body>

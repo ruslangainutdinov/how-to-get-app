@@ -15,9 +15,12 @@
 <title>Processing Form page</title>
 <style>
 .error {
-	color: red
+	color: red;
+	font-size:12px;
+	font-family: Arial, Helvetica, sans-serif;
 }
 </style>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 	<a class="navbar-brand" href="/">How To Get</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -29,88 +32,84 @@
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active"><a class="nav-link" href="/tripForm">Way
-					Finder <span class="sr-only">(current)</span>
+			<li class="nav-item active"><a class="nav-link" href="/tripForm">Search
+					Way<span class="sr-only">(current)</span>
 			</a></li>
 			<li class="nav-item active"><a class="nav-link" href="/loading">Transport
 					Companies <span class="sr-only">(current)</span>
 			</a></li>
-			<li class="nav-item active"><a class="nav-link" href="/contacts">Contacts
+			<li class="nav-item active"><a class="nav-link" href="/contacts">Information
 					<span class="sr-only">(current)</span>
 			</a></li>
 			
-			<li class="nav-item active" sec:authorize="!isAuthenticated()">
-			<a class="nav-link" href="/registration/newUser">Registration<span class="sr-only">(current)</span>
-			</a>
-			</li>
-			
 			<li class="nav-item active" sec:authorize="isAuthenticated()">
-				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" th:text="${#authentication.name}" >My Cab<span class="sr-only">(current)</span>				
+				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" >My Cabinet<span class="sr-only">(current)</span>				
 				</a>
 			</li>
 			
 
 
-			<li class="nav-item dropdown"><a
-				class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
-				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Dropdown </a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="/tripForm">Action</a> <a
-						class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
-				</div></li>
 
 		</ul>
-			<div sec:authorize="isAuthenticated()">
-			  This content is only shown to authenticated users.
-			</div>
 		     <form action="#" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
         		<input type="submit" value="Logout" class="btn btn-primary-outline">
 			</form>
 			
 			
-		<p class="tab"></p>
-		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="search"
-				placeholder="Search" aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		</form>
+			<div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/registration/newUser}">Registration<span class="sr-only">(current)</span></a>
+			</div>
+        	
+	        <div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/loginURL}">Login<span class="sr-only">(current)</span></a>
+			</div>
+        	
+        	
 	</div>
 </nav>
 </head>
-
-
-
 <body>
 	<h1></h1>
 	<div class="container">
 		<form action="" th:action="@{/registration/process}" th:object="${user}" method="POST">
-			Email:   <input type="email" th:field="*{email}" required>
-			<span th:text="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
-			<br><br>
-			First name:   <input type="text" th:field="*{firstName}" required>
-			<span th:text="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error"></span>
-			<br><br>
-			Last name:   <input type="text" th:field="*{lastName}" required>
-			<span th:text="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error"></span>
-			<br><br>
-			Age:   <input type="text" th:field="*{age}"  th:errorclass="fieldError" required>
-			<span th:text="${#fields.hasErrors('age')}" th:errors="*{age}" class="error"></span>
-			<br><br>
-			Password:   <input type="password" th:field="*{password}" required>
-			<br><br>
-			Repeat password:   <input type="password" th:field="*{tempPassword}" required>
-			<br><br>
-			<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></span>
-			<span th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="error"></span>
-			<br><br>
 			<br>
-			<input type="submit" value="Register">
+			<div class="col-md-6 mb-3">
+			
+		    <label>Email address</label>			
+			<input type="email" class="form-control" th:field="*{email}" required>
+			<div th:text="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></div>
+			
+		
+			<label>First name</label>
+			<input type="text" th:field="*{firstName}" class="form-control" required>
+			<span th:text="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error"></span>
+			<br>
+			<label>Last name</label>   
+			<input type="text" th:field="*{lastName}" class="form-control" required>
+			<span th:text="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error"></span>
+			<br>			
+			<label>Age</label>   
+ 			<input type="text" th:field="*{age}"  th:errorclass="fieldError" class="form-control" required>
+			<span th:text="${#fields.hasErrors('age')}" th:errors="*{age}" class="error"></span>
+			<br>
+			<label>Password</label>   
+			<input type="password" th:field="*{password}" class="form-control" required>
+			<small id="passwordHelpBlock" class="form-text text-muted">
+  				Your password must be 6-20 characters long, contain letters and numbers.
+			</small>
+			<label>Repeat password</label>
+			<input type="password" th:field="*{tempPassword}" class="form-control" required>
+			
+			<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></span>
+			
+			<span th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="error"></span>
+			<br>
+			<input type="submit" value="Register" class="btn btn-outline-secondary">
 			<input type="hidden" name="token" th:value="${token}"/>
+			<span th:if="${invalidCode != 'null'}" th:text="${invalidCode}" class="error"></span>
+			</div>
 		</form>	
-		<span th:if="${invalidCode != ''}" th:text="${invalidCode}"></span>
+	
 	</div>
 </body>
 </html>

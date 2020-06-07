@@ -29,71 +29,53 @@
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active"><a class="nav-link" href="/tripForm">Way
-					Finder <span class="sr-only">(current)</span>
+			<li class="nav-item active"><a class="nav-link" href="/tripForm">Search
+					Way<span class="sr-only">(current)</span>
 			</a></li>
 			<li class="nav-item active"><a class="nav-link" href="/loading">Transport
 					Companies <span class="sr-only">(current)</span>
 			</a></li>
-			<li class="nav-item active"><a class="nav-link" href="/contacts">Contacts
+			<li class="nav-item active"><a class="nav-link" href="/contacts">Information
 					<span class="sr-only">(current)</span>
 			</a></li>
 			
-			<li class="nav-item active" sec:authorize="!isAuthenticated()">
-			<a class="nav-link" href="/registration/newUser">Registration<span class="sr-only">(current)</span>
-			</a>
-			</li>
-			
 			<li class="nav-item active" sec:authorize="isAuthenticated()">
-				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" th:text="${#authentication.name}" >My Cab<span class="sr-only">(current)</span>				
+				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" >My Cabinet<span class="sr-only">(current)</span>				
 				</a>
 			</li>
 			
 
 
-			<li class="nav-item dropdown"><a
-				class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
-				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Dropdown </a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="/tripForm">Action</a> <a
-						class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
-				</div></li>
 
 		</ul>
-			<div sec:authorize="isAuthenticated()">
-			  This content is only shown to authenticated users.
-			</div>
 		     <form action="#" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
         		<input type="submit" value="Logout" class="btn btn-primary-outline">
 			</form>
 			
 			
-		<p class="tab"></p>
-		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="search"
-				placeholder="Search" aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		</form>
+			<div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/registration/newUser}">Registration<span class="sr-only">(current)</span></a>
+			</div>
+        	
+	        <div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/loginURL}">Login<span class="sr-only">(current)</span></a>
+			</div>
+        	
+        	
 	</div>
 </nav>
 </head>
 	
+<body>
+	
 	<div class="jumbotron">
-	  <h1 class="display-4">Hello, world!</h1>
-	  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+	  <h1 class="display-4">Welcome to HowToGet application!</h1>
+	  <p class="lead">This is the application that can help you to book flight or bus from one location to another!</p>
 	  <hr class="my-4">
-	  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+	  <p>You can click on "Way Finder" and start booking immediately, but you have to authenticate first. If you don't have account please follow simple registration procedure.</p>
 	  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
 	</div>
-</head>
-<body>
-	<h1></h1>
-	<div class="container">
-		<a href="/login">Login</a> <a href="/tripForm">TripForm</a>
-	</div>
+
 
 </body>
 </html>
