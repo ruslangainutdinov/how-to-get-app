@@ -43,7 +43,7 @@ public class MailAspect {
 	
 	private List<UserProfile> userProfiles;
 	
-	/*Preprocessing of removeWay() operation */
+	/*Pre-processing of removeWay() operation */
 	@Before(value = "removeWay()")
 	public void before(JoinPoint jPoint) {
 		WayToGet way = (WayToGet) jPoint.getArgs()[0];
