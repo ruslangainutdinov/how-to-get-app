@@ -8,6 +8,8 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,8 @@ import com.ruslanproject.howtoget.utils.MailSenderClass;
 @Component
 public class MailAspect {
 
+	private static final Logger logger = LoggerFactory.getLogger(MailAspect.class);
+	
 	@Autowired
 	private UserProfileRepository userProfileRepository;
 
@@ -53,12 +57,10 @@ public class MailAspect {
 			userProfiles= userProfileRepository.findAll().stream().filter(b->b.getBusesOfOrderIds().contains(way.getId())).collect(Collectors.toList());			
 		}
 		else if(commercialAccountService.checkWayForFlight(way)&&aspectFlag) {
-			System.out.println("Way flight advice: "+ way);
 			userProfiles= userProfileRepository.findAll().stream().filter(b->b.getFlightsOfOrderIds().contains(way.getId())).collect(Collectors.toList());
 		}
-		System.out.println("Way NON flight advice: "+ way);
-		System.out.println("Advice users BEFORE: "+userProfiles);
-		System.out.println("Status: "+commercialAccountService.checkWayForFlight(way));
+		logger.info("Way to be removed: "+ way);
+		logger.info("Users to inform: "+userProfiles);
 	}
 	
 	/*Notification all the users about booking cancellation*/
@@ -78,7 +80,7 @@ public class MailAspect {
 		}
 		if(aspectFlag)
 		userProfiles.clear();
-
+		logger.debug("userProfiles.isEmpty(): "+userProfiles.isEmpty());
 	}
 	//pointcut expression for CommecrcialAccountService.removeWay(..)
 	@Pointcut("execution(* com.ruslanproject.howtoget.services.CommercialAccountService.removeWay(com.ruslanproject.howtoget.enities.WayToGet,java.lang.Boolean))")
