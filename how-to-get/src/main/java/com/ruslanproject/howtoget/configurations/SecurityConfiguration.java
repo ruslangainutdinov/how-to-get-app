@@ -41,13 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.permitAll()
 		.and()
 		.logout().logoutSuccessUrl("/");
-		
-		}
-	/*
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().anyRequest().permitAll();
-	}*/
+	}
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {

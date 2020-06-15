@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -20,23 +22,27 @@ import com.ruslanproject.howtoget.services.CommercialAccountService;
 @Component
 public class MyScheduledOperations {
 
-	@Autowired
-	FlightRepository flightRepository;
-
-	@Autowired
-	BusRepository busRepository;	
+	private static final Logger logger = LoggerFactory.getLogger(MyScheduledOperations.class);
 	
 	@Autowired
-	CommercialAccountService commercialAccountService;
+	private FlightRepository flightRepository;
 
+	@Autowired
+	private BusRepository busRepository;	
 	
-	@Scheduled(fixedDelay = 100000)
+	@Autowired
+	private CommercialAccountService commercialAccountService;
+
+	//TODO try to extract it to external properties file
+	//every 4 minutes
+	@Scheduled(fixedDelay = 240000)
 	@Transactional
 	public void removeOldFlights() {
 
+		//TODO extract only today's flights!!!
 		List<Flight> flights = flightRepository.findAll();
 
-		System.out.println("Flights" + flights);
+		logger.debug("Today's flights" + flights);
 
 		Collections.sort(flights, new Comparator<Object>() {
 
@@ -51,7 +57,7 @@ public class MyScheduledOperations {
 			LocalDateTime departureDate = LocalDateTime.parse(flights.get(i).getDepartureDate());
 			if(departureDate.isBefore(LocalDateTime.now())) {
 				commercialAccountService.removeWay(flights.get(i),false);
-				System.out.println("removeWay");
+				logger.info("Flight was removed: "+flights.get(i).getId());
 			}
 			else {
 				break OUTER;
@@ -59,13 +65,15 @@ public class MyScheduledOperations {
 		}
 	}
 	
-	@Scheduled(fixedDelay = 100000)
+	//every 4 minutes
+	@Scheduled(fixedDelay = 240000)
 	@Transactional
 	public void removeOldBuses() {
+		//TODO extract only today's buses!!!
 
 		List<Bus> buses = busRepository.findAll();
 
-		System.out.println("Buses" + buses);
+		logger.debug("Today's buses: " + buses);
 
 		Collections.sort(buses, new Comparator<Object>() {
 
@@ -80,7 +88,7 @@ public class MyScheduledOperations {
 			LocalDateTime departureDate = LocalDateTime.parse(buses.get(i).getDepartureDate());
 			if(departureDate.isBefore(LocalDateTime.now())) {
 				commercialAccountService.removeWay(buses.get(i),false);
-				System.out.println("Bus remove Way "+buses.get(i).getId() );
+				logger.info("Bus was removed: "+buses.get(i).getId());
 			}
 			else {
 				break OUTER;

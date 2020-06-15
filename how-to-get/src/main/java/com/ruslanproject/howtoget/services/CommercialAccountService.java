@@ -58,6 +58,7 @@ public class CommercialAccountService {
 	@Autowired
 	private CommercialAccountRepository commercialAccountRepository;
 	
+	@SuppressWarnings("rawtypes")
 	@Autowired
 	private WayToGetTransformer transformer;
 	
@@ -103,7 +104,7 @@ public class CommercialAccountService {
 		return flightRepository.findAllByCompanyProvider(commercialAccount.getCompanyName());
 	}
 	
-	public List<String> getTypesOfProvider(String email) {
+	private List<String> getTypesOfProvider(String email) {
 		String[] transportTypes = new String[] {};
 		try {
 			CommercialAccount commercialAccount = getCommercialAccount(email);
@@ -141,12 +142,8 @@ public class CommercialAccountService {
 			System.out.println("Bus remove logic");
 			Bus bus = new Bus();
 			transformer.transform(way, bus);
-			
-			System.out.println("Remove step 1");
 			proceedOrdersBusDeletion(bus);
-			System.out.println("Remove step 2");
 			orderBusRepository.deleteAllByWay(bus);
-			System.out.println("Remove step 3");
 			busRepository.deleteById(bus.getId());
 			done=true;
 		} else if (checkWayForFlight(way)) {

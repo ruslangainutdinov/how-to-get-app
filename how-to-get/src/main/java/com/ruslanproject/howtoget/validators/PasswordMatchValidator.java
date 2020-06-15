@@ -5,6 +5,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.BeanWrapperImpl;
 
+/*ConstraintValidator for @PasswordMatch annotation*/
 public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch,Object>{
 
 	private String first;

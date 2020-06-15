@@ -10,11 +10,21 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/*Class responsible for sending email
+ * During registration to confirm email 
+ * Notify user about cancellation of booking*/
 @Component
 public class MailSenderClass {
 
+	private static final Logger logger = LoggerFactory.getLogger(MailSenderClass.class);
+	
+	//TODO extract username&password to external properties file?
+	//maybe extract also PROPERTIES to this file as well
+	//==fields==
 	private Session session;
 
 	private static final String username = "how-to-get@mail.ru";
@@ -23,6 +33,7 @@ public class MailSenderClass {
 
 	private Properties properties = new Properties();
 
+	
 	public MailSenderClass() {
 		initializeProperties();
 		initializeSession();
@@ -43,7 +54,10 @@ public class MailSenderClass {
 		properties.put("mail.smtp.socketFactory.port", "465");
 		properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	}
-
+ 
+	/*boolean flag conditions:
+	*true - registration message
+	*false - messageBody used*/
 	public  boolean sendMessage(String receiver, String name, String subject, Long confirmationCode, String messageBody, boolean registrationFlag) {
 		boolean success=false;
 		try {
@@ -59,7 +73,7 @@ public class MailSenderClass {
 				message.setText(messageBody);
 			}
 			Transport.send(message);
-			System.out.println("Message was sent to " + receiver + " Subject: " +subject);
+			logger.info("Message was sent to " + receiver + " Subject: " +subject);
 			success=true;
 		} catch (MessagingException e) {
 
