@@ -33,7 +33,6 @@ public class HowToGetApplication {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(HowToGetApplication.class, args);
-		
 	}	
 }
 

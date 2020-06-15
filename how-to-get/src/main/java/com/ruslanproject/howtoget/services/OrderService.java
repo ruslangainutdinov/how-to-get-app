@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,26 +26,28 @@ import com.ruslanproject.howtoget.utils.WayToGetTransformer;
 @Service
 public class OrderService {
 
+	private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
+
 	@Autowired
-	BusRepository busRepository;
+	private BusRepository busRepository;
 	
 	@Autowired
-	FlightRepository flightRepository;
+	private FlightRepository flightRepository;
 	
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 	
 	@Autowired
-	OrderBusRepository orderBusRepository;
+	private OrderBusRepository orderBusRepository;
 	
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	
 	@Autowired
 	private CommercialAccountService commercialAccountService;
 	
 	@Autowired
-	WayToGetTransformer transformer;
+	private WayToGetTransformer transformer;
 	
 	public List<String> getAllBusUfns() {
 		List<String> busesUfnList =busRepository.findAll().stream().map(b->b.getUfn()).distinct().collect(Collectors.toList());

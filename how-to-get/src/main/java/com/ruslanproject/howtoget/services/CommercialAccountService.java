@@ -7,11 +7,14 @@ import java.util.Optional;
 import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ruslanproject.howtoget.controllers.RegistrationUserController;
 import com.ruslanproject.howtoget.dao.BusRepository;
 import com.ruslanproject.howtoget.dao.CommercialAccountRepository;
 import com.ruslanproject.howtoget.dao.FlightRepository;
@@ -31,6 +34,8 @@ import com.ruslanproject.howtoget.utils.WayToGetTransformer;
 @Service
 public class CommercialAccountService {
 
+	private static final Logger logger = LoggerFactory.getLogger(CommercialAccountService.class);
+	
 	@Autowired
 	private ProviderRepository providerRepository;
 

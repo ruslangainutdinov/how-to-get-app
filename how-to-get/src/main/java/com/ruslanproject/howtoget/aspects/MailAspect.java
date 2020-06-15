@@ -80,7 +80,6 @@ public class MailAspect {
 		}
 		if(aspectFlag)
 		userProfiles.clear();
-		logger.debug("userProfiles.isEmpty(): "+userProfiles.isEmpty());
 	}
 	//pointcut expression for CommecrcialAccountService.removeWay(..)
 	@Pointcut("execution(* com.ruslanproject.howtoget.services.CommercialAccountService.removeWay(com.ruslanproject.howtoget.enities.WayToGet,java.lang.Boolean))")

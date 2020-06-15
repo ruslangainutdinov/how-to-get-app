@@ -3,6 +3,8 @@ package com.ruslanproject.howtoget.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +16,13 @@ import com.ruslanproject.howtoget.enities.Flight;
 @Service
 public class TripService {
 	
-
-	@Autowired
-	BusRepository busRepository;
-	
+	private static final Logger logger = LoggerFactory.getLogger(TripService.class);
 	
 	@Autowired
-	FlightRepository flightRepository;
+	private BusRepository busRepository;
+	
+	@Autowired
+	private FlightRepository flightRepository;
 	
 	public List<String> getAllLocations() {
 		List<Flight> flights =flightRepository.findAll();

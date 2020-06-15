@@ -5,12 +5,13 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ruslanproject.howtoget.dao.FlightRepository;
-import com.ruslanproject.howtoget.enities.Bus;
 import com.ruslanproject.howtoget.enities.Flight;
 import com.ruslanproject.howtoget.enities.Trip;
 import com.ruslanproject.howtoget.enities.WayToGet;
@@ -19,6 +20,8 @@ import com.ruslanproject.howtoget.utils.WayToGetTransformer;
 @Service
 public class FlightService implements WayToGetService{
 	
+	private static final Logger logger = LoggerFactory.getLogger(FlightService.class);
+
 	@Autowired
 	private FlightRepository flightRepository;
 	

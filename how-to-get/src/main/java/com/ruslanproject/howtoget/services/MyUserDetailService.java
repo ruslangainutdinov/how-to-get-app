@@ -2,8 +2,8 @@ package com.ruslanproject.howtoget.services;
 
 import java.util.Optional;
 
-import javax.annotation.PostConstruct;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,9 +18,10 @@ import com.ruslanproject.howtoget.repositories.UserRepository;
 @Component
 public class MyUserDetailService implements UserDetailsService{
 	
+	private static final Logger logger = LoggerFactory.getLogger(MyUserDetailService.class);
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

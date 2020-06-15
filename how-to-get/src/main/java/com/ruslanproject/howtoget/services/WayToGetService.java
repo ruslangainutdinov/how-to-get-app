@@ -10,5 +10,4 @@ public interface WayToGetService {
 	
 	public List<? extends WayToGet> findAllByTrip(Trip trip);
 	
-	
 }
