@@ -3,6 +3,8 @@ package com.ruslanproject.howtoget.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +19,12 @@ import com.ruslanproject.howtoget.utils.WayToGetTransformer;
 @Service
 public class BusService implements WayToGetService{
 	
-	@Autowired
-	private FlightRepository flightRepository;
+	private static final Logger logger = LoggerFactory.getLogger(BusService.class);
 	
 	@Autowired
 	private BusRepository busRepository;
 	
+	//TODO @Autowired?
 	private WayToGetTransformer<Bus> transformer = new WayToGetTransformer<>();
 	
 	@Transactional
@@ -31,17 +33,18 @@ public class BusService implements WayToGetService{
 		
 		buses= buses.stream().filter(b -> b.getDepartureDate().startsWith(trip.getDepartureDate())).collect(Collectors.toList());
 		
-		System.out.println(">>>>>>>>>>>>>>>>>>>>Departuredate: "+trip.getDepartureDate());
+		logger.info(">>>>>>>>>>>>>>>>>>>>Departuredate: "+trip.getDepartureDate());
+		
 		return buses;
 	}
-	
 	
 	
 	@Transactional
 	public void saveEntity(WayToGet way) {
 		Bus bus = new Bus();
+		
 		transformer.transform(way, bus);
-		System.out.println("Transformed bus "+bus);	
+				
 		busRepository.save(bus);
 	}
 }

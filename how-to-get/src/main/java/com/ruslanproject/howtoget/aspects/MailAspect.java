@@ -8,6 +8,8 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +19,16 @@ import com.ruslanproject.howtoget.enities.WayToGet;
 import com.ruslanproject.howtoget.services.CommercialAccountService;
 import com.ruslanproject.howtoget.utils.MailSenderClass;
 
+/*Class responds for notification of Users whose booking was cancelled.
+ * It's only applied when Transport provider removes it by itself. 
+ * It doesn't applied to situation when booking is expired.
+ * */
 @Aspect
 @Component
 public class MailAspect {
 
+	private static final Logger logger = LoggerFactory.getLogger(MailAspect.class);
+	
 	@Autowired
 	private UserProfileRepository userProfileRepository;
 
@@ -30,6 +38,7 @@ public class MailAspect {
 	@Autowired
 	private MailSenderClass sender;
 	
+	//>>>>>>Text constants which maybe? can be extracted to external properties file<<<<<<
 	private static final String MESSAGE_HEADER="Hello ";
 	
 	private static final String MESSAGE_BODY="\n\nUnfortunately we have to inform you that your reservation was cancelled on this route: \n\n";
@@ -38,7 +47,7 @@ public class MailAspect {
 	
 	private List<UserProfile> userProfiles;
 	
-	
+	/*Pre-processing of removeWay() operation */
 	@Before(value = "removeWay()")
 	public void before(JoinPoint jPoint) {
 		WayToGet way = (WayToGet) jPoint.getArgs()[0];
@@ -48,15 +57,13 @@ public class MailAspect {
 			userProfiles= userProfileRepository.findAll().stream().filter(b->b.getBusesOfOrderIds().contains(way.getId())).collect(Collectors.toList());			
 		}
 		else if(commercialAccountService.checkWayForFlight(way)&&aspectFlag) {
-			System.out.println("Way flight advice: "+ way);
 			userProfiles= userProfileRepository.findAll().stream().filter(b->b.getFlightsOfOrderIds().contains(way.getId())).collect(Collectors.toList());
 		}
-		System.out.println("Way NON flight advice: "+ way);
-		System.out.println("Advice users BEFORE: "+userProfiles);
-		System.out.println("Status: "+commercialAccountService.checkWayForFlight(way));
+		logger.info("Way to be removed: "+ way);
+		logger.info("Users to inform: "+userProfiles);
 	}
 	
-	
+	/*Notification all the users about booking cancellation*/
 	@AfterReturning(value = "removeWay()", returning = "result")
 	public void after(JoinPoint jPoint, Boolean result) throws Throwable {
 		WayToGet way = (WayToGet) jPoint.getArgs()[0];
@@ -73,8 +80,9 @@ public class MailAspect {
 		}
 		if(aspectFlag)
 		userProfiles.clear();
-
+		logger.debug("userProfiles.isEmpty(): "+userProfiles.isEmpty());
 	}
+	//pointcut expression for CommecrcialAccountService.removeWay(..)
 	@Pointcut("execution(* com.ruslanproject.howtoget.services.CommercialAccountService.removeWay(com.ruslanproject.howtoget.enities.WayToGet,java.lang.Boolean))")
 	public void removeWay() {}
 	
