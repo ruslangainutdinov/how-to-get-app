@@ -52,21 +52,21 @@ public class UserService {
 	}
 	
 	public void processUserToDB(UniqueId uniqueId) {
-		System.out.println("Step 1");
+
 		User user = userMap.get(uniqueId.getEmail());
-		System.out.println("Step 2"+userMap);
+		
 		UserProfile profile =new UserProfile();
 		profile.setUser(user);
 		user.setUserProfile(profile);
 		
 		String encodedPassword=passwordEncoder.encode(user.getPassword());
 		user.setEncryptedPassword(encodedPassword);
-		System.out.println("encodedPassword"+encodedPassword);
 		userRepository.save(user);
-		System.out.println("Step 3");
+		logger.info(">>>>>>Succesfully saved user to DB: "+user);
 		userMap.remove(uniqueId.getEmail());
-		System.out.println("Step 4");
+		logger.debug(">>>>>>userMap must do not contain "+uniqueId.getEmail()+" : "+validationMap.containsKey(uniqueId.getEmail()));
 		validationMap.remove(uniqueId.getEmail());
+		logger.debug(">>>>>>validationMap must do not contain "+uniqueId.getEmail()+" : "+validationMap.containsKey(uniqueId.getEmail()));
 	}
 	
 	public void setUniqueId(UniqueId uniqueId) {
@@ -94,7 +94,7 @@ public class UserService {
 	}
 
 	public void sendConfirmation(UniqueId uniqueId, @Valid User user) {
-		System.out.println("Value to be send: "+uniqueId.getUniqueId());
+		logger.info("Code was send to: "+uniqueId.getEmail());
 		sender.sendMessage(uniqueId.getEmail(), user.getFirstName()+" "+user.getLastName()
 		,MESSAGE_SUBJECT, uniqueId.getUniqueId(), null, true);
 

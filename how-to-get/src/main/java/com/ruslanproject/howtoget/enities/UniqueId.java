@@ -1,22 +1,22 @@
 package com.ruslanproject.howtoget.enities;
 
 public class UniqueId {
-	private long uniqueId;
+	private String uniqueId;
 	private String email;
 	private int count;
 	public UniqueId() {
 		
 	}
-	public UniqueId(long uniqueId, String email) {
+	public UniqueId(String uniqueId, String email) {
 		this.uniqueId = uniqueId;
 		this.email = email;
 	}
 
-	public long getUniqueId() {
+	public String getUniqueId() {
 		return uniqueId;
 	}
 
-	public void setUniqueId(long uniqueId) {
+	public void setUniqueId(String uniqueId) {
 		this.uniqueId = uniqueId;
 	}
 
@@ -38,12 +38,15 @@ public class UniqueId {
 	public void incrementCount() {
 		count++;
 	}
+
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + count;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + (int) (uniqueId ^ (uniqueId >>> 32));
+		result = prime * result + ((uniqueId == null) ? 0 : uniqueId.hashCode());
 		return result;
 	}
 	@Override
@@ -55,12 +58,17 @@ public class UniqueId {
 		if (getClass() != obj.getClass())
 			return false;
 		UniqueId other = (UniqueId) obj;
+		if (count != other.count)
+			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
-		if (uniqueId != other.uniqueId)
+		if (uniqueId == null) {
+			if (other.uniqueId != null)
+				return false;
+		} else if (!uniqueId.equals(other.uniqueId))
 			return false;
 		return true;
 	}

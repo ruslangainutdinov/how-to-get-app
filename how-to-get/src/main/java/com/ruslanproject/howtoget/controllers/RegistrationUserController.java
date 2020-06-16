@@ -38,7 +38,14 @@ public class RegistrationUserController {
 		User user = new User();
 
 		model.addAttribute("user", user);
+		
 		return "userRegistrationForm";
+	}
+	
+	@GetMapping("/successRegistration")
+	public String succesRegistration() {
+
+		return "successRegistration";
 	}
 
 	@RequestMapping("/process")
@@ -54,18 +61,19 @@ public class RegistrationUserController {
 		}
 	
 		if(bindingResult.hasErrors()) {
-			System.out.println(bindingResult);
+			logger.info("Binding result: "+bindingResult);
 			model.setViewName("userRegistrationForm");
 			return model;
 		}
-		long confirmationCode;
+		String hexString;
 		if (user.getEmail() != null) {
 			if (userService.getValidationMap().containsKey(user.getEmail())) {
-				confirmationCode = userService.getValidationMap().get(user.getEmail()).getUniqueId();
+				hexString = userService.getValidationMap().get(user.getEmail()).getUniqueId();
+				
 			} else {
-				confirmationCode = Math.abs(random.nextLong());
-				System.out.println("Code: " + confirmationCode);
-				UniqueId uniqueIdNew = new UniqueId(confirmationCode, user.getEmail());
+				long confirmationCode = Math.abs(random.nextLong());
+				hexString = Long.toHexString(confirmationCode);
+				UniqueId uniqueIdNew = new UniqueId(hexString, user.getEmail());
 				userService.sendConfirmation(uniqueIdNew,user);
 				userService.setUniqueId(uniqueIdNew);
 			}
@@ -87,7 +95,7 @@ public class RegistrationUserController {
 		model.addObject("modelUniqueId", modelUniqueId);
 		model.addObject("invalidCode", "");
 		model.setViewName("confirmationCodePage");
-		System.out.println("User email first: " + user.getEmail());
+		logger.info("User's email: " + user.getEmail());
 		return model;
 	}
 
@@ -98,16 +106,14 @@ public class RegistrationUserController {
 		
 		System.out.println("Second: "+uniqueId.getEmail());
 		if (userService.validateUser(uniqueId)) {
-			model.setViewName("successRegistration");			
-			System.out.println("Succes registration: "+userService.getValidationMap());
+			model.setViewName("redirect:/registration/successRegistration");			
+			logger.info("Succes registration: "+userService.getValidationMap());
 			userService.processUserToDB(uniqueId);
 			return model;
 		} else {
-			// userService.getValidationMap().get(uniqueId.getEmail()).incrementCount();
 			model.addObject("invalidCode", "Please enter valid code.");
 			UniqueId id = new UniqueId();
 			id.setEmail(uniqueId.getEmail());
-			// user.setEmail(uniqueId.getEmail());
 			model.addObject("modelUniqueId", id);
 			model.setViewName("confirmationCodePage");
 			return model;

@@ -2,6 +2,8 @@ drop schema if exists how_to_get_app;
 
 create schema how_to_get_app;
 
+GRANT ALL PRIVILEGES ON how_to_get_app.* TO 'root'@'localhost';
+
 use how_to_get_app;
 
 set foreign_key_checks=0;

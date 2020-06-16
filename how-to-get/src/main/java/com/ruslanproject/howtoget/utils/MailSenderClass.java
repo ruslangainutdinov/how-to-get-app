@@ -58,7 +58,7 @@ public class MailSenderClass {
 	/*boolean flag conditions:
 	*true - registration message
 	*false - messageBody used*/
-	public  boolean sendMessage(String receiver, String name, String subject, Long confirmationCode, String messageBody, boolean registrationFlag) {
+	public  boolean sendMessage(String receiver, String name, String subject, String confirmationCode, String messageBody, boolean registrationFlag) {
 		boolean success=false;
 		try {
 			Message message = new MimeMessage(session);

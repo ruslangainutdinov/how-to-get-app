@@ -71,7 +71,7 @@ public class MailAspect {
 		if (result&&aspectFlag) {
 			userProfiles.stream()
 				.forEach(b->{
-					sender.sendMessage(b.getUser().getEmail(),null,MESSAGE_SUBJECT, 0L, 
+					sender.sendMessage(b.getUser().getEmail(),null,MESSAGE_SUBJECT, null, 
 							MESSAGE_HEADER+b.getUser().getFirstName()+" "+b.getUser().getLastName() +MESSAGE_BODY+ way.getCompanyProvider()
 							+ " From: "+way.getLocationFrom()+ " To: "+ way.getLocationTo() + " "+ way.getDepartureDate()
 					
