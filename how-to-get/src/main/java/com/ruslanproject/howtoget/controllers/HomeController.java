@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -22,25 +21,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ruslanproject.howtoget.aspects.MailAspect;
 import com.ruslanproject.howtoget.enities.Bus;
-import com.ruslanproject.howtoget.enities.CommercialAccount;
 import com.ruslanproject.howtoget.enities.Flight;
 import com.ruslanproject.howtoget.enities.OrderBus;
 import com.ruslanproject.howtoget.enities.OrderFlight;
 import com.ruslanproject.howtoget.enities.Trip;
 import com.ruslanproject.howtoget.enities.User;
 import com.ruslanproject.howtoget.enities.WayToGet;
-import com.ruslanproject.howtoget.services.CommercialAccountService;
 import com.ruslanproject.howtoget.services.OrderService;
 import com.ruslanproject.howtoget.services.TripService;
 import com.ruslanproject.howtoget.services.UserService;
 import com.ruslanproject.howtoget.services.WayToGetService;
 
+/**
+ * Main Home Controller
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
 @Controller
 public class HomeController {
 
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 	
 	@Autowired
 	private TripService tripService;
@@ -59,8 +62,7 @@ public class HomeController {
 	@Autowired
 	private OrderService orderService;
 
-	@Autowired
-	private CommercialAccountService commercialAccountService;
+	
 	
 	/*Basic info application*/
 	@RequestMapping("/contacts")
@@ -120,20 +122,20 @@ public class HomeController {
 
 		model.addObject("locations", locations);
 
-		System.out.println("Types are: " + trip.getTypes());
+		LOGGER.info(">>>>>>Types are: " + trip.getTypes());
 
 		if (bindingResult.hasErrors()) {
 			model.setViewName("form");
 			return model;
 		}
-		System.out.println(trip);
+		LOGGER.info(">>>>>Trip to process: "+trip.toString());
 		trip.setTimestamp(LocalDateTime.now());
-		// System.out.println(trip.getDepartureDate());
+		// LOGGER.info(trip.getDepartureDate());
 		/*
 		 * trip.setDepartureDate(LocalDate.now().toString()); if
 		 * (trip.getDepartureDate() != null) { LocalDate date =
 		 * LocalDate.parse(trip.getDepartureDate());
-		 * System.out.println(">>>>>>>>>>>>>>>date: " + date); }
+		 * LOGGER.info(">>>>>>>>>>>>>>>date: " + date); }
 		 */
 		model.setViewName("form");
 		if ((trip.getDepartureDate().isEmpty())
@@ -151,28 +153,31 @@ public class HomeController {
 		}
 
 		if (trip.getTypes().contains("BUS")) {
+			@SuppressWarnings("unchecked")
 			List<Bus> buses= (List<Bus>) busService.findAllByTrip(trip);
 			//List<Bus> buses = tripService.getBuses(trip);
 			model.addObject("buses", buses);
+			LOGGER.info(">>>>>>Buses are " + buses);
 		}
 		if (trip.getTypes().contains("FLIGHT")) {
+			@SuppressWarnings("unchecked")
 			List<Flight> fligths = (List<Flight>) flightService.findAllByTrip(trip);
 			model.addObject("flights", fligths);
-			System.out.println("Flights are " + fligths);
+			LOGGER.info(">>>>>>Flights are " + fligths);
 		}
 		model.setViewName("processForm");
 		return model;
 	}
 
-	/*Process 1 interested mapping*/
+	/*Process 1 interested booking*/
 	@RequestMapping("/process/book")
 	public String postBooking(@ModelAttribute("buses") WayToGet way, Model model, Authentication auth) {
 		
-		System.out.println("Way"+way);			
+		LOGGER.info(">>>>>>Way to process: "+way);			
 
 		model.addAttribute("way", way);
 		
-		System.out.println("Authentication.getName()"+auth.getName());
+		LOGGER.debug(">>>>>>Authentication.getName() :"+auth.getName());
 		
 		return "bookTheWay";
 	}
@@ -180,29 +185,23 @@ public class HomeController {
 	/*Process targeted booking as a final order, with redirecting as a final booking*/
 	@RequestMapping("/process/booking")
 	public String processBooking(@ModelAttribute("way") WayToGet way, 
-			@RequestParam(name="numberOfTickets") int number, Model model, Authentication auth) {
+			@RequestParam(name="numberOfTickets") int numberOfTickets, Model model, Authentication auth) {
 		
-		System.out.println("HERE "+way);
+		LOGGER.info(">>>>>>Process way as a new ORDER: "+way);
 		
-		if(way.getTicketsAvailable()<number) {
+		if(way.getTicketsAvailable()<numberOfTickets) {
 			model.addAttribute("way", way);
 			return "bookTheWay";
 		}
 		
-		orderService.processNewOrder(way,number,auth.getName());
+		orderService.processNewOrder(way,numberOfTickets,auth.getName());
 	
-		System.out.println("Way "+way);
-		System.out.println("Number: "+number);
-
-		User user =userService.findByEmail(auth.getName());
-		
-		System.out.println("Step1 "+user.getUserProfile());
-		System.out.println("Step2 ");
-		System.out.println(auth.getName());
+		LOGGER.info(">>>>>>Number of tickets: "+numberOfTickets);
+				
+		LOGGER.debug(">>>>>>Authentication.getName() :"+auth.getName());
 				
 		return "redirect:/successBooking";
 	}
-	
 	
 	/*user cabinet mapping*/
 	@GetMapping("/user")
@@ -217,6 +216,7 @@ public class HomeController {
 		return "myCabinet";
 	}
 	
+	
 	/*user's personal orders*/
 	@RequestMapping("/myOrders")
 	public String getMyOrders(Authentication auth, Model model) {
@@ -224,8 +224,9 @@ public class HomeController {
 		List<OrderBus> ordersBus= orderService.getAllOrdersBusByUser(auth.getName());
 		List<OrderFlight> ordersFlight= orderService.getAllOrdersFlightByUser(auth.getName());
 		
-		System.out.println("list orderBus"+ordersBus);
-	
+		LOGGER.info(">>>>>>User's list orderBus: "+ordersBus);
+		LOGGER.info(">>>>>>User's list ordersFlight: "+ordersFlight);
+		
 		model.addAttribute("ordersBus",ordersBus);
 		model.addAttribute("ordersFlight",ordersFlight);
 
@@ -236,109 +237,25 @@ public class HomeController {
 	@PostMapping("/myOrders/cancel")
 	public String cancelMyOrder(@RequestParam(name="id") int id,
 								@RequestParam(name="ufn") String ufn,
-								@RequestParam(name="number") int number,
+								@RequestParam(name="number") int numberOfTickets,
 								@RequestParam(name="wayid") int wayid,
 														Authentication auth, Model model) {
 		
 		User user =userService.findByEmail(auth.getName());
-		System.out.println("numberOfTickets"+number);
-		System.out.println("User's ordersBus before: "+user.getUserProfile().getOrdersBus());
-		System.out.println("User's ordersFlight before: "+user.getUserProfile().getOrdersFlight());
+		LOGGER.info(">>>>>>User's ordersBus before: "+user.getUserProfile().getOrdersBus());
+		LOGGER.info(">>>>>>User's ordersFlight before: "+user.getUserProfile().getOrdersFlight());
 		
-		System.out.println("Ufn: "+ufn);
-		orderService.removeWay(id,ufn,auth.getName(),number,wayid);
+		LOGGER.info("Ufn: "+ufn);
 		
-		System.out.println("Id: "+id);
-		System.out.println("User's ordersBus after: "+user.getUserProfile().getOrdersBus());
-		System.out.println("User's ordersFlight after: "+user.getUserProfile().getOrdersFlight());
+		orderService.removeWay(id,ufn,auth.getName(),numberOfTickets,wayid);
+		
+		LOGGER.info(">>>>>>Id: "+id+", ufn: "+ufn+", numberOfTickets: "+numberOfTickets);
+		LOGGER.info(">>>>>>User's ordersBus after: "+user.getUserProfile().getOrdersBus());
+		LOGGER.info(">>>>>>User's ordersFlight after: "+user.getUserProfile().getOrdersFlight());
 				
 		return "redirect:/myOrders";
 	}
 	
-	/*commercial account related stuff
-	 * providing list of owning ways to manage/edit */
-	@RequestMapping("/myCabinet/edit")
-	public String edit(Model model, Authentication auth) {
-		
-		List<? extends WayToGet> ways = commercialAccountService.getAllWays(auth.getName());
-		
-		model.addAttribute("companyWays", ways);
-		
-		System.out.println("Managing ways: "+ways);
-				
-		return "myCompanyCabinet";
-	}
-	
-	@RequestMapping("/myCabinet/edit/remove")
-	public String remove(@ModelAttribute("temp") WayToGet way, Authentication auth) {
-		
-		commercialAccountService.removeWay(way,true);
-		
-		System.out.println("Remove way" + way);
-						
-		return "redirect:/myCabinet/edit";
-	}
-	
-	@RequestMapping("/myCabinet/edit/add")
-	public String addNewWayPreCreate(Model model,Authentication auth) throws AccountNotFoundException {
-		
-		
-		CommercialAccount commercialAccount = commercialAccountService.getCommercialAccount(auth.getName());
-		System.out.println("commercialAccount.getTransportTypes()"+commercialAccount.getTransportTypes());
-		
-		model.addAttribute("type", commercialAccount.getTransportTypes());
-					
-		return "addNewTripPreProcess";
-	}
-	
-	
-	@RequestMapping("/myCabinet/edit/add/new")
-	public String addNewWayAdd(@RequestParam("type") String type,Model model, Authentication auth) {
-		
-		WayToGet way=commercialAccountService.generateRoute(type,auth.getName());
-		
-		System.out.println("Type to add is "+type);
-		model.addAttribute("type", type);
-		model.addAttribute("way", way);
-		
-		return "formToAddNewTrip";
-	}
-	
-	
-	@RequestMapping("/myCabinet/edit/add/save")
-	public ModelAndView addNewWayAdd(@Valid@ModelAttribute("way") WayToGet way,BindingResult bindingResult, 
-											@RequestParam("type") String type, Authentication auth) {
-		
-		ModelAndView model = new ModelAndView();
-		
-		if(bindingResult.hasErrors()) {
-			model.addObject("way", way);
-			model.setViewName("formToAddNewTrip");
-			model.addObject("type", type);
-			System.out.println(bindingResult);
-			return model;
-		}		
-		
-		System.out.println("Processed way is "+way);
-		
-		commercialAccountService.saveEntity(way,type);
-		
-		model.setViewName("redirect:/succesSavingWay");
-		return model;
-	}
-	
-	@RequestMapping("/myCabinet/edit/edit/save")
-	public ModelAndView editNewWayAdd(@ModelAttribute("way") WayToGet way, Authentication auth) {
-		ModelAndView model = new ModelAndView();
-		
-		System.out.println("Processed way is "+way);
 
-		model.setViewName("formToAddNewTrip");
-		return model;
-	}
-	
-	
-	
-	
-	
+
 }

@@ -11,16 +11,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+/**
+ * Entity class for OrderFlight
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
 @Entity
 @Table(name="orders_flight")
 public class OrderFlight {
 	
-	/*When order is created the number of tickets must be at least 1*/
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private Long id;
 	
+	/*When order is created the number of tickets must be at least 1*/
 	@Column(name="tickets_number")
 	private int numberOfTickets=1;
 	

@@ -11,6 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+/**
+ * Entity class for CommercialAccount
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
 @Entity
 @Table(name="commercial_accounts")
 public class CommercialAccount {

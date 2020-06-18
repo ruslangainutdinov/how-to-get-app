@@ -9,6 +9,13 @@ import javax.validation.constraints.Size;
 
 import com.ruslanproject.howtoget.validators.FieldsDoNotMatch;
 
+/**
+ * Entity class for Trip
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
 @FieldsDoNotMatch(first = "locationFrom", second = "locationTo",message="Departure location and arrival location should not match")
 public class Trip {
 

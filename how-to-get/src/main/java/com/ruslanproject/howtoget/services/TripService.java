@@ -13,10 +13,17 @@ import com.ruslanproject.howtoget.dao.FlightRepository;
 import com.ruslanproject.howtoget.enities.Bus;
 import com.ruslanproject.howtoget.enities.Flight;
 
+/**
+ * Service class for TripService
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
 @Service
 public class TripService {
+		
 	
-	private static final Logger logger = LoggerFactory.getLogger(TripService.class);
 	
 	@Autowired
 	private BusRepository busRepository;

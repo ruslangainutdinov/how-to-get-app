@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ruslanproject.howtoget.controllers.RegistrationUserController;
 import com.ruslanproject.howtoget.dao.BusRepository;
 import com.ruslanproject.howtoget.dao.CommercialAccountRepository;
 import com.ruslanproject.howtoget.dao.FlightRepository;
@@ -22,19 +21,26 @@ import com.ruslanproject.howtoget.dao.OrderBusRepository;
 import com.ruslanproject.howtoget.dao.OrderFlightRepository;
 import com.ruslanproject.howtoget.dao.ProviderRepository;
 import com.ruslanproject.howtoget.dao.UserProfileRepository;
+import com.ruslanproject.howtoget.dao.UserRepository;
 import com.ruslanproject.howtoget.enities.Bus;
 import com.ruslanproject.howtoget.enities.CommercialAccount;
 import com.ruslanproject.howtoget.enities.Flight;
 import com.ruslanproject.howtoget.enities.User;
 import com.ruslanproject.howtoget.enities.UserProfile;
 import com.ruslanproject.howtoget.enities.WayToGet;
-import com.ruslanproject.howtoget.repositories.UserRepository;
 import com.ruslanproject.howtoget.utils.WayToGetTransformer;
+
+/**
+ * Service class for CommercialAccountService
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
 
 @Service
 public class CommercialAccountService {
 
-	private static final Logger logger = LoggerFactory.getLogger(CommercialAccountService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CommercialAccountService.class);
 	
 	@Autowired
 	private ProviderRepository providerRepository;
@@ -77,11 +83,11 @@ public class CommercialAccountService {
 	public List<? extends WayToGet> getAllWays(String email) {
 		List<String> types = getTypesOfProvider(email);
 		if (types.contains(WayToGet.Type.BUS.toString())) {
-			System.out.println("Success enter");
+			LOGGER.info("Success enter");
 			return getBusesByProvider(email);
 			}
 		if (types.contains(WayToGet.Type.FLIGHT.toString())) {
-			System.out.println("Success enter");
+			LOGGER.info("Success enter");
 			return getFlightsByProvider(email);
 		}
 		return null;
@@ -144,7 +150,7 @@ public class CommercialAccountService {
 	public boolean removeWay(WayToGet way, Boolean flag) {
 		boolean done= false;
 		if (checkWayForBus(way)) {
-			System.out.println("Bus remove logic");
+			LOGGER.debug("Bus remove logic");
 			Bus bus = new Bus();
 			transformer.transform(way, bus);
 			proceedOrdersBusDeletion(bus);
@@ -153,18 +159,12 @@ public class CommercialAccountService {
 			done=true;
 		} else if (checkWayForFlight(way)) {
 			
-			System.out.println("Flight remove logic");
+			LOGGER.debug("Flight remove logic");
 			Flight flight = new Flight();
-			
-			
 			transformer.transform(way, flight);
-			
 			proceedOrdersFlightDeletion(flight);
-			
 			orderFlightRepository.deleteAllByWay(flight);
-			
 			flightRepository.deleteById(flight.getId());
-			
 			done=true;
 		}
 		return done;
@@ -223,13 +223,13 @@ public class CommercialAccountService {
 			}
 		}
 		
-		System.out.println("Id: "+way.getId());
-		System.out.println("Type: "+type);
+		LOGGER.info("Id: "+way.getId());
+		LOGGER.info("Type: "+type);
 		if(checkWayForBus(way)) {
-			System.out.println("Saving bus Service");
+			LOGGER.debug("Saving bus Service");
 			busService.saveEntity(way);
 		}else if(checkWayForFlight(way)) {
-			System.out.println("Saving flight Service");
+			LOGGER.debug("Saving flight Service");
 			flightService.saveEntity(way);
 		}
 		

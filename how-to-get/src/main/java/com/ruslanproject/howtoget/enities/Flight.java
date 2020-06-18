@@ -1,9 +1,14 @@
 package com.ruslanproject.howtoget.enities;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+/**
+ * Entity class for Flight
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
 
 @Entity
 @Table(name = "flights")

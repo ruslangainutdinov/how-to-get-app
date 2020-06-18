@@ -15,9 +15,9 @@ public class FieldsDoNotMatchValidator implements ConstraintValidator<FieldsDoNo
 	
 	@Override
 	public void initialize(FieldsDoNotMatch constraintAnnotation) {
-		first=constraintAnnotation.first();
-		second=constraintAnnotation.second();
-		message=constraintAnnotation.message();
+		this.first=constraintAnnotation.first();
+		this.second=constraintAnnotation.second();
+		this.message=constraintAnnotation.message();
 	}
 	
 	@Override

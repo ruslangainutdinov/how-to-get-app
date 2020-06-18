@@ -11,6 +11,13 @@ import org.springframework.stereotype.Service;
 import com.ruslanproject.howtoget.dao.BusRepository;
 import com.ruslanproject.howtoget.dao.FlightRepository;
 
+/**
+ * Service class for UfnStorageService
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
 @Service
 public class UfnStorageService {
 

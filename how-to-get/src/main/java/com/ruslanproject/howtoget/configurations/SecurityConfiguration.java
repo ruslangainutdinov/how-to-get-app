@@ -7,10 +7,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.ruslanproject.howtoget.services.MyUserDetailService;
+
+/**
+ * Spring Security configuration
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{

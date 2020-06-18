@@ -1,4 +1,4 @@
-package com.ruslanproject.howtoget.repositories;
+package com.ruslanproject.howtoget.dao;
 
 import java.util.Optional;
 

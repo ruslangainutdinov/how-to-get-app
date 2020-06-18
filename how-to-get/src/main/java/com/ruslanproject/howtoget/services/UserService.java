@@ -11,11 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ruslanproject.howtoget.dao.UserRepository;
 import com.ruslanproject.howtoget.enities.UniqueId;
 import com.ruslanproject.howtoget.enities.User;
 import com.ruslanproject.howtoget.enities.UserProfile;
-import com.ruslanproject.howtoget.repositories.UserRepository;
 import com.ruslanproject.howtoget.utils.MailSenderClass;
+
+/**
+ * Service class for UserService
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
 
 @Service
 public class UserService {

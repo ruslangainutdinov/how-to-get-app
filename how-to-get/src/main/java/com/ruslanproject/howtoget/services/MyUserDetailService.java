@@ -9,16 +9,23 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import com.ruslanproject.howtoget.dao.UserRepository;
 import com.ruslanproject.howtoget.enities.MyUserDetails;
 import com.ruslanproject.howtoget.enities.User;
-import com.ruslanproject.howtoget.repositories.UserRepository;
 
-@Component
+/**
+ * Service class for MyUserDetailService
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
+@Service
 public class MyUserDetailService implements UserDetailsService{
 	
-	private static final Logger logger = LoggerFactory.getLogger(MyUserDetailService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MyUserDetailService.class);
 
 	@Autowired
 	private UserRepository userRepository;

@@ -19,13 +19,21 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ruslanproject.howtoget.enities.UniqueId;
 import com.ruslanproject.howtoget.enities.User;
 import com.ruslanproject.howtoget.services.UserService;
-import com.ruslanproject.howtoget.utils.MailSenderClass;
+
+
+/**
+ * Controller is responsible for registration procedure
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
 
 @Controller
 @RequestMapping("/registration")
 public class RegistrationUserController {
 
-	private static final Logger logger = LoggerFactory.getLogger(RegistrationUserController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationUserController.class);
 	
 	private Random random = new Random();
 
@@ -61,7 +69,7 @@ public class RegistrationUserController {
 		}
 	
 		if(bindingResult.hasErrors()) {
-			logger.info("Binding result: "+bindingResult);
+			LOGGER.info(">>>>>>Binding result of registration: "+bindingResult);
 			model.setViewName("userRegistrationForm");
 			return model;
 		}
@@ -95,7 +103,7 @@ public class RegistrationUserController {
 		model.addObject("modelUniqueId", modelUniqueId);
 		model.addObject("invalidCode", "");
 		model.setViewName("confirmationCodePage");
-		logger.info("User's email: " + user.getEmail());
+		LOGGER.info(">>>>>>User's email: " + user.getEmail());
 		return model;
 	}
 
@@ -107,7 +115,7 @@ public class RegistrationUserController {
 		System.out.println("Second: "+uniqueId.getEmail());
 		if (userService.validateUser(uniqueId)) {
 			model.setViewName("redirect:/registration/successRegistration");			
-			logger.info("Succes registration: "+userService.getValidationMap());
+			LOGGER.debug(">>>>>>Succes registration: "+userService.getValidationMap());
 			userService.processUserToDB(uniqueId);
 			return model;
 		} else {

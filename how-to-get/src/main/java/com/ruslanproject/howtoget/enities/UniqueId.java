@@ -1,9 +1,20 @@
 package com.ruslanproject.howtoget.enities;
 
+/**
+ * Entity class for UniqueId
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
 public class UniqueId {
+	
 	private String uniqueId;
+	
 	private String email;
+	
 	private int count;
+	
 	public UniqueId() {
 		
 	}

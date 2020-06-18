@@ -17,10 +17,17 @@ import org.springframework.stereotype.Component;
 /*Class responsible for sending email
  * During registration to confirm email 
  * Notify user about cancellation of booking*/
+
+/**
+ * Class is responsible for sending emails to users
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
 @Component
 public class MailSenderClass {
 
-	private static final Logger logger = LoggerFactory.getLogger(MailSenderClass.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MailSenderClass.class);
 	
 	//TODO extract username&password to external properties file?
 	//maybe extract also PROPERTIES to this file as well
@@ -73,7 +80,7 @@ public class MailSenderClass {
 				message.setText(messageBody);
 			}
 			Transport.send(message);
-			logger.info("Message was sent to " + receiver + " Subject: " +subject);
+			LOGGER.info("Message was sent to " + receiver + " Subject: " +subject);
 			success=true;
 		} catch (MessagingException e) {
 

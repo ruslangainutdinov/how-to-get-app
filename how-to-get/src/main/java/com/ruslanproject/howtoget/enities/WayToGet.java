@@ -1,21 +1,23 @@
 package com.ruslanproject.howtoget.enities;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.ruslanproject.howtoget.validators.CustomFutureDateTime;
 import com.ruslanproject.howtoget.validators.FieldsDoNotMatch;
-import com.ruslanproject.howtoget.validators.FutureDateTimeString;
+
+/**
+ * Entity class for WayToGet
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
 
 @MappedSuperclass
 @FieldsDoNotMatch(first = "locationFrom", second = "locationTo",message="Departure location and arrival location should not match")

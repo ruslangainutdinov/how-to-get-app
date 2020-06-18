@@ -6,11 +6,18 @@ import org.springframework.stereotype.Component;
 
 import com.ruslanproject.howtoget.enities.WayToGet;
 
-/*Should be refactored in case of ANY field was added to basic WayToGet entity*/
+/**
+ * Class is responsible for transforming WayToGet object to its implementations
+ * Should be refactored in case of ANY field was added 
+ * to basic WayToGet entity(adding corresponding new setter code)
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
 @Component
 public class WayToGetTransformer<T extends WayToGet> {
 	
-	private static final Logger logger = LoggerFactory.getLogger(WayToGetTransformer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(WayToGetTransformer.class);
 	
 	public T transform(WayToGet way,T object){
 		object.setArrivalDate(way.getArrivalDate());
@@ -22,7 +29,7 @@ public class WayToGetTransformer<T extends WayToGet> {
 		object.setPrice(way.getPrice());
 		object.setUfn(way.getUfn());
 		object.setTicketsAvailable(way.getTicketsAvailable());
-		logger.debug("Object "+way.getId()+", "+way.getCompanyProvider() +". Was transformed into: "+object.getClass().getSimpleName() );
+		LOGGER.debug("Object "+way.getId()+", "+way.getCompanyProvider() +". Was transformed into: "+object.getClass().getSimpleName() );
 		return object;
 	}
 }

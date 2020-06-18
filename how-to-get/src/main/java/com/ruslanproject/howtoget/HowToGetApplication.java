@@ -14,7 +14,6 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 @EnableScheduling
 public class HowToGetApplication {
 	
-	/*Main comment in main branch*/
 	@Bean
 	public LocalValidatorFactoryBean getValidator() {
 	    LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();

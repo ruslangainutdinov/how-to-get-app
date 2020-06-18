@@ -19,15 +19,20 @@ import com.ruslanproject.howtoget.enities.WayToGet;
 import com.ruslanproject.howtoget.services.CommercialAccountService;
 import com.ruslanproject.howtoget.utils.MailSenderClass;
 
-/*Class responds for notification of Users whose booking was cancelled.
+/**
+ * This Class responds for notification of Users whose booking was cancelled.
  * It's only applied when Transport provider removes it by itself. 
  * It doesn't applied to situation when booking is expired.
- * */
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
 @Aspect
 @Component
 public class MailAspect {
 
-	private static final Logger logger = LoggerFactory.getLogger(MailAspect.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MailAspect.class);
 	
 	@Autowired
 	private UserProfileRepository userProfileRepository;
@@ -59,8 +64,12 @@ public class MailAspect {
 		else if(commercialAccountService.checkWayForFlight(way)&&aspectFlag) {
 			userProfiles= userProfileRepository.findAll().stream().filter(b->b.getFlightsOfOrderIds().contains(way.getId())).collect(Collectors.toList());
 		}
-		logger.info("Way to be removed: "+ way);
-		logger.info("Users to inform: "+userProfiles);
+		
+		LOGGER.info("Way to be removed: "+ way);
+		
+		if(aspectFlag) {
+			LOGGER.info("Users to inform: "+userProfiles);
+		}
 	}
 	
 	/*Notification all the users about booking cancellation*/

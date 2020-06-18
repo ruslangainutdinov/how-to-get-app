@@ -1,9 +1,6 @@
-package com.ruslanproject.howtoget.repositories;
+package com.ruslanproject.howtoget.dao;
 
 import java.util.Optional;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import com.ruslanproject.howtoget.enities.User;
 

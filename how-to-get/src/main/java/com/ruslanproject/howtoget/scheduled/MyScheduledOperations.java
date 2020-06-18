@@ -19,10 +19,17 @@ import com.ruslanproject.howtoget.enities.Bus;
 import com.ruslanproject.howtoget.enities.Flight;
 import com.ruslanproject.howtoget.services.CommercialAccountService;
 
+/**
+ * Class is responsible for cleaning up expired ways-to-get(bookings)
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
 @Component
 public class MyScheduledOperations {
 
-	private static final Logger logger = LoggerFactory.getLogger(MyScheduledOperations.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MyScheduledOperations.class);
 	
 	@Autowired
 	private FlightRepository flightRepository;
@@ -42,7 +49,7 @@ public class MyScheduledOperations {
 		//TODO extract only today's flights!!!
 		List<Flight> flights = flightRepository.findAll();
 
-		logger.debug("Today's flights" + flights);
+		LOGGER.debug("Today's flights" + flights);
 
 		Collections.sort(flights, new Comparator<Object>() {
 
@@ -57,7 +64,7 @@ public class MyScheduledOperations {
 			LocalDateTime departureDate = LocalDateTime.parse(flights.get(i).getDepartureDate());
 			if(departureDate.isBefore(LocalDateTime.now())) {
 				commercialAccountService.removeWay(flights.get(i),false);
-				logger.info("Flight was removed: "+flights.get(i).getId());
+				LOGGER.info("Flight was removed: "+flights.get(i).getId());
 			}
 			else {
 				break OUTER;
@@ -73,7 +80,7 @@ public class MyScheduledOperations {
 
 		List<Bus> buses = busRepository.findAll();
 
-		logger.debug("Today's buses: " + buses);
+		LOGGER.debug("Today's buses: " + buses);
 
 		Collections.sort(buses, new Comparator<Object>() {
 
@@ -88,7 +95,7 @@ public class MyScheduledOperations {
 			LocalDateTime departureDate = LocalDateTime.parse(buses.get(i).getDepartureDate());
 			if(departureDate.isBefore(LocalDateTime.now())) {
 				commercialAccountService.removeWay(buses.get(i),false);
-				logger.info("Bus was removed: "+buses.get(i).getId());
+				LOGGER.info("Bus was removed: "+buses.get(i).getId());
 			}
 			else {
 				break OUTER;

@@ -14,19 +14,26 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ruslanproject.howtoget.dao.BusRepository;
 import com.ruslanproject.howtoget.dao.FlightRepository;
 import com.ruslanproject.howtoget.dao.OrderBusRepository;
+import com.ruslanproject.howtoget.dao.UserRepository;
 import com.ruslanproject.howtoget.enities.Bus;
 import com.ruslanproject.howtoget.enities.Flight;
 import com.ruslanproject.howtoget.enities.OrderBus;
 import com.ruslanproject.howtoget.enities.OrderFlight;
 import com.ruslanproject.howtoget.enities.User;
 import com.ruslanproject.howtoget.enities.WayToGet;
-import com.ruslanproject.howtoget.repositories.UserRepository;
 import com.ruslanproject.howtoget.utils.WayToGetTransformer;
+
+/**
+ * Service class for OrderService
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
 
 @Service
 public class OrderService {
 
-	private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
 
 	@Autowired
 	private BusRepository busRepository;
@@ -63,12 +70,12 @@ public class OrderService {
 		
 		if(commercialAccountService.checkWayForFlight(way)) {
 			//logic for fligths
-			System.out.println("Flight logic");
+			LOGGER.info("Flight logic");
 			processNewOrderFligth(way,number,name);
 		}
 		else if (commercialAccountService.checkWayForBus(way)) {
 			//logic for buses
-			System.out.println("Bus logic");
+			LOGGER.info("Bus logic");
 			processNewOrderBus(way,number,name);
 			
 		} 
@@ -76,7 +83,7 @@ public class OrderService {
 
 	@Transactional
 	private void processNewOrderBus(WayToGet way, int number, String name) {
-		System.out.println("way.getId()"+way.getId());
+		LOGGER.info("way.getId()"+way.getId());
 		Optional<Bus> bus = busRepository.findById(way.getId());
 		Optional<User> user = userRepository.findByEmail(name);
 	
@@ -96,7 +103,7 @@ public class OrderService {
 	@Transactional
 	private void processNewOrderFligth(WayToGet way, int number, String name) {
 		
-		System.out.println("way.getId()"+way.getId());
+		LOGGER.info("way.getId()"+way.getId());
 		
 		Optional<Flight> flight = flightRepository.findById(way.getId());
 		Optional<User> user = userRepository.findByEmail(name);
@@ -148,19 +155,19 @@ public class OrderService {
 		
 		
 		
-		System.out.println("Ufns: "+getAllBusUfns());
-		System.out.println("Ufns flight: "+getAllFlightUfns());
-		System.out.println("Bus status: "+bus);
+		LOGGER.info("Ufns: "+getAllBusUfns());
+		LOGGER.info("Ufns flight: "+getAllFlightUfns());
+		LOGGER.info("Bus status: "+bus);
 		
 		if(getAllFlightUfns().contains(ufn)){
-			System.out.println("Flight logic");
+			LOGGER.info("Flight logic");
 			
 			flightUpdateNumberOfTickets(wayid, numberOfTickets);
 			
 			user.getUserProfile().getOrdersFlight().removeIf(i->i.getId()==(id));
 		}
 		else if (getAllBusUfns().contains(ufn)){
-			System.out.println("Bus logic");
+			LOGGER.info("Bus logic");
 			
 			busUpdateNumberOfTickets(wayid,numberOfTickets);
 			
@@ -180,7 +187,7 @@ public class OrderService {
 	@Transactional
 	private void busUpdateNumberOfTickets(int id, int numberOfTickets) {
 		Optional<Bus> optBus = busRepository.findById(id);
-		System.out.println("busRepository.findById(id);"+id);
+		LOGGER.info("busRepository.findById(id);"+id);
 		Bus bus = optBus.get();
 		bus.setTicketsAvailable(bus.getTicketsAvailable()+numberOfTickets);
 		busRepository.save(bus);

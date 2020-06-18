@@ -1,20 +1,11 @@
-package com.ruslanproject.howtoget;
+package com.ruslanproject.howtoget.configurations;
 
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import com.ruslanproject.howtoget.enities.User;
-
-
+/**
+ * Hibernate configuration which can be used in non-Spring Boot environment
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
 
 public class HibernateConfiguration {
 	/*

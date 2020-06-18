@@ -10,16 +10,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ruslanproject.howtoget.dao.BusRepository;
-import com.ruslanproject.howtoget.dao.FlightRepository;
 import com.ruslanproject.howtoget.enities.Bus;
 import com.ruslanproject.howtoget.enities.Trip;
 import com.ruslanproject.howtoget.enities.WayToGet;
 import com.ruslanproject.howtoget.utils.WayToGetTransformer;
 
+/**
+ * Service class for BusService
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
 @Service
 public class BusService implements WayToGetService{
 	
-	private static final Logger logger = LoggerFactory.getLogger(BusService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(BusService.class);
 	
 	@Autowired
 	private BusRepository busRepository;
@@ -33,7 +39,7 @@ public class BusService implements WayToGetService{
 		
 		buses= buses.stream().filter(b -> b.getDepartureDate().startsWith(trip.getDepartureDate())).collect(Collectors.toList());
 		
-		logger.info(">>>>>>>>>>>>>>>>>>>>Departuredate: "+trip.getDepartureDate());
+		LOGGER.info(">>>>>>>>>>>>>>>>>>>>Departuredate: "+trip.getDepartureDate());
 		
 		return buses;
 	}

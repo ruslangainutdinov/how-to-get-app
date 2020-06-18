@@ -17,10 +17,17 @@ import com.ruslanproject.howtoget.enities.Trip;
 import com.ruslanproject.howtoget.enities.WayToGet;
 import com.ruslanproject.howtoget.utils.WayToGetTransformer;
 
+/**
+ * Service class for FlightService
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
 @Service
 public class FlightService implements WayToGetService{
 	
-	private static final Logger logger = LoggerFactory.getLogger(FlightService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FlightService.class);
 
 	@Autowired
 	private FlightRepository flightRepository;
@@ -40,7 +47,7 @@ public class FlightService implements WayToGetService{
 	public void saveEntity(@Valid WayToGet way) {
 		Flight flight = new Flight();
 		transformer.transform(way, flight);
-		System.out.println("Transformed flight "+flight);	
+		LOGGER.info("Transformed flight: "+flight);	
 		flightRepository.save(flight);
 	}
 

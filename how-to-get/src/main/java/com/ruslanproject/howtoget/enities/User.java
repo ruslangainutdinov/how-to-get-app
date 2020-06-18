@@ -16,6 +16,13 @@ import javax.validation.constraints.Size;
 
 import com.ruslanproject.howtoget.validators.PasswordMatch;
 
+/**
+ * Entity class for User
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
 @Entity
 @Table(name="users")
 @PasswordMatch(first = "password", second = "tempPassword")

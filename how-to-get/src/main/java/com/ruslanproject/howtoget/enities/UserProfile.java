@@ -16,6 +16,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+/**
+ * Entity class for UserProfile
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
+
 @Entity
 @Table(name = "user_profiles")
 public class UserProfile {

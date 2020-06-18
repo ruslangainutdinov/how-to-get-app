@@ -10,9 +10,19 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.ruslanproject.howtoget.repositories.UserRepository;
+import com.ruslanproject.howtoget.dao.UserRepository;
+
+/**
+ * Entity class for MyUserDetails.
+ * Used as SpringSecurity Entity in the first place
+ * 
+ * @author Ruslan Gainutdinov
+ *
+ */
 
 public class MyUserDetails implements UserDetails {
+
+	private static final long serialVersionUID = -5032784401290896927L;
 
 	// private MyUserRepository userDetailsRepository = new MyUserRepository();
 
