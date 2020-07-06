@@ -1,4 +1,4 @@
-package com.ruslanproject.howtoget.enities;
+package com.ruslanproject.howtoget.entities;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,15 +12,15 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
- * Entity class for OrderBus
+ * Entity class for OrderFlight
  * 
  * @author Ruslan Gainutdinov
  *
  */
 
 @Entity
-@Table(name="orders_bus")
-public class OrderBus {
+@Table(name="orders_flight")
+public class OrderFlight {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -33,15 +33,14 @@ public class OrderBus {
 	
 	@OneToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,
 						CascadeType.PERSIST,CascadeType.REFRESH},fetch = FetchType.EAGER)
-	@JoinColumn(name = "bus")
-	private Bus way;
+	@JoinColumn(name = "flight")
+	private Flight way;
 	
-	public OrderBus() {		
-	
+	public OrderFlight() {
+		
 	}
 	
-	
-	public OrderBus(int numberOfTickets, Bus way) {
+	public OrderFlight(int numberOfTickets, Flight way) {
 		this.numberOfTickets = numberOfTickets;
 		this.way = way;
 	}
@@ -54,6 +53,7 @@ public class OrderBus {
 		this.numberOfTickets = numberOfTickets;
 	}
 
+
 	public Long getId() {
 		return id;
 	}
@@ -62,12 +62,12 @@ public class OrderBus {
 		this.id = id;
 	}
 
-	public Bus getWay() {
+	public Flight getWay() {
 		return way;
 	}
 
-	public void setWay(Bus bus) {
-		this.way = bus;
+	public void setWay(Flight way) {
+		this.way = way;
 	}
 
 	@Override

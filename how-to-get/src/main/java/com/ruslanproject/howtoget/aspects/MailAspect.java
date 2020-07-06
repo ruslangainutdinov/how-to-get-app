@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ruslanproject.howtoget.dao.UserProfileRepository;
-import com.ruslanproject.howtoget.enities.UserProfile;
-import com.ruslanproject.howtoget.enities.WayToGet;
+import com.ruslanproject.howtoget.entities.UserProfile;
+import com.ruslanproject.howtoget.entities.WayToGet;
 import com.ruslanproject.howtoget.services.CommercialAccountService;
 import com.ruslanproject.howtoget.utils.MailSenderClass;
 

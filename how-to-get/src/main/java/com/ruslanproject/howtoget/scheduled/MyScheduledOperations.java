@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 
 import com.ruslanproject.howtoget.dao.BusRepository;
 import com.ruslanproject.howtoget.dao.FlightRepository;
-import com.ruslanproject.howtoget.enities.Bus;
-import com.ruslanproject.howtoget.enities.Flight;
+import com.ruslanproject.howtoget.entities.Bus;
+import com.ruslanproject.howtoget.entities.Flight;
 import com.ruslanproject.howtoget.services.CommercialAccountService;
 
 /**

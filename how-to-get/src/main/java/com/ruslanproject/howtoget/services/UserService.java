@@ -12,9 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ruslanproject.howtoget.dao.UserRepository;
-import com.ruslanproject.howtoget.enities.UniqueId;
-import com.ruslanproject.howtoget.enities.User;
-import com.ruslanproject.howtoget.enities.UserProfile;
+import com.ruslanproject.howtoget.entities.UniqueId;
+import com.ruslanproject.howtoget.entities.User;
+import com.ruslanproject.howtoget.entities.UserProfile;
 import com.ruslanproject.howtoget.utils.MailSenderClass;
 
 /**

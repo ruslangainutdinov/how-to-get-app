@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.ruslanproject.howtoget.dao.BusRepository;
 import com.ruslanproject.howtoget.dao.FlightRepository;
-import com.ruslanproject.howtoget.enities.Bus;
-import com.ruslanproject.howtoget.enities.Flight;
+import com.ruslanproject.howtoget.entities.Bus;
+import com.ruslanproject.howtoget.entities.Flight;
 
 /**
  * Service class for TripService
@@ -22,8 +22,6 @@ import com.ruslanproject.howtoget.enities.Flight;
 
 @Service
 public class TripService {
-		
-	
 	
 	@Autowired
 	private BusRepository busRepository;

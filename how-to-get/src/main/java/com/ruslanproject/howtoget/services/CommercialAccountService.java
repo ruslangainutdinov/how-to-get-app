@@ -22,12 +22,12 @@ import com.ruslanproject.howtoget.dao.OrderFlightRepository;
 import com.ruslanproject.howtoget.dao.ProviderRepository;
 import com.ruslanproject.howtoget.dao.UserProfileRepository;
 import com.ruslanproject.howtoget.dao.UserRepository;
-import com.ruslanproject.howtoget.enities.Bus;
-import com.ruslanproject.howtoget.enities.CommercialAccount;
-import com.ruslanproject.howtoget.enities.Flight;
-import com.ruslanproject.howtoget.enities.User;
-import com.ruslanproject.howtoget.enities.UserProfile;
-import com.ruslanproject.howtoget.enities.WayToGet;
+import com.ruslanproject.howtoget.entities.Bus;
+import com.ruslanproject.howtoget.entities.CommercialAccount;
+import com.ruslanproject.howtoget.entities.Flight;
+import com.ruslanproject.howtoget.entities.User;
+import com.ruslanproject.howtoget.entities.UserProfile;
+import com.ruslanproject.howtoget.entities.WayToGet;
 import com.ruslanproject.howtoget.utils.WayToGetTransformer;
 
 /**

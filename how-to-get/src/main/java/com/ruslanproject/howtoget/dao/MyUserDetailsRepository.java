@@ -2,7 +2,7 @@ package com.ruslanproject.howtoget.dao;
 
 import java.util.Optional;
 
-import com.ruslanproject.howtoget.enities.User;
+import com.ruslanproject.howtoget.entities.User;
 
 
 public interface MyUserDetailsRepository {

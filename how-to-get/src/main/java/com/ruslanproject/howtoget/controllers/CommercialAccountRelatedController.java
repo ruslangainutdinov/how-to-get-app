@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ruslanproject.howtoget.enities.CommercialAccount;
-import com.ruslanproject.howtoget.enities.WayToGet;
+import com.ruslanproject.howtoget.entities.CommercialAccount;
+import com.ruslanproject.howtoget.entities.WayToGet;
 import com.ruslanproject.howtoget.services.CommercialAccountService;
 
 /**
