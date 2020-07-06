@@ -66,23 +66,17 @@
 	</div>
 </nav>
 </head>
+<body>
 	<div class="jumbotron">
+		<div class="container">
 	  <form action="" th:action="@{/process/booking}" method="POST" th:object="${order}">
-	  		Congratulations
+	  		<h4>Congratulations! </h4>
+			<hr>
 	  		You succesfully book the trip. You can check it in "My Cabinet"
-	  		
-	  		
-			
 			<br>
 			<br>		
 	  </form>
+	  </div>
 	</div>
-</head>
-<body>
-	<h1></h1>
-	<div class="container">
-		<a href="/login">Login</a> <a href="/tripForm">TripForm</a>
-	</div>
-
 </body>
 </html>

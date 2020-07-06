@@ -15,7 +15,9 @@
 <title>Processing Form page</title>
 <style>
 .error {
-	color: red
+	color: red;
+	font-size:12px;
+	font-family: Arial, Helvetica, sans-serif;
 }
 </style>
 
@@ -71,44 +73,96 @@
 	
 		
 		<form th:action="@{/myCabinet/edit/add/save}" >
+			<div class="col-md-6 mb-3">
 			
 			<input type="hidden" th:name="type" th:value="${type}">
 			<input type="hidden" th:field="*{way.id}" th:value="${way.id}">
-			<span th:text="*{way.id}"></span>
-			<h4>Form to add new <span th:text=${type}/></h4>
+			<br>
+			<div th:if="${way.id>0}">
+			<b>Way Id: </b><span th:text="*{way.id}"></span>
+			</div>
+			<div th:if="${way.id==null}">
+				<h4>Form to add new <span th:text=${type}/></h4>
+			</div>
+			
 			<input type="hidden" th:field="*{way.companyProvider}" th:value="*{way.companyProvider}">
-			<span th:text="*{way.companyProvider}"></span>
 			
-			<br><br>
-			Location from   <input type="text" th:field="*{way.locationFrom}" th:value="${#strings.capitalizeWords(way.locationFrom)}" placeholder="Please enter location from" required>
 			<br>
-			<span th:if="${#fields.hasErrors('way.locationFrom')}" th:errors="*{way.locationFrom}" class="error"></span>
+			
+			<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="inputGroup-sizing-default">Location from</span>
+				  </div>
+			   <input type="text" th:field="*{way.locationFrom}" th:value="${#strings.capitalizeWords(way.locationFrom)}" placeholder="Please enter location from" 
+			   class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+			</div>
+			<div th:if="${#fields.hasErrors('way.locationFrom')}" th:errors="*{way.locationFrom}" class="error"></div>
 			<br>
-			Location to(*)   <input type="text" th:field="*{way.locationTo}" th:value="${#strings.capitalizeWords(way.locationTo)}"  placeholder="Please enter location to" required>
+			
+			<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="inputGroup-sizing-default">Location to</span>
+				  </div>
+			   <input type="text" th:field="*{way.locationTo}" th:value="${#strings.capitalizeWords(way.locationTo)}"  placeholder="Please enter location to" 
+			   class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+			</div>
+			<div th:if="${#fields.hasErrors('way.locationTo')}" th:errors="*{way.locationTo}" class="error"></div>	
 			<br>
-			<span th:if="${#fields.hasErrors('way.locationTo')}" th:errors="*{way.locationTo}" class="error"></span>	
+			
+			<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="inputGroup-sizing-default">Departure date</span>
+				  </div>
+				<input type="datetime-local" th:field="*{way.departureDate}" placeholder="Please enter departure date" 
+				class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+			</div>
+			<div th:if="${#fields.hasErrors('way.departureDate')}" th:errors="*{way.departureDate}" class="error"></div>
 			<br>
-			Departure date(*)   <input type="datetime-local" th:field="*{way.departureDate}" placeholder="Please enter departure date" required>
-			<span th:if="${#fields.hasErrors('way.departureDate')}" th:errors="*{way.departureDate}" class="error"></span>
-			<br><br>
-			Arrival date(*)   <input type="datetime-local" th:field="*{way.arrivalDate}" placeholder="Please enter arrival date" required>
-			<span th:if="${#fields.hasErrors('way.arrivalDate')}" th:errors="*{way.arrivalDate}" class="error"></span>
-			<br><br>
-			Price(*)    <input type="text" th:field="*{way.price}" placeholder="Enter price" required>
-			<span th:if="${#fields.hasErrors('way.price')}" th:errors="*{way.price}" class="error"></span>
-			<br><br>
-			UFN(*)    <input type="text" th:field="*{way.ufn}" th:value="${#strings.toUpperCase(way.ufn)}" placeholder="Enter ufn" required>
-			<span th:if="${#fields.hasErrors('way.ufn')}" th:errors="*{way.ufn}" class="error"></span>
+			
+			<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="inputGroup-sizing-default">Arrival date</span>
+				  </div>
+				<input type="datetime-local" th:field="*{way.arrivalDate}" placeholder="Please enter arrival date" 
+				class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+			</div>
+			<div th:if="${#fields.hasErrors('way.arrivalDate')}" th:errors="*{way.arrivalDate}" class="error"></div>
 			<br>
-			<span th:if="${#fields.hasErrors('way')}" th:errors="*{way}" class="error"></span> 
+			
+			<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="inputGroup-sizing-default">Price</span>
+				  </div>
+				<input type="text" th:field="*{way.price}" placeholder="Enter price" 
+				class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+			</div>
+			<div th:if="${#fields.hasErrors('way.price')}" th:errors="*{way.price}" class="error"></div>
 			<br>
-			Tickets available(*)    <input type="number" min="10" th:field="*{way.ticketsAvailable}" placeholder="Enter number of available tickets" required>
+			
+			<div th:if="${way.id==null}">
+			<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="inputGroup-sizing-default">UFN</span>
+				  </div>
+			 	<input type="text" th:field="*{way.ufn}" th:value="${#strings.toUpperCase(way.ufn)}" placeholder="Enter UFN" 
+			 	aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+			</div>
+			<div th:if="${#fields.hasErrors('way.ufn')}" th:errors="*{way.ufn}" class="error"></div>
+			<br>
+			</div>
+			
+			<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="inputGroup-sizing-default">Tickets available</span>
+				  </div>
+				<input type="number" min="10" th:field="*{way.ticketsAvailable}" placeholder="Enter number of available tickets" required>
 			<span th:if="${#fields.hasErrors('way.ticketsAvailable')}" th:errors="*{way.ticketsAvailable}" class="error"></span>
-			
+			</div>
+			<div th:if="${#fields.hasErrors('way')}" th:errors="*{way}" class="error"></div> 
 			<br>
-			<button type="submit" th:text="Save"></button>	
+			<button type="submit" th:text="Save" class="btn btn-primary btn-lg"></button>
+			</div>
 		</form>
-		<a href="/login">Login</a> <a href="/tripForm">TripForm</a>
 	</div>
 
 </body>

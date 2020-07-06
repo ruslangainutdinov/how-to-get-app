@@ -68,12 +68,14 @@
 </head>
 
 <body>
-
-
 	<div class="container">
 		<br> <br>
-		<h2>My orders</h2>
+		<h4>My orders</h4>
 		<br>
+		<span th:text="${tripObject}"></span>
+		<div th:if="${!ordersFlight.isEmpty()}">
+		<h5>Flights</h5>
+		
 		<table class="table">
 			<thead class="thead-light">
 				<tr>
@@ -83,6 +85,7 @@
 					<th scope="col"></th>
 				</tr>
 			</thead>
+			
 			<tbody>
 				<tr th:each="order,iStat: ${ordersFlight}">
 					<th th:text="${iStat.index}+1"></th>
@@ -106,7 +109,11 @@
 				</tr>
 			</tbody>
 		</table>
-				<table class="table">
+		</div>
+		<div th:if="${!ordersBus.isEmpty()}">
+		<h5>Buses</h5>
+		
+		<table class="table">
 			<thead class="thead-light">
 				<tr>
 					<th scope="col">#</th>
@@ -115,6 +122,7 @@
 					<th scope="col"></th>
 				</tr>
 			</thead>
+			
 			<tbody>
 				<tr th:each="order,iStat: ${ordersBus}">
 					<th th:text="${iStat.index}+1"></th>
@@ -133,9 +141,12 @@
 				</tr>
 			</tbody>
 		</table>
-		
+		</div>
+		<div th:if="${ordersBus.isEmpty()&&ordersFlight.isEmpty()}">
+			<br>
+				<h5 class ="text-center">No orders found</h5>
+		</div>
 	</div>
 	<br>
-	</div>
 </body>
 </html>

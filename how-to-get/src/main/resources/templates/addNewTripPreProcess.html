@@ -69,11 +69,18 @@
 	<body>
 	<h1></h1>
 	<div class="container">
-		You are on the page where you can choose which type of route you can add
+		<br>
+		<h5>Below you can choose type of booking to add</h5>
+		<hr>
+		<br>
 		
-		<form th:switch="${type}" th:action="@{/myCabinet/edit/add/new}">
-			<button th:case="BUS" type="submit" th:name="type" th:value="Bus">Click here to add new bus route</button>
-    		<button th:case="FLIGHT"type="submit" th:name="type" th:value="Flight">Click here to add new flight</button>
+		  <form th:action="@{/myCabinet/edit/add/new}">
+			<div th:each="temp : ${types}">
+				<button type="submit" th:name="type" th:value="*{temp}" class="btn btn-secondary btn-lg btn-block">Click here to add new 
+					<div th:text="*{temp}"> route</div>
+				</button><br>
+    		</div>
+    		
 		</form>
 		<a href="/login">Login</a> <a href="/tripForm">TripForm</a>
 	</div>

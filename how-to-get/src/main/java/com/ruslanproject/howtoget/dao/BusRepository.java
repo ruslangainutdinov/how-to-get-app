@@ -11,4 +11,6 @@ public interface BusRepository extends JpaRepository<Bus, Integer> {
 	List<Bus> findAllByCompanyProvider(String companyProvider);
 	
 	List<Bus> findAllByLocationFromAndLocationTo(String locationFrom,String locationTo);
+	
+	List<Bus> findAllByUfn(String ufn);
 }

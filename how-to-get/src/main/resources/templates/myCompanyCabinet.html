@@ -69,24 +69,40 @@
 <body>
 	<h1></h1>
 	<div class="container">
-		<a th:href="@{/myCabinet/edit/add}">Add new route</a>
-		<table>
-			<thead>
+			<br>
+	
+		<form th:action="@{/myCabinet/edit/add}">
+			<button type="submit" class="btn btn-outline-success">Add new route</button>
+		</form>
+		<br>
+		<table class="table table-striped">
+			<thead class="thead-light">
 				<tr>
-					<th>#</th>
-					<th>Way info</th>
-					<th>Way info 2</th>
+					<tr>
+					<th>ID in table</th>
+					<th>Company</th>
+					<th>Price</th>
+					<th>Departure date</th>
+					<th>Arrival date</th>
+					<th>Departure from</th>
+					<th>Arrival to</th>
+					<th>Tickets</th>
+					<th width="200px">MANAGE</th>
+				</tr>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="way,index:${companyWays}">
+				<tr th:each="way,index:${page.content}">
 					<td th:text="*{way.id}"></td>
 					<td th:text="*{way.CompanyProvider}"></td>
 					<td th:text="*{way.price}"></td>
 					<td th:text="*{way.departureDate}"></td>
+					<td th:text="*{way.arrivalDate}"></td>
+					<td th:text="*{way.locationFrom}"></td>
+					<td th:text="*{way.locationTo}"></td>
 					<td th:text="*{way.ticketsAvailable}"></td>
-					<td>
-						<form action="#" th:action="@{/myCabinet/edit/remove}" th:object="${way}" method="POST">
+					<td >
+						<form action="#" th:action="@{/myCabinet/edit/edit/save}" th:object="${way}" method="POST" style="display:inline">
 							<input type="hidden" name="id" th:value="${way.id}" >
 							<input type="hidden" name="ufn" th:value="${way.ufn}"> 
 							<input type="hidden" name="companyProvider"	th:value="${way.companyProvider}"> 
@@ -96,10 +112,10 @@
 							<input type="hidden" name="locationFrom" th:value="${way.locationFrom}">
 							<input type="hidden" name="locationTo" th:value="${way.locationTo}">
 							<input type="hidden" name="ticketsAvailable" th:value="${way.ticketsAvailable}">
-							<button type="submit" th:text="Remove"></button>
-						</form>|
-						
-						<form action="#" th:action="@{/myCabinet/edit/edit/save}" th:object="${way}" method="POST">
+							<button type="submit" th:text="Edit" class="btn btn-outline-primary"></button>
+						</form>
+					
+						<form action="#" th:action="@{/myCabinet/edit/remove}" th:object="${way}" method="POST" style="display:inline">
 							<input type="hidden" name="id" th:value="${way.id}" >
 							<input type="hidden" name="ufn" th:value="${way.ufn}"> 
 							<input type="hidden" name="companyProvider"	th:value="${way.companyProvider}"> 
@@ -109,15 +125,20 @@
 							<input type="hidden" name="locationFrom" th:value="${way.locationFrom}">
 							<input type="hidden" name="locationTo" th:value="${way.locationTo}">
 							<input type="hidden" name="ticketsAvailable" th:value="${way.ticketsAvailable}">
-							<button type="submit" th:text="Edit"></button>
-						</form>|
-					<!--  	<form th:action="@{/}" th:object="${}" method="POST">
-							<button type="submit" value="Edit"></button>
-						</form>-->
+							<button type="submit" th:text="Remove" class="btn btn-outline-danger"></button>
+						</form>
+					
 					</td>
 				</tr>
 			</tbody>
 		</table>
+		
+		<div th:if="${page.totalPages > 0}" class="pagination"
+		    th:each="pageNumber : ${pageNumbers}">
+		    <a th:href="@{/myCabinet/edit(size=${page.size}, page=${pageNumber})}"
+		        th:text=${pageNumber}
+		        th:class="${pageNumber==page.number+1} ? active"></a>
+		</div>
 	</div>
 
 </body>

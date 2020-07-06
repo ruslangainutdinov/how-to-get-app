@@ -1,6 +1,10 @@
 package com.ruslanproject.howtoget.controllers;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.Valid;
@@ -8,6 +12,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,13 +46,27 @@ public class CommercialAccountRelatedController {
 	/*commercial account related stuff
 	 * providing list of owning ways to manage/edit */
 	@RequestMapping("/edit")
-	public String edit(Model model, Authentication auth) {
+	public String edit(Model model, Authentication auth,@RequestParam("page") Optional<Integer> pageNumber, 
+		      											@RequestParam(value = "size") Optional<Integer> size) {
+		int currentPage=pageNumber.orElse(1);
+		int sizePage = size.orElse(20);
 		
-		List<? extends WayToGet> ways = commercialAccountService.getAllWays(auth.getName());
+		Page<WayToGet> page = commercialAccountService.findPaginated(PageRequest.of(currentPage, sizePage), auth.getName());
+		//List<? extends WayToGet> ways = commercialAccountService.getAllWays(auth.getName());
 		
-		model.addAttribute("companyWays", ways);
+		//model.addAttribute("companyWays", ways);
 		
-		LOG.info("Managing ways: "+ways);
+		model.addAttribute("page", page);
+		
+		int totalPages=page.getTotalPages();
+		
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                .boxed()
+                .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+		//LOG.info("Managing ways: ={}",ways);
 				
 		return "myCompanyCabinet";
 	}
@@ -67,9 +87,9 @@ public class CommercialAccountRelatedController {
 		
 		CommercialAccount commercialAccount = commercialAccountService.getCommercialAccount(auth.getName());
 		
-		LOG.debug("commercialAccount.getTransportTypes()"+commercialAccount.getTransportTypes());
+		LOG.info("commercialAccount.getTransportTypes()"+Arrays.toString(commercialAccount.getFormattedTransportTypes()));
 		
-		model.addAttribute("type", commercialAccount.getTransportTypes());
+		model.addAttribute("types", commercialAccount.getFormattedTransportTypes());
 					
 		return "addNewTripPreProcess";
 	}
@@ -77,7 +97,8 @@ public class CommercialAccountRelatedController {
 	
 	@RequestMapping("/edit/add/new")
 	public String addNewWayAdd(@RequestParam("type") String type,Model model, Authentication auth) {
-		
+		System.out.println("HERE***************************");
+		System.out.println(type);
 		WayToGet way=commercialAccountService.generateRoute(type,auth.getName());
 
 		LOG.info("Type to add is "+type);
@@ -86,6 +107,16 @@ public class CommercialAccountRelatedController {
 		model.addAttribute("way", way);
 		
 		return "formToAddNewTrip";
+	}
+	//TODO maybe add valid from previous method
+	@RequestMapping("/edit/edit/save")
+	public ModelAndView editNewWayAdd(@ModelAttribute("way") WayToGet way, Authentication auth) {
+			ModelAndView model = new ModelAndView();
+			
+			LOG.info("Processed way is "+way);
+
+			model.setViewName("formToAddNewTrip");
+			return model;
 	}
 	
 	
@@ -107,17 +138,8 @@ public class CommercialAccountRelatedController {
 		
 		commercialAccountService.saveEntity(way,type);
 		
-		model.setViewName("redirect:/succesSavingWay");
+		model.setViewName("redirect:/myCabinet/edit");
 		return model;
 	}
-	//TODO maybe add valid from previous method
-	@RequestMapping("/edit/edit/save")
-	public ModelAndView editNewWayAdd(@ModelAttribute("way") WayToGet way, Authentication auth) {
-		ModelAndView model = new ModelAndView();
-		
-		LOG.info("Processed way is "+way);
-
-		model.setViewName("formToAddNewTrip");
-		return model;
-	}
+	
 }
