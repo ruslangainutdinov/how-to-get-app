@@ -1,4 +1,4 @@
-package com.ruslanproject.howtoget.enities;
+package com.ruslanproject.howtoget.entities;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -61,8 +61,6 @@ public class User {
 	@Column(name="roles")
 	private String roles= "ROLE_USER";
 	
-	
-	
 	@Transient
 	private String tempPassword;
 	
@@ -81,8 +79,6 @@ public class User {
 		this.age=age;
 	}
 
-
-	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -109,18 +105,11 @@ public class User {
 		this.id = id;
 	}
 	
-	
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", email=" + email + ", age="+age+ "]";
 	}
 
 	public Integer getAge() {
@@ -163,4 +152,9 @@ public class User {
 		this.encryptedPassword = encryptedPassword;
 	}
 	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", email=" + email + ", age="+age+ "]";
+	}
 }

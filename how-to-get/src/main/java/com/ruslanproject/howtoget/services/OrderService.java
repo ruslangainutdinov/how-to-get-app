@@ -15,12 +15,12 @@ import com.ruslanproject.howtoget.dao.BusRepository;
 import com.ruslanproject.howtoget.dao.FlightRepository;
 import com.ruslanproject.howtoget.dao.OrderBusRepository;
 import com.ruslanproject.howtoget.dao.UserRepository;
-import com.ruslanproject.howtoget.enities.Bus;
-import com.ruslanproject.howtoget.enities.Flight;
-import com.ruslanproject.howtoget.enities.OrderBus;
-import com.ruslanproject.howtoget.enities.OrderFlight;
-import com.ruslanproject.howtoget.enities.User;
-import com.ruslanproject.howtoget.enities.WayToGet;
+import com.ruslanproject.howtoget.entities.Bus;
+import com.ruslanproject.howtoget.entities.Flight;
+import com.ruslanproject.howtoget.entities.OrderBus;
+import com.ruslanproject.howtoget.entities.OrderFlight;
+import com.ruslanproject.howtoget.entities.User;
+import com.ruslanproject.howtoget.entities.WayToGet;
 import com.ruslanproject.howtoget.utils.WayToGetTransformer;
 
 /**
@@ -69,7 +69,7 @@ public class OrderService {
 	public void processNewOrder(WayToGet way, int number, String name) {
 		
 		if(commercialAccountService.checkWayForFlight(way)) {
-			//logic for fligths
+			//logic for flights
 			LOGGER.info("Flight logic");
 			processNewOrderFligth(way,number,name);
 		}
@@ -147,17 +147,14 @@ public class OrderService {
 
 	@Transactional
 	public void removeWay(int id, String ufn, String email, int numberOfTickets, int wayid) {
-		
-		
+				
 		User user =userService.findByEmail(email);
 		
 		boolean bus = getAllBusUfns().contains(ufn);
-		
-		
-		
-		LOGGER.info("Ufns: "+getAllBusUfns());
+
+		LOGGER.info("Ufns buses: "+getAllBusUfns());
 		LOGGER.info("Ufns flight: "+getAllFlightUfns());
-		LOGGER.info("Bus status: "+bus);
+		LOGGER.debug("Bus status: "+bus);
 		
 		if(getAllFlightUfns().contains(ufn)){
 			LOGGER.info("Flight logic");

@@ -1,6 +1,8 @@
 package com.ruslanproject.howtoget.services;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +12,10 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +28,12 @@ import com.ruslanproject.howtoget.dao.OrderFlightRepository;
 import com.ruslanproject.howtoget.dao.ProviderRepository;
 import com.ruslanproject.howtoget.dao.UserProfileRepository;
 import com.ruslanproject.howtoget.dao.UserRepository;
-import com.ruslanproject.howtoget.enities.Bus;
-import com.ruslanproject.howtoget.enities.CommercialAccount;
-import com.ruslanproject.howtoget.enities.Flight;
-import com.ruslanproject.howtoget.enities.User;
-import com.ruslanproject.howtoget.enities.UserProfile;
-import com.ruslanproject.howtoget.enities.WayToGet;
+import com.ruslanproject.howtoget.entities.Bus;
+import com.ruslanproject.howtoget.entities.CommercialAccount;
+import com.ruslanproject.howtoget.entities.Flight;
+import com.ruslanproject.howtoget.entities.User;
+import com.ruslanproject.howtoget.entities.UserProfile;
+import com.ruslanproject.howtoget.entities.WayToGet;
 import com.ruslanproject.howtoget.utils.WayToGetTransformer;
 
 /**
@@ -80,17 +86,18 @@ public class CommercialAccountService {
 	private FlightService flightService;
 	
 	
-	public List<? extends WayToGet> getAllWays(String email) {
+	public List<WayToGet> getAllWays(String email) {
 		List<String> types = getTypesOfProvider(email);
+		List<WayToGet> result = new ArrayList<>();
 		if (types.contains(WayToGet.Type.BUS.toString())) {
-			LOGGER.info("Success enter");
-			return getBusesByProvider(email);
+			LOGGER.info("Success enter BUS");
+			result.addAll(getBusesByProvider(email));
 			}
 		if (types.contains(WayToGet.Type.FLIGHT.toString())) {
-			LOGGER.info("Success enter");
-			return getFlightsByProvider(email);
+			LOGGER.info("Success enter FLIGHT");
+			result.addAll(getFlightsByProvider(email));
 		}
-		return null;
+		return result;
 	}
 
 	@Transactional
@@ -183,11 +190,13 @@ public class CommercialAccountService {
 	}
 
 	public boolean checkWayForBus(WayToGet way) {
-		return ufnStorageService.getAllBusUfns().contains(way.getUfn());
+		
+		return ufnStorageService.getAllBusUfns(way.getUfn());
+		
 	}
 
 	public boolean checkWayForFlight(WayToGet way) {
-		return ufnStorageService.getAllFlightUfns().contains(way.getUfn());
+		return ufnStorageService.getAllFlightUfns(way.getUfn());
 	}
 
 	public WayToGet generateRoute(String type, String email) {
@@ -197,10 +206,10 @@ public class CommercialAccountService {
 		
 		WayToGet way = null;
 		switch (type) {
-		case "Bus":
+		case "BUS":
 			way = new Bus();
 			break;
-		case "Flight":
+		case "FLIGHT":
 			way = new Flight();
 			break;
 		}
@@ -233,5 +242,24 @@ public class CommercialAccountService {
 			flightService.saveEntity(way);
 		}
 		
+	}
+	
+	public Page<WayToGet> findPaginated(Pageable pageable,String email){
+		List<WayToGet> ways = (List<WayToGet>) getAllWays(email);
+		System.out.println(ways);
+		int pageSize= pageable.getPageSize();
+		int currentPage = pageable.getPageNumber();
+		int startItem = pageSize * currentPage;
+		List <WayToGet> list;
+		if(ways.size()<startItem) {
+			list= Collections.emptyList();
+		}else {
+			int toIndex = Math.min(startItem+pageSize, ways.size());
+			list=ways.subList(startItem,toIndex);
+		}
+		Page<WayToGet> page = new PageImpl<>(list,PageRequest.of(currentPage, pageSize),ways.size());
+		System.out.println("************************");
+		System.out.println(list);
+		return page;
 	}
 }

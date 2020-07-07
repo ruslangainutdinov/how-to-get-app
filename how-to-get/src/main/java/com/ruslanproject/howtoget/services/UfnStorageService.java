@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.ruslanproject.howtoget.dao.BusRepository;
 import com.ruslanproject.howtoget.dao.FlightRepository;
+import com.ruslanproject.howtoget.entities.Bus;
 
 /**
  * Service class for UfnStorageService
@@ -29,15 +30,20 @@ public class UfnStorageService {
 	@Autowired
 	private BusRepository busRepository;
 		
-	public List<String> getAllBusUfns() {
-		List<String> busUfns = busRepository.findAll().stream().map(w->w.getUfn()).distinct().collect(Collectors.toList());
-		return busUfns;
+	public boolean getAllBusUfns(String ufn) {
+		
+	//	List<String> busUfns = busRepository.findAll().stream().map(w->w.getUfn()).distinct().collect(Collectors.toList());
+		List<Bus> busUfns = busRepository.findAllByUfn(ufn);
+		
+		return !busUfns.isEmpty();
 	}
 	
-	public List<String> getAllFlightUfns() {
-		List<String> flightUfns =flightRepository.findAll().stream().map(w->w.getUfn()).distinct().collect(Collectors.toList());
-		return flightUfns;
-	
+	public boolean getAllFlightUfns(String ufn) {
+		
+		List<String> flightUfns = flightRepository.findAll().stream().map(w->w.getUfn()).distinct().collect(Collectors.toList());
+		
+		
+		return flightUfns.contains(ufn);
 	}
 	
 }

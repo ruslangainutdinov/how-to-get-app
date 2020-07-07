@@ -68,7 +68,21 @@
 		Search results:
 		<span th:text="${tripObject}" />
 		
-		<div th:if="${buses != null}">
+		<div th:if="${buses!=null && flights!=null && buses.isEmpty()&&flights.isEmpty()}">
+		<br><br><br><br><br>
+			<h5 class ="text-center">No results found</h5>
+		</div>
+		<div th:if="${buses!=null && flights==null && buses.isEmpty()}">
+		<br><br><br><br><br>
+			<h5 class ="text-center">No buses available</h5>
+		</div>
+		<div th:if="${buses==null && flights!=null && flights.isEmpty()}">
+		<br><br><br><br><br>
+			<h5 class ="text-center">No flights available</h5>
+		</div>
+		
+		
+		<div th:if="${buses!=null && !buses.isEmpty()}">
 		<br>
 		<h3>Buses</h3>
 		<br>
@@ -112,7 +126,7 @@
 							<input type="hidden" name="locationTo"
 								th:value="${bus.locationTo}"> 
 							<input type="hidden" name="ticketsAvailable" th:value="${bus.ticketsAvailable}">
-								
+
 								<input type="submit"
 								value="Book" />
 					</td>
@@ -122,7 +136,7 @@
 			</tbody>
 		</table>
 		</div>
-		<div th:if="${flights != null}">
+		<div th:if="${flights !=null && !flights.isEmpty()}">
 			<br>
 			<h3>Fligths</h3>
 			<br>

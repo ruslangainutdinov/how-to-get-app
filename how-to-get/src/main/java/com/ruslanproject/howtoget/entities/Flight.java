@@ -1,4 +1,4 @@
-package com.ruslanproject.howtoget.enities;
+package com.ruslanproject.howtoget.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

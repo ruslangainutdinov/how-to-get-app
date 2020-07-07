@@ -1,4 +1,4 @@
-package com.ruslanproject.howtoget.enities;
+package com.ruslanproject.howtoget.entities;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -96,6 +96,10 @@ public class CommercialAccount {
 
 	public String getTransportTypes() {
 		return transportTypes;
+	}
+	
+	public String[] getFormattedTransportTypes() {
+		return getTransportTypes().split(",");
 	}
 
 	public void setTransportTypes(String transportTypes) {

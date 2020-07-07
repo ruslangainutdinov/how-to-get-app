@@ -1,4 +1,4 @@
-package com.ruslanproject.howtoget.enities;
+package com.ruslanproject.howtoget.entities;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -10,7 +10,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.ruslanproject.howtoget.validators.CustomFutureDateTime;
 import com.ruslanproject.howtoget.validators.FieldsDoNotMatch;
+import com.ruslanproject.howtoget.validators.FutureDateTimeString;
 
 /**
  * Entity class for WayToGet
@@ -21,7 +23,7 @@ import com.ruslanproject.howtoget.validators.FieldsDoNotMatch;
 
 @MappedSuperclass
 @FieldsDoNotMatch(first = "locationFrom", second = "locationTo",message="Departure location and arrival location should not match")
-//@FutureDateTimeString(first = "departureDate", message = "Arrival date must be after departure date", second = "arrivalDate")
+@FutureDateTimeString(first = "departureDate", message = "Arrival date must be after departure date", second = "arrivalDate")
 public class WayToGet {
 	
 	@Id
@@ -41,12 +43,11 @@ public class WayToGet {
 	private Double price;
 	
 	@Column(name="departure_date")
+	@CustomFutureDateTime
 	private String departureDate;
-	
 	
 	@Column(name="arrival_date")
 	private String arrivalDate;
-	
 	
 	@NotNull
 	@Size(min=4, message="Length of the location cannot be less than 5")

@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ruslanproject.howtoget.enities.UniqueId;
-import com.ruslanproject.howtoget.enities.User;
+import com.ruslanproject.howtoget.entities.UniqueId;
+import com.ruslanproject.howtoget.entities.User;
 import com.ruslanproject.howtoget.services.UserService;
 
 

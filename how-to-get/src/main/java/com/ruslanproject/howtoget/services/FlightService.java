@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ruslanproject.howtoget.dao.FlightRepository;
-import com.ruslanproject.howtoget.enities.Flight;
-import com.ruslanproject.howtoget.enities.Trip;
-import com.ruslanproject.howtoget.enities.WayToGet;
+import com.ruslanproject.howtoget.entities.Flight;
+import com.ruslanproject.howtoget.entities.Trip;
+import com.ruslanproject.howtoget.entities.WayToGet;
 import com.ruslanproject.howtoget.utils.WayToGetTransformer;
 
 /**

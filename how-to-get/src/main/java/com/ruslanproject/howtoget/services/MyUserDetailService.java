@@ -12,8 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.ruslanproject.howtoget.dao.UserRepository;
-import com.ruslanproject.howtoget.enities.MyUserDetails;
-import com.ruslanproject.howtoget.enities.User;
+import com.ruslanproject.howtoget.entities.MyUserDetails;
+import com.ruslanproject.howtoget.entities.User;
 
 /**
  * Service class for MyUserDetailService

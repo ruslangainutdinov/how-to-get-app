@@ -66,23 +66,35 @@
 	</div>
 </nav>
 </head>
-
 <body>
-
-
 	<div class="container">
 	<br><br>
 		<h3>My cabinet</h3>
 		<br>
 		<div if:th="${#authentication.name==param.id}">
-			Logged user: <span sec:authentication="name"
-				th:text="${#authentication.name}">Bob</span>
+			<b>Logged user:</b> <span sec:authentication="name"
+				th:text="${#authentication.name}">Name</span>
+				<br><br>
+			<b>First name:</b> <span th:text="${user.firstName}">User's first name</span>
+				<br><br>
+			<b>Last name:</b> <span th:text="${user.lastName}">User's last name</span>
+				<br><br>
+			<b>Age:</b> <span th:text="${user.age}">User's age</span>
 		</div>
 		<br>
-		<a href="/myOrders">My orders</a>
-		<div sec:authorize="hasRole('ROLE_PROVIDER')">
-			<a th:href="@{/myCabinet/edit}">Control Room</a>
+		<div class="row">
+			<div class="col-1 col-md-2">
+				<form th:action="@{/myOrders}">
+					<button type="submit"  class="btn btn-outline-success" >My orders</button>
+				</form>
+			</div>
+			
+		<div class="col-1 col-md-2" sec:authorize="hasRole('ROLE_PROVIDER')">
+			<form th:action="@{/myCabinet/edit}">
+				<button type="submit"  class="btn btn-outline-success" >Manage</button>
+			</form>
 		</div>
-	</div>
+		</div>
+		</div>
 </body>
 </html>
