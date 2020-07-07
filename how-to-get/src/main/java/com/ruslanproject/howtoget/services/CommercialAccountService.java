@@ -250,6 +250,7 @@ public class CommercialAccountService {
 		int pageSize= pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
 		int startItem = pageSize * currentPage;
+		LOGGER.debug("Page size={}, current page={}", pageSize,currentPage);
 		List <WayToGet> list;
 		if(ways.size()<startItem) {
 			list= Collections.emptyList();

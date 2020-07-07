@@ -17,6 +17,15 @@
 .error {
 	color: red
 }
+.active{
+	color:white
+}
+.nonactive{
+	color:black
+}
+.pagination{
+	text-align: justify
+}
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -133,12 +142,17 @@
 			</tbody>
 		</table>
 		
-		<div th:if="${page.totalPages > 0}" class="pagination"
-		    th:each="pageNumber : ${pageNumbers}">
-		    <a th:href="@{/myCabinet/edit(size=${page.size}, page=${pageNumber})}"
-		        th:text=${pageNumber}
-		        th:class="${pageNumber==page.number+1} ? active"></a>
+		<div class="d-flex justify-content-center">
+			<span th:if="${page.totalPages > 0}" class="d-inline p-2 bg-dark text-white"
+			    th:each="pageNumber : ${pageNumbers}">
+			    <a th:href="@{/myCabinet/edit(size=${page.size}, page=${pageNumber})}"
+			        th:text="${pageNumber}"
+			        th:class="${pageNumber==page.number+1} ? active:nonactive"></a>
+			</span>
 		</div>
+		<br>
+		<br>
+		<br>
 	</div>
 
 </body>

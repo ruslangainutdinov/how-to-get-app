@@ -47,11 +47,11 @@ public class CommercialAccountRelatedController {
 	 * providing list of owning ways to manage/edit */
 	@RequestMapping("/edit")
 	public String edit(Model model, Authentication auth,@RequestParam("page") Optional<Integer> pageNumber, 
-		      											@RequestParam(value = "size") Optional<Integer> size) {
+		      											@RequestParam("size") Optional<Integer> size) {
 		int currentPage=pageNumber.orElse(1);
 		int sizePage = size.orElse(20);
 		
-		Page<WayToGet> page = commercialAccountService.findPaginated(PageRequest.of(currentPage, sizePage), auth.getName());
+		Page<WayToGet> page = commercialAccountService.findPaginated(PageRequest.of(currentPage-1, sizePage), auth.getName());
 		//List<? extends WayToGet> ways = commercialAccountService.getAllWays(auth.getName());
 		
 		//model.addAttribute("companyWays", ways);
@@ -60,6 +60,7 @@ public class CommercialAccountRelatedController {
 		
 		int totalPages=page.getTotalPages();
 		
+		LOG.debug("Page content={}", page.getContent());
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                 .boxed()
@@ -67,7 +68,7 @@ public class CommercialAccountRelatedController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 		//LOG.info("Managing ways: ={}",ways);
-				
+        LOG.debug("Total pages ={}",page.getTotalPages());	
 		return "myCompanyCabinet";
 	}
 	

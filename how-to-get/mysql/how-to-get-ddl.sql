@@ -2,7 +2,9 @@ drop schema if exists how_to_get_app;
 
 create schema how_to_get_app;
 
-GRANT ALL PRIVILEGES ON how_to_get_app.* TO 'root'@'localhost';
+DROP USER IF EXISTS 'how-to-get-connection'@'localhost';
+CREATE USER 'how-to-get-connection'@'localhost' IDENTIFIED BY 'ruslan_db_51694931';
+GRANT ALL PRIVILEGES ON how_to_get_app.* TO 'root'@'how-to-get-connection'@'localhost';
 
 use how_to_get_app;
 
