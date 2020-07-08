@@ -150,6 +150,11 @@
 			<div th:if="${#fields.hasErrors('way.ufn')}" th:errors="*{way.ufn}" class="error"></div>
 			<br>
 			</div>
+			<div th:if="${way.id!=null}">
+				<input type="hidden" th:field="*{way.ufn}" th:value="*{way.ufn}"/>
+			</div>
+			
+			
 			
 			<div class="input-group mb-3">
 				  <div class="input-group-prepend">

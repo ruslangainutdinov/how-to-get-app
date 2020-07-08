@@ -256,6 +256,20 @@ public class HomeController {
 		return "redirect:/myOrders";
 	}
 	
-
+	@GetMapping("/companies")
+	public String getTransportCompanies(Model model) {
+		//get all transport companies
+		//add them to the model
+		//return view template
+		return null;
+	}
+	
+	@GetMapping("/companies/company")
+	public String getSpecificCompany(@RequestParam("id")Integer id, Model model) {
+		//get specific commercial account according to its id
+		//add found account to the model
+		return null;
+	}
+	
 
 }
