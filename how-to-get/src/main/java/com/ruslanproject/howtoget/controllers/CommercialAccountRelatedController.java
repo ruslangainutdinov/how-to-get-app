@@ -26,6 +26,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ruslanproject.howtoget.entities.CommercialAccount;
 import com.ruslanproject.howtoget.entities.WayToGet;
 import com.ruslanproject.howtoget.services.CommercialAccountService;
+import com.ruslanproject.howtoget.utils.ApplicationMappings;
+import com.ruslanproject.howtoget.utils.ApplicationViews;
 
 /**
  * Controller to manage bookings by user who has role ROLE_
@@ -35,7 +37,7 @@ import com.ruslanproject.howtoget.services.CommercialAccountService;
  */
 
 @Controller
-@RequestMapping(value = "/myCabinet")
+@RequestMapping(value = ApplicationMappings.BASE_PATH_COMMERCIAL_ACCOUNT_CONTROLLER_MAPPING)
 public class CommercialAccountRelatedController {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(CommercialAccountRelatedController.class);
@@ -45,16 +47,13 @@ public class CommercialAccountRelatedController {
 	
 	/*commercial account related stuff
 	 * providing list of owning ways to manage/edit */
-	@RequestMapping("/edit")
+	@RequestMapping(ApplicationMappings.MY_CABINET_EDIT_MAPPING)
 	public String edit(Model model, Authentication auth,@RequestParam("page") Optional<Integer> pageNumber, 
 		      											@RequestParam("size") Optional<Integer> size) {
 		int currentPage=pageNumber.orElse(1);
 		int sizePage = size.orElse(20);
 		
 		Page<WayToGet> page = commercialAccountService.findPaginated(PageRequest.of(currentPage-1, sizePage), auth.getName());
-		//List<? extends WayToGet> ways = commercialAccountService.getAllWays(auth.getName());
-		
-		//model.addAttribute("companyWays", ways);
 		
 		model.addAttribute("page", page);
 		
@@ -67,22 +66,21 @@ public class CommercialAccountRelatedController {
                 .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-		//LOG.info("Managing ways: ={}",ways);
         LOG.debug("Total pages ={}",page.getTotalPages());	
-		return "myCompanyCabinet";
+		return ApplicationViews.COMPANY_CABINET_VIEW;
 	}
 	
-	@RequestMapping("/edit/remove")
+	@RequestMapping(ApplicationMappings.REMOVE_WAY_MAPPING)
 	public String remove(@ModelAttribute("temp") WayToGet way, Authentication auth) {
 		
 		commercialAccountService.removeWay(way,true);
 		
 		LOG.info("Remove way" + way);
 						
-		return "redirect:/myCabinet/edit";
+		return "redirect:"+ApplicationMappings.BASE_PATH_COMMERCIAL_ACCOUNT_CONTROLLER_MAPPING+ApplicationMappings.MY_CABINET_EDIT_MAPPING;
 	}
 	
-	@RequestMapping("/edit/add")
+	@RequestMapping(ApplicationMappings.ADD_WAY_TYPE_FORM_PRE_PROCESS_MAPPING)
 	public String addNewWayPreCreate(Model model,Authentication auth) throws AccountNotFoundException {
 		
 		
@@ -92,14 +90,12 @@ public class CommercialAccountRelatedController {
 		
 		model.addAttribute("types", commercialAccount.getFormattedTransportTypes());
 					
-		return "addNewTripPreProcess";
+		return ApplicationViews.NEW_TRIP_PREPROCESS_VIEW;
 	}
 	
 	
-	@RequestMapping("/edit/add/new")
+	@RequestMapping(ApplicationMappings.ADD_NEW_WAY_FORM_MAPPING)
 	public String addNewWayAdd(@RequestParam("type") String type,Model model, Authentication auth) {
-		System.out.println("HERE***************************");
-		System.out.println(type);
 		WayToGet way=commercialAccountService.generateRoute(type,auth.getName());
 
 		LOG.info("Type to add is "+type);
@@ -107,40 +103,38 @@ public class CommercialAccountRelatedController {
 		model.addAttribute("type", type);
 		model.addAttribute("way", way);
 		
-		return "formToAddNewTrip";
+		return ApplicationViews.FORM_TO_ADD_NEW_WAY_VIEW;
 	}
 	//TODO maybe add valid from previous method
-	@RequestMapping("/edit/edit/save")
+	@RequestMapping(ApplicationMappings.SAVE_EXISTED_WAY_MAPPING)
 	public ModelAndView editNewWayAdd(@ModelAttribute("way") WayToGet way, Authentication auth) {
 			ModelAndView model = new ModelAndView();
 			
 			LOG.info("Processed way is "+way);
 
-			model.setViewName("formToAddNewTrip");
+			model.setViewName(ApplicationViews.FORM_TO_ADD_NEW_WAY_VIEW);
 			return model;
 	}
 	
 	
-	@RequestMapping("/edit/add/save")
+	@RequestMapping(ApplicationMappings.SAVE_NEW_WAY_MAPPING)
 	public ModelAndView addNewWayAdd(@Valid@ModelAttribute("way") WayToGet way,BindingResult bindingResult, 
 											@RequestParam("type") String type, Authentication auth) {
-		
 		ModelAndView model = new ModelAndView();
 		
 		if(bindingResult.hasErrors()) {
 			model.addObject("way", way);
-			model.setViewName("formToAddNewTrip");
+			model.setViewName(ApplicationViews.FORM_TO_ADD_NEW_WAY_VIEW);
 			model.addObject("type", type);
 			LOG.debug(">>>>>>adding way error: "+bindingResult.toString());
 			return model;
 		}		
-		
 		LOG.info("Processed way is "+way);
 		
 		commercialAccountService.saveEntity(way,type);
 		
-		model.setViewName("redirect:/myCabinet/edit");
+		model.setViewName("redirect:"+ApplicationMappings.BASE_PATH_COMMERCIAL_ACCOUNT_CONTROLLER_MAPPING+ApplicationMappings.MY_CABINET_EDIT_MAPPING);
+		
 		return model;
 	}
-	
 }

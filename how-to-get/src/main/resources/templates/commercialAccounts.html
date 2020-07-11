@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+
+<title>Processing Form page</title>
+<style>
+.error {
+	color: red
+}
+</style>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<a class="navbar-brand" href="/">How To Get</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse"
+		data-target="#navbarSupportedContent"
+		aria-controls="navbarSupportedContent" aria-expanded="false"
+		aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item active"><a class="nav-link" href="/tripForm">Search
+					Way<span class="sr-only">(current)</span>
+			</a></li>
+			<li class="nav-item active"><a class="nav-link" href="/loading">Transport
+					Companies <span class="sr-only">(current)</span>
+			</a></li>
+			<li class="nav-item active"><a class="nav-link" href="/contacts">Information
+					<span class="sr-only">(current)</span>
+			</a></li>
+			
+			<li class="nav-item active" sec:authorize="isAuthenticated()">
+				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" >My Cabinet<span class="sr-only">(current)</span>				
+				</a>
+			</li>
+			
+
+
+
+		</ul>
+		     <form action="#" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
+        		<input type="submit" value="Logout" class="btn btn-primary-outline">
+			</form>
+			
+			
+			<div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/registration/newUser}">Registration<span class="sr-only">(current)</span></a>
+			</div>
+        	
+	        <div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/loginURL}">Login<span class="sr-only">(current)</span></a>
+			</div>
+        	
+        	
+	</div>
+</nav>
+</head>
+	
+<body>
+	
+	<div class="container">
+	<br>
+	  <h1 class="display-4">TRANSPORT COMPANIES</h1>
+	  	<br>
+	  	<table class="table	">
+	  	<tbody>
+	  	<tr th:each="temp,iStat:${commercialAccounts}" style="list-style-type:none">
+	  		<td th:text="*{iStat.index}+1" class="text-center"></td>
+	  		<td class="text-left">
+	  			<h3 th:text="*{temp.companyName}"></h3>
+	  			<br>
+	  			Transport types: <h5 th:text="*{temp.transportTypes}"></h5>
+	  			<!--  <a th:href="@{}">Details</a>-->
+	  		</td>
+	  		<td class="text-center">
+	  			<a href="#" th:href="@{/companies/company(id=${temp.id})}">Details
+	  			</a>
+	  		</td>
+	  		</tr>
+	  	</tbody>
+	  	</table>
+	  </div>
+
+
+</body>
+</html>

@@ -25,7 +25,7 @@ insert into users values
 ('1','$2a$10$aTUkLD.ZEKumK0k/ffrCvuO0n.mY1SCaEF3VCTeTxnTu3suGg6bOS','Flix Bus','Company','flixbus@flixbus.com','4','ROLE_USER,ROLE_PROVIDER'),
 ('2','$2a$10$eNTeZ4Ju7Qbt5L.rSiZR5ulCQp84CFrAPgTeGa1za71dPvrZO9on6','Buster','Company','buster@buster.com','5','ROLE_USER,ROLE_PROVIDER'),
 ('3','$2a$10$uwP6ZXisKrr94DQKYNFqtOC6rtVuk8PfTiKU/zKBfb83.N3e2aKlW','East Coast Logistics','Company','eal@eal.com','14','ROLE_USER,ROLE_PROVIDER'),
-('4','$2a$10$aTUkLD.ZEKumK0k/ffrCvuO0n.mY1SCaEF3VCTeTxnTu3suGg6bOS','Barrier','Company','barrier@.com','6','ROLE_USER,ROLE_PROVIDER'),
+('4','$2a$10$aTUkLD.ZEKumK0k/ffrCvuO0n.mY1SCaEF3VCTeTxnTu3suGg6bOS','Barrier','Company','barrier@br.com','6','ROLE_USER,ROLE_PROVIDER'),
 ('5','$2a$10$eNTeZ4Ju7Qbt5L.rSiZR5ulCQp84CFrAPgTeGa1za71dPvrZO9on6','Hitchhiker','Company','hitchhiker@hh.com','8','ROLE_USER,ROLE_PROVIDER'),
 ('6','$2a$10$uwP6ZXisKrr94DQKYNFqtOC6rtVuk8PfTiKU/zKBfb83.N3e2aKlW','Kris','Company','kris@kris.com','17','ROLE_USER,ROLE_PROVIDER'),
 ('7','$2a$10$aTUkLD.ZEKumK0k/ffrCvuO0n.mY1SCaEF3VCTeTxnTu3suGg6bOS','YAGNI','Company','yagni@principles.com','12','ROLE_USER,ROLE_PROVIDER'),

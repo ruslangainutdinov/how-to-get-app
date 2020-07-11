@@ -22,16 +22,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ruslanproject.howtoget.entities.Bus;
+import com.ruslanproject.howtoget.entities.CommercialAccount;
 import com.ruslanproject.howtoget.entities.Flight;
 import com.ruslanproject.howtoget.entities.OrderBus;
 import com.ruslanproject.howtoget.entities.OrderFlight;
 import com.ruslanproject.howtoget.entities.Trip;
 import com.ruslanproject.howtoget.entities.User;
 import com.ruslanproject.howtoget.entities.WayToGet;
+import com.ruslanproject.howtoget.services.CommercialAccountService;
 import com.ruslanproject.howtoget.services.OrderService;
 import com.ruslanproject.howtoget.services.TripService;
 import com.ruslanproject.howtoget.services.UserService;
 import com.ruslanproject.howtoget.services.WayToGetService;
+import com.ruslanproject.howtoget.utils.ApplicationMappings;
+import com.ruslanproject.howtoget.utils.ApplicationViews;
 
 /**
  * Main Home Controller
@@ -62,56 +66,32 @@ public class HomeController {
 	@Autowired
 	private OrderService orderService;
 
+	@Autowired
+	private CommercialAccountService commercialAccountService;
 	
 	
-	/*Basic info application*/
-	@RequestMapping("/contacts")
-	public String getContacts() {
-		return "info";
-	}	
-	
-	/*Booking related mapping*/
-	@RequestMapping("/successBooking")
-	public String getSuccesBooking() {
-		return "succesBooking";
-	}
-	
-	/*Booking editing mapping*/
-	@RequestMapping("/succesSavingWay")
-	public String getSuccesSavingWay() {
-		return "succesSavingWay";
-	}
-
-	/*login stuff may be related to home*/
-	@RequestMapping("/loginURL")
-	public String getLoginForm() {
-		return "loginForm";
-	}
-
 	/*home page*/
-	@RequestMapping("/")
+/*	@RequestMapping(ApplicationMappings.HOME_PAGE_MAPPING)
 	public String getHome(Model model, Authentication authentication) {
-		if (authentication != null) {
-			model.addAttribute("authenticationName", authentication.getName());
-		}
-		return "index";
-	}
+		return ApplicationViews.HOME_VIEW;
+	}*/
 
 	/*Start searching for concrete way-to-get*/
-	@RequestMapping("/tripForm")
+	@RequestMapping(ApplicationMappings.SEARCH_TRIP_MAPPING)
 	public String getForm(Model model, Authentication authentication) {
 
 		model.addAttribute("authenticationName", authentication.getName());
-
 		model.addAttribute("tripObject", new Trip());
+		
 		List<String> locations=tripService.getAllLocations();
-
+		//TODO refactor method above
 		model.addAttribute("locations", locations);
-		return "form";
+		
+		return ApplicationViews.FORM_TRIP_VIEW;
 	}
 
 	/*Respond with list of possible target ways-to-get*/
-	@PostMapping("/process")
+	@PostMapping(ApplicationMappings.PROCESS_TRIP_MAPPING)
 	public ModelAndView postForm(@Valid @ModelAttribute("tripObject") Trip trip, BindingResult bindingResult,Authentication authentication
 			) {
 		ModelAndView model = new ModelAndView();
@@ -119,13 +99,14 @@ public class HomeController {
 		model.addObject("authenticationName", authentication.getName());
 
 		List<String> locations=tripService.getAllLocations();
-
 		model.addObject("locations", locations);
+		//TODO probable code above not need
+		
 
 		LOGGER.info(">>>>>>Types are: " + trip.getTypes());
 
 		if (bindingResult.hasErrors()) {
-			model.setViewName("form");
+			model.setViewName(ApplicationViews.FORM_TRIP_VIEW);
 			return model;
 		}
 		LOGGER.info(">>>>>Trip to process: "+trip.toString());
@@ -137,7 +118,7 @@ public class HomeController {
 		 * LocalDate.parse(trip.getDepartureDate());
 		 * LOGGER.info(">>>>>>>>>>>>>>>date: " + date); }
 		 */
-		model.setViewName("form");
+		model.setViewName(ApplicationViews.FORM_TRIP_VIEW);
 		if ((trip.getDepartureDate().isEmpty())
 				|| (LocalDate.parse(trip.getDepartureDate()).isBefore(trip.getTimestamp().toLocalDate()))) {
 			model.addObject("errorStatus", "Departure date cannot be in past");
@@ -165,12 +146,12 @@ public class HomeController {
 			model.addObject("flights", fligths);
 			LOGGER.info(">>>>>>Flights are " + fligths);
 		}
-		model.setViewName("processForm");
+		model.setViewName(ApplicationViews.TRIP_SEARCH_RESULTS_VIEW);
 		return model;
 	}
 
-	/*Process 1 interested booking*/
-	@RequestMapping("/process/book")
+	/*Process 1 specific booking*/
+	@RequestMapping(ApplicationMappings.PROCESS_BOOKING_MAPPING)
 	public String postBooking(@ModelAttribute("buses") WayToGet way, Model model, Authentication auth) {
 		
 		LOGGER.info(">>>>>>Way to process: "+way);			
@@ -179,11 +160,11 @@ public class HomeController {
 		
 		LOGGER.debug(">>>>>>Authentication.getName() :"+auth.getName());
 		
-		return "bookTheWay";
+		return ApplicationViews.BOOK_WAY_VIEW;
 	}
 
 	/*Process targeted booking as a final order, with redirecting as a final booking*/
-	@RequestMapping("/process/booking")
+	@RequestMapping(ApplicationMappings.CONFIRM_BOOKING_MAPPING)
 	public String processBooking(@ModelAttribute("way") WayToGet way, 
 			@RequestParam(name="numberOfTickets") int numberOfTickets, Model model, Authentication auth) {
 		
@@ -191,7 +172,7 @@ public class HomeController {
 		
 		if(way.getTicketsAvailable()<numberOfTickets) {
 			model.addAttribute("way", way);
-			return "bookTheWay";
+			return ApplicationViews.BOOK_WAY_VIEW;
 		}
 		
 		orderService.processNewOrder(way,numberOfTickets,auth.getName());
@@ -200,11 +181,11 @@ public class HomeController {
 				
 		LOGGER.debug(">>>>>>Authentication.getName() :"+auth.getName());
 				
-		return "redirect:/successBooking";
+		return "redirect:"+ApplicationMappings.SUCCESS_BOOKING_MAPPING;
 	}
 	
 	/*user cabinet mapping*/
-	@GetMapping("/user")
+	@GetMapping(ApplicationMappings.MY_CABINET_MAPPING)
 	public String getMyCabinet(@RequestParam(name="id") String email, Model model) {
 		User user =userService.findByEmail(email);
 		
@@ -213,12 +194,12 @@ public class HomeController {
 		}else {
 			model.addAttribute("invalidUser", "User not found");
 		}
-		return "myCabinet";
+		return ApplicationViews.MY_CABINET_VIEW;
 	}
 	
 	
 	/*user's personal orders*/
-	@RequestMapping("/myOrders")
+	@RequestMapping(ApplicationMappings.MY_ORDERS_MAPPING)
 	public String getMyOrders(Authentication auth, Model model) {
 		
 		List<OrderBus> ordersBus= orderService.getAllOrdersBusByUser(auth.getName());
@@ -230,11 +211,11 @@ public class HomeController {
 		model.addAttribute("ordersBus",ordersBus);
 		model.addAttribute("ordersFlight",ordersFlight);
 
-		return "myOrders";
+		return ApplicationViews.MY_ORDERS_VIEW;
 	}
 	
 	/*user's cancellation process already booked of 'ways'*/
-	@PostMapping("/myOrders/cancel")
+	@PostMapping(ApplicationMappings.MY_ORDERS_CANCELLATION_MAPPING)
 	public String cancelMyOrder(@RequestParam(name="id") int id,
 								@RequestParam(name="ufn") String ufn,
 								@RequestParam(name="number") int numberOfTickets,
@@ -244,7 +225,6 @@ public class HomeController {
 		User user =userService.findByEmail(auth.getName());
 		LOGGER.info(">>>>>>User's ordersBus before: "+user.getUserProfile().getOrdersBus());
 		LOGGER.info(">>>>>>User's ordersFlight before: "+user.getUserProfile().getOrdersFlight());
-		
 		LOGGER.info("Ufn: "+ufn);
 		
 		orderService.removeWay(id,ufn,auth.getName(),numberOfTickets,wayid);
@@ -253,22 +233,26 @@ public class HomeController {
 		LOGGER.info(">>>>>>User's ordersBus after: "+user.getUserProfile().getOrdersBus());
 		LOGGER.info(">>>>>>User's ordersFlight after: "+user.getUserProfile().getOrdersFlight());
 				
-		return "redirect:/myOrders";
+		return "redirect:"+ApplicationMappings.MY_ORDERS_MAPPING;
 	}
 	
-	@GetMapping("/companies")
+	@GetMapping(ApplicationMappings.ALL_COMPANIES_MAPPING)
 	public String getTransportCompanies(Model model) {
-		//get all transport companies
-		//add them to the model
-		//return view template
-		return null;
+		List<CommercialAccount> commercialAccounts = commercialAccountService.getCommercialAccounts();
+		
+		model.addAttribute("commercialAccounts",commercialAccounts);
+		System.out.println(commercialAccounts);
+		return ApplicationViews.ALL_COMPANIES_VIEW;
 	}
 	
-	@GetMapping("/companies/company")
+	@GetMapping(ApplicationMappings.SINGLE_COMPANY_MAPPING)
 	public String getSpecificCompany(@RequestParam("id")Integer id, Model model) {
-		//get specific commercial account according to its id
-		//add found account to the model
-		return null;
+		CommercialAccount commercialAccountById = commercialAccountService.getCommercialAccountById(id);
+
+		model.addAttribute("commercialAccountById", commercialAccountById);
+	//	commercialAccountById.getUserProfile().getUser().getEmail();
+		
+		return ApplicationViews.SINGLE_COMPANY_VIEW;
 	}
 	
 

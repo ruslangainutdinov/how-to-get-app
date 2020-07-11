@@ -19,7 +19,7 @@
 }
 </style>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<a class="navbar-brand" href="/">How To Get</a>
+	<a class="navbar-brand" th:href="@{/}">How To Get</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse"
 		data-target="#navbarSupportedContent"
 		aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -29,13 +29,13 @@
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active"><a class="nav-link" href="/tripForm">Search
+			<li class="nav-item active"><a class="nav-link" th:href="@{/tripForm}">Search
 					Way<span class="sr-only">(current)</span>
 			</a></li>
-			<li class="nav-item active"><a class="nav-link" href="/loading">Transport
+			<li class="nav-item active"><a class="nav-link" href="@{/companies}">Transport
 					Companies <span class="sr-only">(current)</span>
 			</a></li>
-			<li class="nav-item active"><a class="nav-link" href="/contacts">Information
+			<li class="nav-item active"><a class="nav-link" href="@{/contacts}">Information
 					<span class="sr-only">(current)</span>
 			</a></li>
 			
@@ -72,10 +72,21 @@
 	  <h1 class="display-4">Welcome to HowToGet application!</h1>
 	  <p class="lead">This is the application that can help you to book flight or bus from one location to another!</p>
 	  <hr class="my-4">
-	  <p>You can click on "Way Finder" and start booking immediately, but you have to authenticate first. If you don't have account please follow simple registration procedure.</p>
+	  <p>You can click on "Search Way" and start booking immediately, but you have to authenticate first. If you don't have account please follow simple registration procedure.</p>
 	  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
 	</div>
 
 
 </body>
+<footer class="page-footer font-small blue">
+
+  <!-- Copyright -->
+  <div class="text-center">© 2020 Copyright : Ruslan Gainutdinov production
+  </div>
+  <div class="text-center h6">
+      <a href="#"> LinkedIn</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
 </html>

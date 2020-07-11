@@ -223,10 +223,10 @@ public class CommercialAccountService {
 		
 		if(way.getId()==null) {
 			switch(type) {
-			case "Flight":
+			case "FLIGHT":
 				flightService.saveEntity(way);
 				return;
-			case "Bus":
+			case "BUS":
 				busService.saveEntity(way);
 				return;
 			}
@@ -262,5 +262,13 @@ public class CommercialAccountService {
 		System.out.println("************************");
 		System.out.println(list);
 		return page;
+	}
+	
+	public List<CommercialAccount> getCommercialAccounts(){
+		return commercialAccountRepository.findAll();
+	}
+	
+	public CommercialAccount getCommercialAccountById(Integer id){
+		return commercialAccountRepository.findById(id).orElse(null);
 	}
 }

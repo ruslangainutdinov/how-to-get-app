@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+
+<title>Processing Form page</title>
+<style>
+.error {
+	color: red
+}
+</style>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<a class="navbar-brand" href="/">How To Get</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse"
+		data-target="#navbarSupportedContent"
+		aria-controls="navbarSupportedContent" aria-expanded="false"
+		aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item active"><a class="nav-link" href="/tripForm">Search
+					Way<span class="sr-only">(current)</span>
+			</a></li>
+			<li class="nav-item active"><a class="nav-link" href="/loading">Transport
+					Companies <span class="sr-only">(current)</span>
+			</a></li>
+			<li class="nav-item active"><a class="nav-link" href="/contacts">Information
+					<span class="sr-only">(current)</span>
+			</a></li>
+			
+			<li class="nav-item active" sec:authorize="isAuthenticated()">
+				<a class="nav-link" th:href="@{/user(id=${#authentication.name})}" >My Cabinet<span class="sr-only">(current)</span>				
+				</a>
+			</li>
+			
+
+
+
+		</ul>
+		     <form action="#" th:action="@{/logout}" method="POST" sec:authorize="isAuthenticated()">
+        		<input type="submit" value="Logout" class="btn btn-primary-outline">
+			</form>
+			
+			
+			<div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/registration/newUser}">Registration<span class="sr-only">(current)</span></a>
+			</div>
+        	
+	        <div class="nav-item active" sec:authorize="!isAuthenticated()">	
+					<a style="color:black;padding-right: 20px;" th:href="@{/loginURL}">Login<span class="sr-only">(current)</span></a>
+			</div>
+        	
+        	
+	</div>
+</nav>
+</head>
+	
+<body>
+	<div class="container">
+		<br><br>
+		<div th:if="${commercialAccountById==null}">
+			No company with this id found
+		</div>
+	<br>
+		<div th:if="${commercialAccountById!=null}">
+	  	<h4 th:text="*{commercialAccountById.companyName}" class="display-4"></h4>
+	  	<br>
+	  	Address<p th:text="*{commercialAccountById.address}"></p>
+	  	Contacts
+	  	Telephone:<p th:text="*{commercialAccountById.telephone}"></p>
+	  	Email:<p th:text="*{commercialAccountById.userProfile.user.email}"></p>
+		</div>
+	 </div>
+</body>
+</html>

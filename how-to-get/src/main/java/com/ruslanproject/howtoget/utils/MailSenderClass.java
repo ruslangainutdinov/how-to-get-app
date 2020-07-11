@@ -2,6 +2,7 @@ package com.ruslanproject.howtoget.utils;
 
 import java.util.Properties;
 
+import javax.annotation.PostConstruct;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -12,6 +13,9 @@ import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 /*Class responsible for sending email
@@ -34,15 +38,19 @@ public class MailSenderClass {
 	//==fields==
 	private Session session;
 
-	private static final String username = "how-to-get@mail.ru";
+	private final String username;
 
-	private static final String password = "password_2020";
-
+	@Autowired
+	private Environment env;
+	
+	private final String password;
+	
 	private Properties properties = new Properties();
 
-	
-	public MailSenderClass() {
-		initializeProperties();
+	public MailSenderClass(@Value("${mail.sender.email}")	String username,
+						   @Value("${mail.sender.password}")String password) {
+		this.username=username;
+		this.password=password;
 		initializeSession();
 	}
 
@@ -54,12 +62,13 @@ public class MailSenderClass {
 		});
 	}
 
+	@PostConstruct
 	private void initializeProperties() {
-		properties.put("mail.smtp.host", "smtp.mail.ru");
-		properties.put("mail.smtp.port", "465");
-		properties.put("mail.smtp.auth", "true");
-		properties.put("mail.smtp.socketFactory.port", "465");
-		properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		properties.put("mail.smtp.host", env.getProperty("mail.smtp.host"));
+		properties.put("mail.smtp.port", env.getProperty("mail.smtp.port"));
+		properties.put("mail.smtp.auth", env.getProperty("mail.smtp.auth"));
+		properties.put("mail.smtp.socketFactory.port", env.getProperty("mail.smtp.socketFactory.port"));
+		properties.put("mail.smtp.socketFactory.class", env.getProperty("mail.smtp.socketFactory.class"));
 	}
  
 	/*boolean flag conditions:
@@ -67,6 +76,8 @@ public class MailSenderClass {
 	*false - messageBody used*/
 	public  boolean sendMessage(String receiver, String name, String subject, String confirmationCode, String messageBody, boolean registrationFlag) {
 		boolean success=false;
+		String s=env.getProperty("mail.sender.email");
+		System.out.println("sssssssssssssssssssssssss"+s);
 		try {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(username));

@@ -19,6 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ruslanproject.howtoget.entities.UniqueId;
 import com.ruslanproject.howtoget.entities.User;
 import com.ruslanproject.howtoget.services.UserService;
+import com.ruslanproject.howtoget.utils.ApplicationMappings;
+import com.ruslanproject.howtoget.utils.ApplicationViews;
 
 
 /**
@@ -30,7 +32,7 @@ import com.ruslanproject.howtoget.services.UserService;
 
 
 @Controller
-@RequestMapping("/registration")
+@RequestMapping(ApplicationMappings.BASE_PATH_REGISTRATION_CONTROLLER_MAPPING)
 public class RegistrationUserController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationUserController.class);
@@ -40,23 +42,19 @@ public class RegistrationUserController {
 	@Autowired
 	private UserService userService;
 
-	@GetMapping("/newUser")
+	@GetMapping(ApplicationMappings.NEW_USER_MAPPING)
 	public String getRegistrationForm(Model model) {
 
 		User user = new User();
 
 		model.addAttribute("user", user);
 		
-		return "userRegistrationForm";
+		return ApplicationViews.FORM_USER_REGISTRATION_VIEW;
 	}
 	
-	@GetMapping("/successRegistration")
-	public String succesRegistration() {
 
-		return "successRegistration";
-	}
 
-	@RequestMapping("/process")
+	@RequestMapping(ApplicationMappings.PROCESS_NEW_USER_MAPPING)
 	public ModelAndView processRegistrationForm(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,
 			@ModelAttribute("uniqueId") UniqueId uniqueId) {
 		ModelAndView model = new ModelAndView();		
@@ -64,13 +62,13 @@ public class RegistrationUserController {
 		/*Check if user with provided email has already existed*/
 		if(userService.isUserExists(user)){
 			model.addObject("invalidCode", "User with this email already exists");
-			model.setViewName("userRegistrationForm");
+			model.setViewName(ApplicationViews.FORM_USER_REGISTRATION_VIEW);
 			return model;
 		}
 	
 		if(bindingResult.hasErrors()) {
 			LOGGER.info(">>>>>>Binding result of registration: "+bindingResult);
-			model.setViewName("userRegistrationForm");
+			model.setViewName(ApplicationViews.FORM_USER_REGISTRATION_VIEW);
 			return model;
 		}
 		String hexString;
@@ -102,19 +100,19 @@ public class RegistrationUserController {
 		
 		model.addObject("modelUniqueId", modelUniqueId);
 		model.addObject("invalidCode", "");
-		model.setViewName("confirmationCodePage");
+		model.setViewName(ApplicationViews.CONFIRMATION_CODE_PAGE_VIEW);
 		LOGGER.info(">>>>>>User's email: " + user.getEmail());
 		return model;
 	}
 
-	@PostMapping("/confirm")
+	@PostMapping(ApplicationMappings.CONFIRM_NEW_USER_MAPPING)
 	public ModelAndView confirmNewUser(@Valid @ModelAttribute UniqueId uniqueId, BindingResult bindingResult) {
 		ModelAndView model = new ModelAndView();
 		
 		
 		System.out.println("Second: "+uniqueId.getEmail());
 		if (userService.validateUser(uniqueId)) {
-			model.setViewName("redirect:/registration/successRegistration");			
+			model.setViewName("redirect:"+ApplicationMappings.BASE_PATH_REGISTRATION_CONTROLLER_MAPPING+ApplicationMappings.SUCCESS_REGISTRATION_MAPPING);			
 			LOGGER.debug(">>>>>>Succes registration: "+userService.getValidationMap());
 			userService.processUserToDB(uniqueId);
 			return model;
@@ -123,7 +121,7 @@ public class RegistrationUserController {
 			UniqueId id = new UniqueId();
 			id.setEmail(uniqueId.getEmail());
 			model.addObject("modelUniqueId", id);
-			model.setViewName("confirmationCodePage");
+			model.setViewName(ApplicationViews.CONFIRMATION_CODE_PAGE_VIEW);
 			return model;
 
 		}
