@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name="buses")
 public class Bus extends WayToGet {
 	
-	public Bus(String id, String companyProvider, double price, String departureDate, String arrivalDate,
+	public Bus(String id, CommercialAccount companyProvider, double price, String departureDate, String arrivalDate,
 			String locationFrom, String locationTo) {
 		super(id, companyProvider, price, departureDate, arrivalDate, locationFrom, locationTo);
 

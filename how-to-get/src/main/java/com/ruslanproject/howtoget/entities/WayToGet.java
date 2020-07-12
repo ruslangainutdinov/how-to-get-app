@@ -1,9 +1,13 @@
 package com.ruslanproject.howtoget.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -35,8 +39,10 @@ public class WayToGet {
 	@Column(name="ufn")
 	private String ufn;
 	
-	@Column(name="company")
-	private String companyProvider;
+	@ManyToOne(cascade = CascadeType.PERSIST,
+				fetch = FetchType.LAZY)
+	@JoinColumn(name = "company_id")
+	private CommercialAccount companyProvider;
 	
 	@Column(name="price")
 	@Min(value = 5, message="Minimum price is 5$")
@@ -68,7 +74,7 @@ public class WayToGet {
 		
 	}
 	
-	public WayToGet(String id, String companyProvider, Double price, String departureDate, String arrivalDate,
+	public WayToGet(String id, CommercialAccount companyProvider, Double price, String departureDate, String arrivalDate,
 			String locationFrom, String locationTo) {
 		this.ufn = id;
 		this.companyProvider = companyProvider;
@@ -78,10 +84,10 @@ public class WayToGet {
 		this.locationFrom = locationFrom;
 		this.locationTo = locationTo;
 	}
-	public String getCompanyProvider() {
+	public CommercialAccount getCompanyProvider() {
 		return companyProvider;
 	}
-	public void setCompanyProvider(String companyProvider) {
+	public void setCompanyProvider(CommercialAccount companyProvider) {
 		this.companyProvider = companyProvider;
 	}
 	public Double getPrice() {

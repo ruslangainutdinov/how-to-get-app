@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.ruslanproject.howtoget.validators.PasswordMatch;
@@ -34,10 +35,12 @@ public class User {
 	private Integer id;
 	
 	@Size(min=2,message="Please enter correct first name")
+	@Pattern(regexp = "[a-zA-Z]{3,25}", message="First name must contain only english letters with length between 3 and 25")
 	@Column(name="first_name")
 	private String firstName;
 	
 	@Column(name="last_name")
+	@Pattern(regexp = "[a-zA-Z]{3,25}", message="Lirst name must contain only english letters with length between 3 and 25")
 	@Size(min=2,message="Please enter correct last name")
 	private String lastName;
 	

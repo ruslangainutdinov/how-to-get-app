@@ -96,6 +96,7 @@ public class CommercialAccountService {
 		if (types.contains(WayToGet.Type.FLIGHT.toString())) {
 			LOGGER.info("Success enter FLIGHT");
 			result.addAll(getFlightsByProvider(email));
+			System.out.println("FINAL POINT 2");
 		}
 		return result;
 	}
@@ -119,7 +120,7 @@ public class CommercialAccountService {
 		} catch (AccountNotFoundException e) {
 			e.printStackTrace();
 		}
-		return flightRepository.findAllByCompanyProvider(commercialAccount.getCompanyName());
+		return flightRepository.findAllByCompanyProvider(commercialAccount);
 	}
 	
 	private List<String> getTypesOfProvider(String email) {
@@ -134,8 +135,8 @@ public class CommercialAccountService {
 	}
 
 	public CommercialAccount getCommercialAccount(String email) throws AccountNotFoundException {
-
 		Optional<User> userContainer = userRepository.findByEmail(email);
+		System.out.println(userContainer.get());
 		Optional<CommercialAccount> findByUserProfileId = null;
 		if (userContainer.isPresent()) {
 			findByUserProfileId = providerRepository.findByUserProfileId(userContainer.get().getUserProfile().getId());
@@ -148,7 +149,8 @@ public class CommercialAccountService {
 		} else {
 			throw new AccountNotFoundException("No suitable commercial account");
 		}
-
+		System.out.println(userContainer.get());
+		System.out.println(commercialAccount);
 		return commercialAccount;
 
 	}
@@ -213,14 +215,15 @@ public class CommercialAccountService {
 			way = new Flight();
 			break;
 		}
-		way.setCompanyProvider(commercialAccount.getCompanyName());
+		way.setCompanyProvider(commercialAccount);
 		
 		return way;
 	}
 	
 	public void saveEntity(@Valid WayToGet way, String type) {
 		//TODO finish this logic with transform object
-		
+		CommercialAccount account = getCommercialAccountById(way.getCompanyProvider().getId());
+		way.setCompanyProvider(account);
 		if(way.getId()==null) {
 			switch(type) {
 			case "FLIGHT":
@@ -259,7 +262,6 @@ public class CommercialAccountService {
 			list=ways.subList(startItem,toIndex);
 		}
 		Page<WayToGet> page = new PageImpl<>(list,PageRequest.of(currentPage, pageSize),ways.size());
-		System.out.println("************************");
 		System.out.println(list);
 		return page;
 	}

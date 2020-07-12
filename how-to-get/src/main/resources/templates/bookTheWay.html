@@ -30,7 +30,7 @@
 		<form action="" th:action="@{/process/booking}" method="POST"
 			th:object="${way}">
 			<h3>Trip details</h3>
-			Operator: <a th:href="@{/companies/company(id=${way.companyProvider.id})}" th:text="*{companyProvider}" /> 
+			Operator: <a th:href="@{/companies/company(id=${way.companyProvider.id})}" th:text="*{companyProvider.companyName}" ></a>
 			<br>
 			<br> Departure date: <span th:text="*{departureDate}" />
 
@@ -44,7 +44,9 @@
 		
 			<input type="hidden" name="id" th:value="${way.id}">
 			<input type="hidden" name="ufn" th:value="${way.ufn}">
-			<input type="hidden" name="companyProvider"	th:value="${way.companyProvider}"> 
+			<input type="hidden" name="companyProvider.id" th:value="${way.companyProvider.id}">
+			<input type="hidden" name="companyProvider.companyName" th:value="${way.companyProvider.companyName}">
+							 
 			<input type="hidden" name="price" th:value="${way.price}">
 			<input type="hidden" name="departureDate" th:value="${way.departureDate}"> 
 			<input type="hidden" name="arrivalDate" th:value="${way.arrivalDate}">
@@ -60,4 +62,6 @@
 	
 
 </body>
+<footer th:replace="~{fragments/footer :: footer}">
+</footer>
 </html>

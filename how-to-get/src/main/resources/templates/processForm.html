@@ -60,7 +60,7 @@
 			<tbody>
 				<tr th:each="bus,iterStat : ${buses}">
 					<td th:text="${bus.ufn}"></td>
-					<td th:text="${bus.companyProvider}"></td>
+					<td th:text="${bus.companyProvider.companyName}"></td>
 					<td th:text="${bus.price}"></td>
 					<td th:text="${#strings.replace(bus.departureDate,'T',' ')}"></td>
 					<td th:text="${#strings.replace(bus.arrivalDate,'T',' ')}"></td>
@@ -71,9 +71,10 @@
 						<form th:action="@{/process/book}" th:object="${buses}"
 							method="POST">
 							<input type="hidden" name="id" th:value="${bus.id}"> 
-							<input type="hidden" name="ufn" th:value="${bus.ufn}"> <input
-								type="hidden" name="companyProvider"
-								th:value="${bus.companyProvider}"> <input type="hidden"
+							<input type="hidden" name="ufn" th:value="${bus.ufn}"> 
+							<input type="hidden" name="companyProvider.id" th:value="${bus.companyProvider.id}">
+							<input type="hidden" name="companyProvider.companyName" th:value="${bus.companyProvider.companyName}">
+							<input type="hidden"
 								name="price" th:value="${bus.price}"> <input
 								type="hidden" name="departureDate"
 								th:value="${bus.departureDate}"> <input type="hidden"
@@ -113,7 +114,7 @@
 				<tbody>
 					<tr th:each="flight,iterStat : ${flights}">
 						<td th:text="${flight.ufn}"></td>
-						<td th:text="${flight.companyProvider}"></td>
+						<td th:text="${flight.companyProvider.companyName}"></td>
 						<td th:text="${flight.price}"></td>
 						<td th:text="${#strings.replace(flight.departureDate,'T',' ')}"></td>
 						<td th:text="${#strings.replace(flight.arrivalDate,'T',' ')}"></td>
@@ -125,8 +126,10 @@
 								method="POST">
 								<input type="hidden" name="id" th:value="${flight.id}">
 								<input type="hidden" name="ufn" th:value="${flight.ufn}">
-								<input type="hidden" name="companyProvider"
-									th:value="${flight.companyProvider}"> <input
+								<input type="hidden" name="companyProvider.id" th:value="${flight.companyProvider.id}">
+								<input type="hidden" name="companyProvider.companyName" th:value="${flight.companyProvider.companyName}">
+							
+									<input
 									type="hidden" name="price" th:value="${flight.price}">
 								<input type="hidden" name="departureDate"
 									th:value="${flight.departureDate}"> <input
@@ -146,4 +149,6 @@
 		</div>
 	</div>
 </body>
+<footer th:replace="~{fragments/footer :: footer}">
+</footer>
 </html>

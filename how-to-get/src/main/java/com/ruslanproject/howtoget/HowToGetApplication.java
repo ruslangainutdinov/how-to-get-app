@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 @EnableScheduling
-public class HowToGetApplication implements WebMvcConfigurer{
+public class HowToGetApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HowToGetApplication.class, args);

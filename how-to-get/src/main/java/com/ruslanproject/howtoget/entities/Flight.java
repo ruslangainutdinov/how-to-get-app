@@ -16,7 +16,7 @@ public class Flight extends WayToGet {
 
 	
 	
-	public Flight(String id, String companyProvider, double price, String departureDate, String arrivalDate,
+	public Flight(String id, CommercialAccount companyProvider, double price, String departureDate, String arrivalDate,
 			String locationFrom, String locationTo) {
 		super(id, companyProvider, price, departureDate, arrivalDate, locationFrom, locationTo);
 	}

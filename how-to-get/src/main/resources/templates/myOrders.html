@@ -45,8 +45,8 @@
 			
 			<tbody>
 				<tr th:each="order,iStat: ${ordersFlight}">
-					<th th:text="${iStat.index}+1"></th>
-					<td th:text="'Company: '+${order.way.companyProvider}+' Departure: '+${order.way.departureDate}
+					<th th:text="${iStat.index}+10"></th>
+					<td th:text="'Company: '+${order.way.companyProvider.companyName}+' Departure: '+${order.way.departureDate}
 					+' Number of seats: '+${order.numberOfTickets}"></td>
 					<td th:text="'Price to pay: '+${#numbers.formatDecimal(order.way.price*(order.numberOfTickets),2,2)}+'$'"></td>
 					<td>
@@ -83,7 +83,7 @@
 			<tbody>
 				<tr th:each="order,iStat: ${ordersBus}">
 					<th th:text="${iStat.index}+1"></th>
-					<td th:text="'Company: '+${order.way.companyProvider}+' Departure: '+${order.way.departureDate}
+					<td th:text="'Company: '+${order.way.companyProvider.companyName}+' Departure: '+${order.way.departureDate}
 					+' Number of seats: '+${order.numberOfTickets}"></td>
 					<td th:text="'Price to pay: '+${#numbers.formatDecimal(order.way.price*(order.numberOfTickets),2,2)}+'$'"></td>
 					<td>
@@ -106,4 +106,6 @@
 	</div>
 	<br>
 </body>
+<footer th:replace="~{fragments/footer :: footer}">
+</footer>
 </html>

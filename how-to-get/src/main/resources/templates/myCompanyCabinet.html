@@ -60,7 +60,7 @@
 			<tbody>
 				<tr th:each="way,index:${page.content}">
 					<td th:text="*{way.id}"></td>
-					<td th:text="*{way.CompanyProvider}"></td>
+					<td th:text="*{way.CompanyProvider.companyName}"></td>
 					<td th:text="*{way.price}"></td>
 					<td th:text="*{way.departureDate}"></td>
 					<td th:text="*{way.arrivalDate}"></td>
@@ -69,22 +69,21 @@
 					<td th:text="*{way.ticketsAvailable}"></td>
 					<td >
 						<form action="#" th:action="@{/myCabinet/edit/edit/save}" th:object="${way}" method="POST" style="display:inline">
-							<input type="hidden" name="id" th:value="${way.id}" >
-							<input type="hidden" name="ufn" th:value="${way.ufn}"> 
-							<input type="hidden" name="companyProvider"	th:value="${way.companyProvider}"> 
-							<input type="hidden" name="price" th:value="${way.price}"> 
-							<input type="hidden" name="departureDate" th:value="${way.departureDate}"> 
-							<input type="hidden" name="arrivalDate" th:value="${way.arrivalDate}"> 
-							<input type="hidden" name="locationFrom" th:value="${way.locationFrom}">
-							<input type="hidden" name="locationTo" th:value="${way.locationTo}">
-							<input type="hidden" name="ticketsAvailable" th:value="${way.ticketsAvailable}">
+							<input type="hidden" th:name="id" th:value="${way.id}" >
+							<input type="hidden" th:name="ufn" th:value="${way.ufn}"> 
+							<input type="hidden" th:name="price" th:value="${way.price}"> 
+							<input type="hidden" th:name="companyProvider.id" th:value="${way.companyProvider.id}">
+							<input type="hidden" th:name="departureDate" th:value="${way.departureDate}"> 
+							<input type="hidden" th:name="arrivalDate" th:value="${way.arrivalDate}"> 
+							<input type="hidden" th:name="locationFrom" th:value="${way.locationFrom}">
+							<input type="hidden" th:name="locationTo" th:value="${way.locationTo}">
+							<input type="hidden" th:name="ticketsAvailable" th:value="${way.ticketsAvailable}">
 							<button type="submit" th:text="Edit" class="btn btn-outline-primary"></button>
 						</form>
 					
 						<form action="#" th:action="@{/myCabinet/edit/remove}" th:object="${way}" method="POST" style="display:inline">
 							<input type="hidden" name="id" th:value="${way.id}" >
 							<input type="hidden" name="ufn" th:value="${way.ufn}"> 
-							<input type="hidden" name="companyProvider"	th:value="${way.companyProvider}"> 
 							<input type="hidden" name="price" th:value="${way.price}"> 
 							<input type="hidden" name="departureDate" th:value="${way.departureDate}"> 
 							<input type="hidden" name="arrivalDate" th:value="${way.arrivalDate}"> 
@@ -111,6 +110,7 @@
 		<br>
 		<br>
 	</div>
-
 </body>
+<footer th:replace="~{fragments/footer :: footer}">
+</footer>
 </html>

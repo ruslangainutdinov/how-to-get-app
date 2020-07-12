@@ -65,8 +65,9 @@
 			<input type="hidden" name="token" th:value="${token}"/>
 			<span th:if="${invalidCode != 'null'}" th:text="${invalidCode}" class="error"></span>
 			</div>
-		</form>	
-	
+		</form>
 	</div>
 </body>
+<footer th:replace="~{fragments/footer :: footer}">
+</footer>
 </html>

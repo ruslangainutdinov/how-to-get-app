@@ -4,7 +4,7 @@ create schema how_to_get_app;
 
 DROP USER IF EXISTS 'how-to-get-connection'@'localhost';
 CREATE USER 'how-to-get-connection'@'localhost' IDENTIFIED BY 'ruslan_db_51694931';
-GRANT ALL PRIVILEGES ON how_to_get_app.* TO 'root'@'how-to-get-connection'@'localhost';
+GRANT ALL PRIVILEGES ON how_to_get_app.* TO 'how-to-get-connection'@'localhost';
 
 use how_to_get_app;
 
@@ -27,28 +27,32 @@ drop table if exists flights;
 create table flights(
 id int AUTO_INCREMENT,
 ufn VARCHAR(10),
-company VARCHAR(255),
+#company VARCHAR(255),
+company_id int not null,
 price DOUBLE,
 departure_from varchar(255),
 arrival_to VARCHAR(255),
 departure_date VARCHAR(30),
 arrival_date VARCHAR(30),
 tickets_available int,
-PRIMARY KEY (id));
+PRIMARY KEY (id),
+FOREIGN KEY (company_id) REFERENCES commercial_accounts(id)ON DELETE NO ACTION);
 
 drop table if exists buses;
 
 create table buses(
 id int AUTO_INCREMENT,
 ufn VARCHAR(10),
-company VARCHAR(255),
+#company VARCHAR(255),
+company_id int not null,
 price DOUBLE,
 departure_from varchar(255),
 arrival_to VARCHAR(255),
 departure_date VARCHAR(30),
 arrival_date VARCHAR(30),
 tickets_available int,
-PRIMARY KEY (id)) ;
+PRIMARY KEY (id) ,
+FOREIGN KEY (company_id) REFERENCES commercial_accounts(id)ON DELETE NO ACTION);
 
 drop table if exists commercial_accounts ;
  

@@ -66,6 +66,7 @@ public class CommercialAccountRelatedController {
                 .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
+        page.get().forEach((b)->System.out.println(">>>>>>>>>>>>>>>>>>>"+b));
         LOG.debug("Total pages ={}",page.getTotalPages());	
 		return ApplicationViews.COMPANY_CABINET_VIEW;
 	}
@@ -121,7 +122,6 @@ public class CommercialAccountRelatedController {
 	public ModelAndView addNewWayAdd(@Valid@ModelAttribute("way") WayToGet way,BindingResult bindingResult, 
 											@RequestParam("type") String type, Authentication auth) {
 		ModelAndView model = new ModelAndView();
-		
 		if(bindingResult.hasErrors()) {
 			model.addObject("way", way);
 			model.setViewName(ApplicationViews.FORM_TO_ADD_NEW_WAY_VIEW);
