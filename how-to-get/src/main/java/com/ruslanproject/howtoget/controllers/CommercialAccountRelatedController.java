@@ -66,7 +66,6 @@ public class CommercialAccountRelatedController {
                 .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-        page.get().forEach((b)->System.out.println(">>>>>>>>>>>>>>>>>>>"+b));
         LOG.debug("Total pages ={}",page.getTotalPages());	
 		return ApplicationViews.COMPANY_CABINET_VIEW;
 	}

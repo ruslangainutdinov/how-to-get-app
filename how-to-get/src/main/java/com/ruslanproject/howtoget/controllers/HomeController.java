@@ -153,7 +153,6 @@ public class HomeController {
 	/*Process 1 specific booking*/
 	@RequestMapping(ApplicationMappings.PROCESS_BOOKING_MAPPING)
 	public String postBooking(@ModelAttribute("buses") WayToGet way, Model model, Authentication auth) {
-		System.out.println(way);
 		LOGGER.info(">>>>>>Way to process: "+way);			
 
 		model.addAttribute("way", way);
@@ -242,7 +241,6 @@ public class HomeController {
 		List<CommercialAccount> commercialAccounts = commercialAccountService.getCommercialAccounts();
 		
 		model.addAttribute("commercialAccounts",commercialAccounts);
-		System.out.println(commercialAccounts);
 		return ApplicationViews.ALL_COMPANIES_VIEW;
 	}
 	
