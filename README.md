@@ -3,6 +3,7 @@
 ## Author
 Hello! My name is Ruslan Gainutdinov, and this entire application was made by me.
 I am very critical to my code and in constant chase for better coding skills. So any reviews and feedbacks are recommended.
+
 [LinkedIn](https://www.linkedin.com/in/ruslan-gainutdinov-5329b71a9/)
 
 ## INFO
