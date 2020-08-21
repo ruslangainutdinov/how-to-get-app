@@ -6,8 +6,19 @@ How To Get Application is service for booking travel options from one place to a
 
 **List of things that already were implemented**
 - Authentication via Spring Security using ORM.
+- Authorization with 3 ROLES: USER, PROVIDER and ADMIN(NOT YET IMPLEMENTED)
+- Login form was created(I really liked it)
+- Registration with validation and confirmation code using that will be sent to email, that you will specify in registration page
+- Seacrhing mechanism for suitable direction, date and transport type(ValuesGenerator values are used as results), with capability to book it, 1 order up to 8 peolpe.
+- User can cancel its booking, if its needed, all seats, that were taken will become available
+- Provider can manage its travel options, edit, add and remove
+- If provider decided to cancel some route, any user that has booking on this flight/bus will be notified via email(aspects used)
+WE ARE HERE
+- Form to change user's personal information will be added (completely forgot about it :facepalm:)
+- ADMIN ROLE is already in the system, but is not yet implemented
+- ADMIN ROLE must have control of anything
 
-
+If you think that I should add smth else, please let me know, I would appreciate any feedback as positive, as negative
 
 ## About me
 Hello my name is Ruslan Gainutdinov. The entire application was made by me.
