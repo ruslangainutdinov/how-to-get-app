@@ -11,7 +11,7 @@ How To Get Application is service for booking travel options from one place to a
 
 **NOTE! This application is pet project! All the cities and companies that are used in project are not related to real ones, even if their names are the same. Cities that have been used are real ones.**
 
-**List of things that already were implemented**
+**List of things to be implemented**
 - Authentication via Spring Security using ORM.
 - Authorization with 3 ROLES: USER, PROVIDER and ADMIN(NOT YET IMPLEMENTED)
 - Login form was created(I really liked it)
