@@ -6,13 +6,15 @@ I am very critical to my code and in constant chase for better coding skills. So
 
 
 This repository is my "how-to-get" application.
-The technologies that have been used during development are:
--Spring Boot,
--Spring MVC,
--Hibernate ORM,
--Hibernate Validator,
--Thymeleaf,
--MySQL
+
+**The technologies that have been used during development are:**
+
+- Spring Boot
+- Spring MVC
+- Hibernate ORM
+- Hibernate Validator
+- Thymeleaf
+- MySQL
 Bootstrap templates were used for front-end par t of the application.
 
 -Documentation for the app on it's way!
